@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="PEP 8规范命名 使用下标获取列表元素、调用函数或者给关键字参数赋值时，不在两旁加空格 函数、变量及属性应该用小写字母来拼写，个单词之间下划线相连 受保护实例属性以单个下划线开头：_protect_var 类与异常，以每个单词首字母大写形式命名：ClassName 模块级别的常量，采用全部大写字母方式命名，单词之间下划线连接：ALL_CAPS 类中实例方法（instance method），应该">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective Python 学习笔记 1">
+<meta property="og:url" content="https://focuseon.me/effective-python-study-note-1/">
+<meta property="og:site_name" content="Focuseds Blog | 记录">
+<meta property="og:description" content="PEP 8规范命名 使用下标获取列表元素、调用函数或者给关键字参数赋值时，不在两旁加空格 函数、变量及属性应该用小写字母来拼写，个单词之间下划线相连 受保护实例属性以单个下划线开头：_protect_var 类与异常，以每个单词首字母大写形式命名：ClassName 模块级别的常量，采用全部大写字母方式命名，单词之间下划线连接：ALL_CAPS 类中实例方法（instance method），应该">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-01T07:36:29.000Z">
+<meta property="article:modified_time" content="2022-08-13T04:27:31.350Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Effective Python 学习笔记 1</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/effective-python-study-note-2/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/windows-pip-is-configured-with-locations-that-require-TLS-SSL/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/effective-python-study-note-1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/effective-python-study-note-1/&text=Effective Python 学习笔记 1"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/effective-python-study-note-1/&is_video=false&description=Effective Python 学习笔记 1"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Effective Python 学习笔记 1&body=Check out this article: https://focuseon.me/effective-python-study-note-1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/effective-python-study-note-1/&name=Effective Python 学习笔记 1&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/effective-python-study-note-1/&t=Effective Python 学习笔记 1"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#PEP-8%E8%A7%84%E8%8C%83"><span class="toc-number">1.</span> <span class="toc-text">PEP 8规范</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E5%90%8D"><span class="toc-number">1.1.</span> <span class="toc-text">命名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">语句</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bytes%E3%80%81str%E4%B8%8Eunicode%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">bytes、str与unicode的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0%E5%8F%96%E4%BB%A3%E5%A4%8D%E6%9D%82%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">用辅助函数取代复杂的表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.1.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E5%88%87%E5%89%B2%E5%BA%8F%E5%88%97%E7%9A%84%E5%8A%9E%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">了解切割序列的办法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%86%99%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">基本写法</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Effective Python 学习笔记 1
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-01T07:36:29.000Z" itemprop="datePublished">2019-08-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/python/" rel="tag">python</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h4 id="PEP-8规范"><a href="#PEP-8规范" class="headerlink" title="PEP 8规范"></a>PEP 8规范</h4><h5 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h5><ol>
+<li>使用下标获取列表元素、调用函数或者给关键字参数赋值时，不在两旁加空格</li>
+<li>函数、变量及属性应该用小写字母来拼写，个单词之间下划线相连</li>
+<li>受保护实例属性以单个下划线开头：_protect_var</li>
+<li>类与异常，以每个单词首字母大写形式命名：ClassName</li>
+<li>模块级别的常量，采用全部大写字母方式命名，单词之间下划线连接：ALL_CAPS</li>
+<li>类中实例方法（instance method），应该把首个参数命名为self，以表示该对象自身</li>
+<li>类方法（class method）的首个参数应该命名为cls，以表示该类自身</li>
+</ol>
+<h5 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h5><ol>
+<li>不要不要通过检测长度的办法（如 if len(somelist) &#x3D;&#x3D; 0）来判断somelist是否为[]或’’等空值，而是采用if not somelist这种写法来判断，它会假定：空值将自动评估为false</li>
+<li>不要编写单行的if、for、while及except语句，应该分开书写以示清晰</li>
+<li>import语句应总是放在开头</li>
+<li>引入模块时，总是使用绝对名称，而不是根据当前面模块路径来使用相对名称：from bar import foo</li>
+<li>如果一定要引用相对名称，采用from . import foo的格式</li>
+<li>import语句应该按顺序划分成三个部分，分别表示标准库模块、第三方模块以及自用模块，在每个部分中import语句应该按照模块的字母顺序排列</li>
+</ol>
+<h4 id="bytes、str与unicode的区别"><a href="#bytes、str与unicode的区别" class="headerlink" title="bytes、str与unicode的区别"></a>bytes、str与unicode的区别</h4><ol>
+<li><p>把Unicode字符转换成二进制数据就必须使用encode方法</p>
+</li>
+<li><p>把二进制数据字符转换成Unicode就必须使用decode方法</p>
+</li>
+<li><p>实现：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">to_str</span><span class="token punctuation">(</span>bytes_or_str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>bytes_or_str<span class="token punctuation">,</span> bytes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        value <span class="token operator">=</span> bytes_or_str<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        value <span class="token operator">=</span> bytes_or_str
+    <span class="token keyword">return</span> value
+
+<span class="token keyword">def</span> <span class="token function">to_bytes</span><span class="token punctuation">(</span>str_to_bytes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>str_to_bytes<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        value <span class="token operator">=</span> str_to_bytes<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        value <span class="token operator">=</span> str_to_bytes
+    <span class="token keyword">return</span> value
+</code></pre>
+</li>
+<li><p>编写程序时，一定要把编码和解码操作放在界面外围来做。程序最核心的部分应该使用Unicode字符类型，而且不对编码做任何假设。这种方法既可以令程序接受多种类型的文本编码（如Latin-1、Shift JIS和Big 5），又可以保证输出的文本信息只采用一种编码形式（最好是UTF-8）</p>
+</li>
+<li><p>open函数添加了名为encoding的新参数，默认值为utf-8，这就要求再写入时必须传入unicode字符的str实例，而不接受二进制数据的bytes实例。解决方法：采用字符写入模式wb，读取采用rb，如：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'file.txt'</span><span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>os<span class="token punctuation">.</span>urandom<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ol>
+<h4 id="用辅助函数取代复杂的表达式"><a href="#用辅助函数取代复杂的表达式" class="headerlink" title="用辅助函数取代复杂的表达式"></a>用辅助函数取代复杂的表达式</h4><pre><code>```python
+&#39;&#39;&#39;
+    eg. 需求：查询字符串
+&#39;&#39;&#39;
+
+from urllib.parse import parse_qs
+    my_values = parse_qs(&#39;red=5&amp;blue=0&amp;green=&#39;, keep_blank_values=True)
+    print(repr(my_values))
+
+&gt;&gt;&gt; &#123;&#39;red&#39;: [&#39;5&#39;], &#39;blue&#39;: [&#39;0&#39;], &#39;green&#39;: [&#39;&#39;]&#125;
+
+# 方法一：用get方法在my_values字典中查询不同参数
+print(&#39;RED:     &#39;, my_values.get(&#39;red&#39;))
+print(&#39;GREEN:   &#39;, my_values.get(&#39;green&#39;))
+&gt;&gt;&gt; RED:       [&#39;5&#39;]
+    GREEN:     [&#39;&#39;]     #无法将空值输出为0
+
+#方法二
+green = int(my_values.get(&#39;green&#39;, [])[0] or 0)
+print(&#39;GREEN:   %r&#39; % green)
+&gt;&gt;&gt; GREEN:   0  #表达式复杂，不易理解
+
+# 总结辅助函数
+def get_first_int(values, key, default=0):
+    found = values.get(key, [&#39;&#39;])
+    if found[0]:
+        found = found[0]
+    else:
+        found = default
+    return found
+
+green = get_first_int(my_values, &#39;green&#39;)
+```
+</code></pre>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
+<li>用if&#x2F;else表达式会比用or或and这样的Boolean操作符更清晰</li>
+</ol>
+<h4 id="了解切割序列的办法"><a href="#了解切割序列的办法" class="headerlink" title="了解切割序列的办法"></a>了解切割序列的办法</h4><h5 id="基本写法"><a href="#基本写法" class="headerlink" title="基本写法"></a>基本写法</h5><p>somelist[start:end]</p>
+<ol>
+<li>如果从头切片，将start留空，而非写0. end同理</li>
+<li>在源列表进行切割之后，会产生一份全新的列表。系统依然维护着指向原列表中各个对象的引用。</li>
+<li>在赋值时采用切割操作会改变原列表：a[2:7] &#x3D; [1, 2, 3]</li>
+<li>单词切片操作内不要同时指定start、end和stride</li>
+<li>反转字符串：re &#x3D; str[::-1]</li>
+<li>第五条只对ASCII字符有效，对已经编码成utf-8字符串的Unicode字符无效</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#PEP-8%E8%A7%84%E8%8C%83"><span class="toc-number">1.</span> <span class="toc-text">PEP 8规范</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E5%90%8D"><span class="toc-number">1.1.</span> <span class="toc-text">命名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">语句</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bytes%E3%80%81str%E4%B8%8Eunicode%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">bytes、str与unicode的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0%E5%8F%96%E4%BB%A3%E5%A4%8D%E6%9D%82%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">用辅助函数取代复杂的表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.1.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E5%88%87%E5%89%B2%E5%BA%8F%E5%88%97%E7%9A%84%E5%8A%9E%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">了解切割序列的办法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%86%99%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">基本写法</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/effective-python-study-note-1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/effective-python-study-note-1/&text=Effective Python 学习笔记 1"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/effective-python-study-note-1/&is_video=false&description=Effective Python 学习笔记 1"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Effective Python 学习笔记 1&body=Check out this article: https://focuseon.me/effective-python-study-note-1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/effective-python-study-note-1/&title=Effective Python 学习笔记 1"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/effective-python-study-note-1/&name=Effective Python 学习笔记 1&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/effective-python-study-note-1/&t=Effective Python 学习笔记 1"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="用列表推导来取代map和filter列表推导(list commprehension)：根据一份列表来制作另外一份列表      &#39;&#39;&#39;         用列表每个元素平方值构建另一份列表         a &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]     &#39;&#39;&#39;     # 列表推导写法     squares &#x3D; [x ** 2 for x in a]     # map写法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective Python 学习笔记 2">
+<meta property="og:url" content="https://focuseon.me/effective-python-study-note-2/">
+<meta property="og:site_name" content="Focuseds Blog | 记录">
+<meta property="og:description" content="用列表推导来取代map和filter列表推导(list commprehension)：根据一份列表来制作另外一份列表      &#39;&#39;&#39;         用列表每个元素平方值构建另一份列表         a &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]     &#39;&#39;&#39;     # 列表推导写法     squares &#x3D; [x ** 2 for x in a]     # map写法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-02T09:44:06.000Z">
+<meta property="article:modified_time" content="2022-08-13T04:27:47.972Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Effective Python 学习笔记 2</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/effective-python-study-note-3/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/effective-python-study-note-1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/effective-python-study-note-2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/effective-python-study-note-2/&text=Effective Python 学习笔记 2"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/effective-python-study-note-2/&is_video=false&description=Effective Python 学习笔记 2"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Effective Python 学习笔记 2&body=Check out this article: https://focuseon.me/effective-python-study-note-2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/effective-python-study-note-2/&name=Effective Python 学习笔记 2&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/effective-python-study-note-2/&t=Effective Python 学习笔记 2"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC%E6%9D%A5%E5%8F%96%E4%BB%A3map%E5%92%8Cfilter"><span class="toc-number">1.</span> <span class="toc-text">用列表推导来取代map和filter</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">1.1.</span> <span class="toc-text">注意</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E7%94%9F%E6%88%90%E5%99%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E6%94%B9%E5%86%99%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BE%83%E5%A4%A7%E7%9A%84%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC"><span class="toc-number">2.</span> <span class="toc-text">用生成器表达式来改写数据量较大的列表推导</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%94%9F%E6%88%90%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">什么是生成器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%81%E7%82%B9"><span class="toc-number">2.2.</span> <span class="toc-text">要点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%BD%E9%87%8F%E7%94%A8enumerate%E5%8F%96%E4%BB%A3range"><span class="toc-number">3.</span> <span class="toc-text">尽量用enumerate取代range</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%81%E7%82%B9-1"><span class="toc-number">3.1.</span> <span class="toc-text">要点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8zip%E5%87%BD%E6%95%B0%E5%90%8C%E6%97%B6%E9%81%8D%E5%8E%86%E4%B8%A4%E4%B8%AA%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">用zip函数同时遍历两个迭代器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%81%E7%82%B9-2"><span class="toc-number">4.1.</span> <span class="toc-text">要点</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Effective Python 学习笔记 2
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-02T09:44:06.000Z" itemprop="datePublished">2019-08-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/python/" rel="tag">python</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h4 id="用列表推导来取代map和filter"><a href="#用列表推导来取代map和filter" class="headerlink" title="用列表推导来取代map和filter"></a>用列表推导来取代map和filter</h4><pre><code>列表推导(list commprehension)：根据一份列表来制作另外一份列表
+</code></pre>
+<pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
+        用列表每个元素平方值构建另一份列表
+        a = [1, 2, 3, 4, 5, 6, 7, 8]
+    '''</span>
+    <span class="token comment" spellcheck="true"># 列表推导写法</span>
+    squares <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token operator">**</span> <span class="token number">2</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> a<span class="token punctuation">]</span>
+    <span class="token comment" spellcheck="true"># map写法</span>
+    squares <span class="token operator">=</span> map<span class="token punctuation">(</span>lamda x<span class="token punctuation">:</span> x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true"># 条件输出</span>
+    <span class="token comment" spellcheck="true"># 列表推导输出偶数</span>
+    squares <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> a <span class="token keyword">if</span> a<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span>
+    <span class="token comment" spellcheck="true"># map辅以filter输出偶数</span>
+    squares <span class="token operator">=</span> map<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">,</span> filter<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>    字典与集也有类似的推导机制，编写算法时，可以通过这些推导机制来创建衍生的数据结构。
+</code></pre>
+<pre class=" language-python"><code class="language-python">    chile_ranks <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;'ghost': 1, 'god': 2, 'man': 3&amp;#125;</span>
+    rank_dict <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;rank: name for name,rank in chile_ranks.items()&amp;#125;</span>
+    chile_len_set <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;len(name) for name in rank_dict.values()&amp;#125;</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>rank_dict<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>chile_len_set<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">#元组与dict互转</span>
+    tuple <span class="token operator">=</span> dict<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    dict <span class="token operator">=</span> tuple<span class="token punctuation">.</span>values
+</code></pre>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ol>
+<li>不使用含有两个以上表达式的列表推导，难理解尽量避免</li>
+<li>列表推导支持多级循环，每一级循环也支持多项条件</li>
+</ol>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><ol>
+<li>数据量较少时，不会出现问题，数据量较多时可能会耗费大量内存</li>
+</ol>
+<h4 id="用生成器表达式来改写数据量较大的列表推导"><a href="#用生成器表达式来改写数据量较大的列表推导" class="headerlink" title="用生成器表达式来改写数据量较大的列表推导"></a>用生成器表达式来改写数据量较大的列表推导</h4><h5 id="什么是生成器"><a href="#什么是生成器" class="headerlink" title="什么是生成器"></a>什么是生成器</h5><pre><code>    通过列表生成式，我们可以直接创建一个列表，但是，受到内存限制，列表容量肯定是有限的，而且创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。
+    所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程中不断推算出后续的元素呢？这样就不必创建完整的list，从而节省大量的空间，在Python中，这种一边循环一边计算的机制，称为生成器：generator。
+</code></pre>
+<pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
+        eg. 读取日志文件
+    '''</span>
+    it <span class="token operator">=</span> <span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> open<span class="token punctuation">(</span><span class="token string">'/var/log.log'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span>
+    <span class="token operator">>></span><span class="token operator">></span> <span class="token operator">&lt;</span>generator object <span class="token operator">&lt;</span>genexpr<span class="token operator">></span> at <span class="token number">0x101b81480</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token operator">>></span><span class="token operator">></span> <span class="token string">"logs"</span>
+</code></pre>
+<h5 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h5><ol>
+<li>当输入数据量较大时，列表推导可能会因为占用太多内存而出现问题</li>
+<li>由生成器表达式返回的迭代器，可以逐次产生输出值，从而避免内存用量问题</li>
+<li>把某个生成器表达式所返回的迭代器，放在另一个生成器表达式的for子表达式中，即可将二者结合起来</li>
+</ol>
+<pre class=" language-python"><code class="language-python">    a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+    res <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> a<span class="token punctuation">)</span>
+</code></pre>
+<ol start="4">
+<li>串在一起的生成器表达式执行速度很快</li>
+</ol>
+<h4 id="尽量用enumerate取代range"><a href="#尽量用enumerate取代range" class="headerlink" title="尽量用enumerate取代range"></a>尽量用enumerate取代range</h4><pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
+        场景说明：当想同时打印元素在列表中的索引和值的时候，使用range略显生硬
+    '''</span>
+    <span class="token comment" spellcheck="true"># range写法</span>
+    <span class="token keyword">for</span> i range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        value <span class="token operator">=</span> list<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        index <span class="token operator">=</span> i
+    <span class="token comment" spellcheck="true"># enumerate写法</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> value <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<h5 id="要点-1"><a href="#要点-1" class="headerlink" title="要点"></a>要点</h5><ol>
+<li>尽量使用enumerate来改写那种将range与下标访问结合的序列遍历代码</li>
+<li>可以给enumerate提供第二个参数， 以指定开始计数时所用的值</li>
+</ol>
+<h4 id="用zip函数同时遍历两个迭代器"><a href="#用zip函数同时遍历两个迭代器" class="headerlink" title="用zip函数同时遍历两个迭代器"></a>用zip函数同时遍历两个迭代器</h4><pre><code>zip可以将两个或者多个迭代器封装成一个生成器
+</code></pre>
+<pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
+        场景说明：需要平行对两个列表进行操作时
+    '''</span>
+    names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'alice'</span><span class="token punctuation">,</span> <span class="token string">'bob'</span><span class="token punctuation">,</span> <span class="token string">'cendy'</span><span class="token punctuation">]</span>
+    letters <span class="token operator">=</span> <span class="token punctuation">[</span>len<span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token keyword">for</span> n <span class="token keyword">in</span> names<span class="token punctuation">]</span>
+
+    longest_name <span class="token operator">=</span> None
+    max_letters <span class="token operator">=</span> <span class="token number">0</span>
+
+    <span class="token keyword">for</span> name<span class="token punctuation">,</span> count <span class="token keyword">in</span> zip<span class="token punctuation">(</span>names<span class="token punctuation">,</span> letters<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> count <span class="token operator">></span> max_letters<span class="token punctuation">:</span>
+            longest_name <span class="token operator">=</span> name
+            max_letters <span class="token operator">=</span> count
+    <span class="token keyword">print</span><span class="token punctuation">(</span>longest_name<span class="token punctuation">)</span>
+</code></pre>
+<h5 id="要点-2"><a href="#要点-2" class="headerlink" title="要点"></a>要点</h5><ol>
+<li>内置的zip函数可以平行地遍历多个迭代器</li>
+<li>python3中的zip函数相当于生成器，会在遍历过程中产生元组</li>
+<li>如果提供的迭代器长度不等，那么zip会自动提前终止</li>
+<li>itertools内置模块中的zip_longest函数可以平行的遍历多个迭代器，而不用在乎他们的长度是否相等</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC%E6%9D%A5%E5%8F%96%E4%BB%A3map%E5%92%8Cfilter"><span class="toc-number">1.</span> <span class="toc-text">用列表推导来取代map和filter</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">1.1.</span> <span class="toc-text">注意</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E7%94%9F%E6%88%90%E5%99%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%9D%A5%E6%94%B9%E5%86%99%E6%95%B0%E6%8D%AE%E9%87%8F%E8%BE%83%E5%A4%A7%E7%9A%84%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC"><span class="toc-number">2.</span> <span class="toc-text">用生成器表达式来改写数据量较大的列表推导</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%94%9F%E6%88%90%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">什么是生成器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%81%E7%82%B9"><span class="toc-number">2.2.</span> <span class="toc-text">要点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%BD%E9%87%8F%E7%94%A8enumerate%E5%8F%96%E4%BB%A3range"><span class="toc-number">3.</span> <span class="toc-text">尽量用enumerate取代range</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%81%E7%82%B9-1"><span class="toc-number">3.1.</span> <span class="toc-text">要点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8zip%E5%87%BD%E6%95%B0%E5%90%8C%E6%97%B6%E9%81%8D%E5%8E%86%E4%B8%A4%E4%B8%AA%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">用zip函数同时遍历两个迭代器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A6%81%E7%82%B9-2"><span class="toc-number">4.1.</span> <span class="toc-text">要点</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/effective-python-study-note-2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/effective-python-study-note-2/&text=Effective Python 学习笔记 2"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/effective-python-study-note-2/&is_video=false&description=Effective Python 学习笔记 2"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Effective Python 学习笔记 2&body=Check out this article: https://focuseon.me/effective-python-study-note-2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/effective-python-study-note-2/&title=Effective Python 学习笔记 2"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/effective-python-study-note-2/&name=Effective Python 学习笔记 2&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/effective-python-study-note-2/&t=Effective Python 学习笔记 2"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

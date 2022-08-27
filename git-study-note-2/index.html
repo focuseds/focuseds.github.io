@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="commit, tree与blob的对应关系 一个commit对应一个tree（唯一一个） 一个tree可以看作是一次commit之后整个项目的一个快照 一个tree可能也会包含多个tree 一个blob对应一个文件  分离头指针注意的问题当切换到没有绑定分支的commit时，并对其当中的文件修改，最终提交commit保存后会出现&quot;warning: you are leaving 1 s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git学习笔记 2">
+<meta property="og:url" content="https://focuseon.me/git-study-note-2/">
+<meta property="og:site_name" content="Focuseds Blog | 记录">
+<meta property="og:description" content="commit, tree与blob的对应关系 一个commit对应一个tree（唯一一个） 一个tree可以看作是一次commit之后整个项目的一个快照 一个tree可能也会包含多个tree 一个blob对应一个文件  分离头指针注意的问题当切换到没有绑定分支的commit时，并对其当中的文件修改，最终提交commit保存后会出现&quot;warning: you are leaving 1 s">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-05T07:28:55.000Z">
+<meta property="article:modified_time" content="2022-08-13T04:30:40.523Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Git学习笔记 2</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/git-study-note-3/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/effective-python-study-note-4/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/git-study-note-2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/git-study-note-2/&text=Git学习笔记 2"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/git-study-note-2/&is_video=false&description=Git学习笔记 2"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git学习笔记 2&body=Check out this article: https://focuseon.me/git-study-note-2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/git-study-note-2/&name=Git学习笔记 2&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/git-study-note-2/&t=Git学习笔记 2"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#commit-tree%E4%B8%8Eblob%E7%9A%84%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">commit, tree与blob的对应关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%A6%BB%E5%A4%B4%E6%8C%87%E9%92%88%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">分离头指针注意的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E5%88%86%E6%94%AF"><span class="toc-number">3.</span> <span class="toc-text">删除不需要的分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9commit%E5%92%8Cmassage"><span class="toc-number">4.</span> <span class="toc-text">修改commit和massage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-number">5.1.</span> <span class="toc-text">文件的差异</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%90%E4%BA%A4%E4%B8%8E%E5%9B%9E%E9%80%80"><span class="toc-number">5.2.</span> <span class="toc-text">文件提交与回退</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E4%B8%8D%E9%9C%80%E8%A6%81git%E7%AE%A1%E7%90%86%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">5.3.</span> <span class="toc-text">指定不需要git管理的文件</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Git学习笔记 2
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-05T07:28:55.000Z" itemprop="datePublished">2019-08-05</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/git/" rel="tag">git</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h4 id="commit-tree与blob的对应关系"><a href="#commit-tree与blob的对应关系" class="headerlink" title="commit, tree与blob的对应关系"></a>commit, tree与blob的对应关系</h4><ol>
+<li>一个commit对应一个tree（唯一一个）</li>
+<li>一个tree可以看作是一次commit之后整个项目的一个快照</li>
+<li>一个tree可能也会包含多个tree</li>
+<li>一个blob对应一个文件</li>
+</ol>
+<h4 id="分离头指针注意的问题"><a href="#分离头指针注意的问题" class="headerlink" title="分离头指针注意的问题"></a>分离头指针注意的问题</h4><pre><code>当切换到没有绑定分支的commit时，并对其当中的文件修改，最终提交commit保存后会出现&quot;warning: you are leaving 1 sommit behind, not connected to any of your branches.&quot;
+这时的commit被git看作不重要，可能会被git所清理，如果你要保存这个commit就要新建分支（git branch new-branch-name [分支hash]）
+</code></pre>
+<h4 id="删除不需要的分支"><a href="#删除不需要的分支" class="headerlink" title="删除不需要的分支"></a>删除不需要的分支</h4><pre class=" language-git"><code class="language-git">git branch -d [branch-name / hash]
+</code></pre>
+<h4 id="修改commit和massage"><a href="#修改commit和massage" class="headerlink" title="修改commit和massage"></a>修改commit和massage</h4><ol>
+<li>修改最新的commit</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git commit --amend
+</code></pre>
+<ol start="2">
+<li>修改老旧的commit</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git rebase -i [privious-commit-hash]
+<span class="token comment" spellcheck="true"># 按照提示修改</span>
+<span class="token comment" spellcheck="true"># 将pick改为reward</span>
+</code></pre>
+<ol start="3">
+<li>合并多次的commit</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git rebase -i [oldest-commit-hash]
+<span class="token comment" spellcheck="true"># 按照提示修改</span>
+<span class="token comment" spellcheck="true"># 将pick改为squash</span>
+</code></pre>
+<ol start="4">
+<li>合并不连续的commit</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git rebase -i [oldest-commit-hash]
+<span class="token comment" spellcheck="true"># 未显示出来的需要用到的commit要按照先后顺序手动添加进来</span>
+<span class="token comment" spellcheck="true"># 把要合并的commit按照先后顺序放在一起</span>
+<span class="token comment" spellcheck="true"># 将pick改为squash</span>
+</code></pre>
+<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><h5 id="文件的差异"><a href="#文件的差异" class="headerlink" title="文件的差异"></a>文件的差异</h5><ol>
+<li>比较暂存区与head指向的文件差异</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git diff --cached
+</code></pre>
+<ol start="2">
+<li>比较工作区与暂存区文件差异</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git diff
+<span class="token comment" spellcheck="true"># 所以说git diff命令默认比较的是工作区和暂存区的区别，默认所有文件</span>
+
+git diff -- file.name
+<span class="token comment" spellcheck="true"># 指定文件的差异</span>
+</code></pre>
+<h5 id="文件提交与回退"><a href="#文件提交与回退" class="headerlink" title="文件提交与回退"></a>文件提交与回退</h5><ol>
+<li><p>暂存区恢复成和HEAD一样</p>
+<p> 命令：git reset HEAD <file>…</p>
+</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git reset HEAD
+<span class="token comment" spellcheck="true"># 清空暂存区所有文件（即取消暂存）</span>
+</code></pre>
+<ol start="2">
+<li><p>工作区恢复成和暂存区一样</p>
+<p> 命令：git checkout – <file>…</p>
+</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git checkout -- file.name
+</code></pre>
+<ol start="3">
+<li><p>取消暂存区部分文件的暂存</p>
+<p> 命令：git reset HEAD <file>…</p>
+</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git resset HEAD -- file1.name file2.name # ...
+</code></pre>
+<ol start="4">
+<li>清除最近几次提交</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git reset --hard [target-commit-hash]
+</code></pre>
+<ol start="5">
+<li>查看不同提交的指定文件的差异</li>
+</ol>
+<pre class=" language-git"><code class="language-git"><span class="token comment" spellcheck="true"># 比较两分支的差异</span>
+git diff branch1 branch2
+<span class="token comment" spellcheck="true"># 比较特定文件</span>
+git diff branch1 branch2 -- file.name
+
+<span class="token comment" spellcheck="true"># 直接比较两个commit</span>
+git diff commit-hash-1 commit-hash-2 -- file.name
+</code></pre>
+<ol start="6">
+<li>删除文件的正确方法</li>
+</ol>
+<pre class=" language-git"><code class="language-git">git rm file.name
+</code></pre>
+<ol start="7">
+<li>紧急任务处理</li>
+</ol>
+<pre class=" language-git"><code class="language-git"><span class="token comment" spellcheck="true"># 保存当前状态以便处理紧急事件</span>
+git stash
+<span class="token comment" spellcheck="true"># 处理完之后再恢复</span>
+git stash pop # 或 git stash apply
+
+<span class="token comment" spellcheck="true"># pop 和 apply的区别</span>
+<span class="token comment" spellcheck="true"># pop恢复并丢掉stash list内容，apply不会</span>
+
+<span class="token comment" spellcheck="true"># 查看stash列表</span>
+git stash list
+</code></pre>
+<h5 id="指定不需要git管理的文件"><a href="#指定不需要git管理的文件" class="headerlink" title="指定不需要git管理的文件"></a>指定不需要git管理的文件</h5><pre><code>.gitignore文件
+</code></pre>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#commit-tree%E4%B8%8Eblob%E7%9A%84%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">commit, tree与blob的对应关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%A6%BB%E5%A4%B4%E6%8C%87%E9%92%88%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">分离头指针注意的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E5%88%86%E6%94%AF"><span class="toc-number">3.</span> <span class="toc-text">删除不需要的分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9commit%E5%92%8Cmassage"><span class="toc-number">4.</span> <span class="toc-text">修改commit和massage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-number">5.1.</span> <span class="toc-text">文件的差异</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%90%E4%BA%A4%E4%B8%8E%E5%9B%9E%E9%80%80"><span class="toc-number">5.2.</span> <span class="toc-text">文件提交与回退</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E4%B8%8D%E9%9C%80%E8%A6%81git%E7%AE%A1%E7%90%86%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">5.3.</span> <span class="toc-text">指定不需要git管理的文件</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/git-study-note-2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/git-study-note-2/&text=Git学习笔记 2"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/git-study-note-2/&is_video=false&description=Git学习笔记 2"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git学习笔记 2&body=Check out this article: https://focuseon.me/git-study-note-2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/git-study-note-2/&title=Git学习笔记 2"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/git-study-note-2/&name=Git学习笔记 2&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/git-study-note-2/&t=Git学习笔记 2"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

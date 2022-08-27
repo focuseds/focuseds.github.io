@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="fetch、pull与push 了解fast-forwards fetch从远端拉到本地保持一致 当remote与本地仓库不一致时的处理办法   先fetch再merge 直接pull git rebase   推送到remote  多人协作不同人修改不同文件该如何处理git merge同一开发分支。  不同人修改了相同文件的不同区域协作前git pull保持仓库最新，再进行push（留意ahea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git学习笔记 3">
+<meta property="og:url" content="https://focuseon.me/git-study-note-3/">
+<meta property="og:site_name" content="Focuseds Blog | 记录">
+<meta property="og:description" content="fetch、pull与push 了解fast-forwards fetch从远端拉到本地保持一致 当remote与本地仓库不一致时的处理办法   先fetch再merge 直接pull git rebase   推送到remote  多人协作不同人修改不同文件该如何处理git merge同一开发分支。  不同人修改了相同文件的不同区域协作前git pull保持仓库最新，再进行push（留意ahea">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-06T14:41:06.000Z">
+<meta property="article:modified_time" content="2022-08-13T04:54:01.802Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Git学习笔记 3</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/optimization-of-hexo-site/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/git-study-note-2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/git-study-note-3/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/git-study-note-3/&text=Git学习笔记 3"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/git-study-note-3/&is_video=false&description=Git学习笔记 3"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git学习笔记 3&body=Check out this article: https://focuseon.me/git-study-note-3/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/git-study-note-3/&name=Git学习笔记 3&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/git-study-note-3/&t=Git学习笔记 3"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#fetch%E3%80%81pull%E4%B8%8Epush"><span class="toc-number">1.</span> <span class="toc-text">fetch、pull与push</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">多人协作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E4%BF%AE%E6%94%B9%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%E8%AF%A5%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">不同人修改不同文件该如何处理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E4%BF%AE%E6%94%B9%E4%BA%86%E7%9B%B8%E5%90%8C%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8D%E5%90%8C%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.2.</span> <span class="toc-text">不同人修改了相同文件的不同区域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E4%BF%AE%E6%94%B9%E4%BA%86%E5%90%8C%E6%96%87%E4%BB%B6%E7%9A%84%E5%90%8C%E4%B8%80%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.3.</span> <span class="toc-text">不同人修改了同文件的同一区域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E5%90%8C%E6%97%B6%E5%8F%98%E6%9B%B4%E4%BA%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%8F%8A%E5%85%B6%E5%86%85%E5%AE%B9"><span class="toc-number">2.4.</span> <span class="toc-text">不同人同时变更了文件名及其内容</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9A%E4%BA%BA%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-number">2.5.</span> <span class="toc-text">多人修改文件名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E5%90%91%E7%BB%A7%E6%89%BF%E5%88%86%E6%94%AF%E6%89%A7%E8%A1%8Cpush-f"><span class="toc-number">2.6.</span> <span class="toc-text">禁止向继承分支执行push -f</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E5%90%91%E9%9B%86%E6%88%90%E5%88%86%E6%94%AF%E6%89%A7%E8%A1%8C%E5%8F%98%E6%9B%B4%E5%8E%86%E5%8F%B2%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.7.</span> <span class="toc-text">禁止向集成分支执行变更历史的操作</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Git学习笔记 3
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-06T14:41:06.000Z" itemprop="datePublished">2019-08-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/git/" rel="tag">git</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h4 id="fetch、pull与push"><a href="#fetch、pull与push" class="headerlink" title="fetch、pull与push"></a>fetch、pull与push</h4><ol>
+<li>了解fast-forwards</li>
+<li>fetch从远端拉到本地保持一致</li>
+<li>当remote与本地仓库不一致时的处理办法</li>
+</ol>
+<ul>
+<li>先fetch再merge</li>
+<li>直接pull</li>
+<li>git rebase</li>
+</ul>
+<ol start="3">
+<li>推送到remote</li>
+</ol>
+<h4 id="多人协作"><a href="#多人协作" class="headerlink" title="多人协作"></a>多人协作</h4><h5 id="不同人修改不同文件该如何处理"><a href="#不同人修改不同文件该如何处理" class="headerlink" title="不同人修改不同文件该如何处理"></a>不同人修改不同文件该如何处理</h5><pre><code>git merge同一开发分支。
+</code></pre>
+<h5 id="不同人修改了相同文件的不同区域"><a href="#不同人修改了相同文件的不同区域" class="headerlink" title="不同人修改了相同文件的不同区域"></a>不同人修改了相同文件的不同区域</h5><pre><code>协作前git pull保持仓库最新，再进行push（留意ahead与behind信息）。
+</code></pre>
+<h5 id="不同人修改了同文件的同一区域"><a href="#不同人修改了同文件的同一区域" class="headerlink" title="不同人修改了同文件的同一区域"></a>不同人修改了同文件的同一区域</h5><pre><code>及时pull来同步变更，这个情况会提示conflict，这时需要打开冲突文件（文件内会有提示信息），选择保留的信息并删除提示信息。修改完成后提交commit再进行push。
+</code></pre>
+<h5 id="不同人同时变更了文件名及其内容"><a href="#不同人同时变更了文件名及其内容" class="headerlink" title="不同人同时变更了文件名及其内容"></a>不同人同时变更了文件名及其内容</h5><pre><code>pull最新内容。当其中一位开发人员变更了姓名与其内容之后，另一位开发人员直接进行pull即可。
+</code></pre>
+<h5 id="多人修改文件名"><a href="#多人修改文件名" class="headerlink" title="多人修改文件名"></a>多人修改文件名</h5><pre><code>当该情况发生时，后提交的开发人员执行pull之后会报conflict，并保留了这两个不同文件名的文件为两个独立文件。两人协商后选择保留一份，git add [要保留的文件]、git rm [不需要保留的文件]，再进行commit，最后push。
+</code></pre>
+<h5 id="禁止向继承分支执行push-f"><a href="#禁止向继承分支执行push-f" class="headerlink" title="禁止向继承分支执行push -f"></a>禁止向继承分支执行push -f</h5><pre><code>-f: force updates
+</code></pre>
+<h5 id="禁止向集成分支执行变更历史的操作"><a href="#禁止向集成分支执行变更历史的操作" class="headerlink" title="禁止向集成分支执行变更历史的操作"></a>禁止向集成分支执行变更历史的操作</h5><pre><code>公共的分支进制被拉到本地进行rebase行为。
+</code></pre>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#fetch%E3%80%81pull%E4%B8%8Epush"><span class="toc-number">1.</span> <span class="toc-text">fetch、pull与push</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">多人协作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E4%BF%AE%E6%94%B9%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%E8%AF%A5%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">不同人修改不同文件该如何处理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E4%BF%AE%E6%94%B9%E4%BA%86%E7%9B%B8%E5%90%8C%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8D%E5%90%8C%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.2.</span> <span class="toc-text">不同人修改了相同文件的不同区域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E4%BF%AE%E6%94%B9%E4%BA%86%E5%90%8C%E6%96%87%E4%BB%B6%E7%9A%84%E5%90%8C%E4%B8%80%E5%8C%BA%E5%9F%9F"><span class="toc-number">2.3.</span> <span class="toc-text">不同人修改了同文件的同一区域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E4%BA%BA%E5%90%8C%E6%97%B6%E5%8F%98%E6%9B%B4%E4%BA%86%E6%96%87%E4%BB%B6%E5%90%8D%E5%8F%8A%E5%85%B6%E5%86%85%E5%AE%B9"><span class="toc-number">2.4.</span> <span class="toc-text">不同人同时变更了文件名及其内容</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9A%E4%BA%BA%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-number">2.5.</span> <span class="toc-text">多人修改文件名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E5%90%91%E7%BB%A7%E6%89%BF%E5%88%86%E6%94%AF%E6%89%A7%E8%A1%8Cpush-f"><span class="toc-number">2.6.</span> <span class="toc-text">禁止向继承分支执行push -f</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E5%90%91%E9%9B%86%E6%88%90%E5%88%86%E6%94%AF%E6%89%A7%E8%A1%8C%E5%8F%98%E6%9B%B4%E5%8E%86%E5%8F%B2%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.7.</span> <span class="toc-text">禁止向集成分支执行变更历史的操作</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseon.me/git-study-note-3/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseon.me/git-study-note-3/&text=Git学习笔记 3"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseon.me/git-study-note-3/&is_video=false&description=Git学习笔记 3"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git学习笔记 3&body=Check out this article: https://focuseon.me/git-study-note-3/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseon.me/git-study-note-3/&title=Git学习笔记 3"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseon.me/git-study-note-3/&name=Git学习笔记 3&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseon.me/git-study-note-3/&t=Git学习笔记 3"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
