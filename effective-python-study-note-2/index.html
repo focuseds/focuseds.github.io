@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="用列表推导来取代map和filter列表推导(list commprehension)：根据一份列表来制作另外一份列表      &#39;&#39;&#39;         用列表每个元素平方值构建另一份列表         a &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]     &#39;&#39;&#39;     # 列表推导写法     squares &#x3D; [x ** 2 for x in a]     # map写法">
+    <meta name="description" content="用列表推导来取代map和filter列表推导(list commprehension)：根据一份列表来制作另外一份列表  1234567891011121314&amp;#x27;&amp;#x27;&amp;#x27;    用列表每个元素平方值构建另一份列表    a &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]&amp;#x27;&amp;#x27;&amp;#x27;# 列表推导写法squares &#x3D; [x ** 2 for x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective Python 学习笔记 2">
 <meta property="og:url" content="https://focuseds.github.io/effective-python-study-note-2/">
 <meta property="og:site_name" content="Focuseds Blog">
-<meta property="og:description" content="用列表推导来取代map和filter列表推导(list commprehension)：根据一份列表来制作另外一份列表      &#39;&#39;&#39;         用列表每个元素平方值构建另一份列表         a &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]     &#39;&#39;&#39;     # 列表推导写法     squares &#x3D; [x ** 2 for x in a]     # map写法">
+<meta property="og:description" content="用列表推导来取代map和filter列表推导(list commprehension)：根据一份列表来制作另外一份列表  1234567891011121314&amp;#x27;&amp;#x27;&amp;#x27;    用列表每个元素平方值构建另一份列表    a &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]&amp;#x27;&amp;#x27;&amp;#x27;# 列表推导写法squares &#x3D; [x ** 2 for x">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-08-02T09:44:06.000Z">
 <meta property="article:modified_time" content="2022-08-13T04:27:47.972Z">
@@ -49,7 +49,7 @@
     
 	<!-- mathjax -->
 	
-<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -150,33 +150,12 @@
   <div class="content" itemprop="articleBody">
     <h4 id="用列表推导来取代map和filter"><a href="#用列表推导来取代map和filter" class="headerlink" title="用列表推导来取代map和filter"></a>用列表推导来取代map和filter</h4><pre><code>列表推导(list commprehension)：根据一份列表来制作另外一份列表
 </code></pre>
-<pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
-        用列表每个元素平方值构建另一份列表
-        a = [1, 2, 3, 4, 5, 6, 7, 8]
-    '''</span>
-    <span class="token comment" spellcheck="true"># 列表推导写法</span>
-    squares <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token operator">**</span> <span class="token number">2</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> a<span class="token punctuation">]</span>
-    <span class="token comment" spellcheck="true"># map写法</span>
-    squares <span class="token operator">=</span> map<span class="token punctuation">(</span>lamda x<span class="token punctuation">:</span> x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    用列表每个元素平方值构建另一份列表</span></span><br><span class="line"><span class="string">    a = [1, 2, 3, 4, 5, 6, 7, 8]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 列表推导写法</span></span><br><span class="line">squares = [x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> a]</span><br><span class="line"><span class="comment"># map写法</span></span><br><span class="line">squares = <span class="built_in">map</span>(lamda x: x ** <span class="number">2</span>, a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 条件输出</span></span><br><span class="line"><span class="comment"># 列表推导输出偶数</span></span><br><span class="line">squares = [x <span class="keyword">for</span> x <span class="keyword">in</span> a <span class="keyword">if</span> a%<span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line"><span class="comment"># map辅以filter输出偶数</span></span><br><span class="line">squares = <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x, <span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, a))</span><br></pre></td></tr></table></figure>
 
-    <span class="token comment" spellcheck="true"># 条件输出</span>
-    <span class="token comment" spellcheck="true"># 列表推导输出偶数</span>
-    squares <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> a <span class="token keyword">if</span> a<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span>
-    <span class="token comment" spellcheck="true"># map辅以filter输出偶数</span>
-    squares <span class="token operator">=</span> map<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">,</span> filter<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</code></pre>
 <pre><code>    字典与集也有类似的推导机制，编写算法时，可以通过这些推导机制来创建衍生的数据结构。
 </code></pre>
-<pre class=" language-python"><code class="language-python">    chile_ranks <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;'ghost': 1, 'god': 2, 'man': 3&amp;#125;</span>
-    rank_dict <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;rank: name for name,rank in chile_ranks.items()&amp;#125;</span>
-    chile_len_set <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;len(name) for name in rank_dict.values()&amp;#125;</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>rank_dict<span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>chile_len_set<span class="token punctuation">)</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">chile_ranks = &#123;<span class="string">&#x27;ghost&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;god&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;man&#x27;</span>: <span class="number">3</span>&#125;</span><br><span class="line">rank_dict = &#123;rank: name <span class="keyword">for</span> name,rank <span class="keyword">in</span> chile_ranks.items()&#125;</span><br><span class="line">chile_len_set = &#123;<span class="built_in">len</span>(name) <span class="keyword">for</span> name <span class="keyword">in</span> rank_dict.values()&#125;</span><br><span class="line"><span class="built_in">print</span>(rank_dict)</span><br><span class="line"><span class="built_in">print</span>(chile_len_set)</span><br><span class="line"></span><br><span class="line"><span class="comment">#元组与dict互转</span></span><br><span class="line"><span class="built_in">tuple</span> = <span class="built_in">dict</span>.items()</span><br><span class="line"><span class="built_in">dict</span> = <span class="built_in">tuple</span>.values</span><br></pre></td></tr></table></figure>
 
-    <span class="token comment" spellcheck="true">#元组与dict互转</span>
-    tuple <span class="token operator">=</span> dict<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    dict <span class="token operator">=</span> tuple<span class="token punctuation">.</span>values
-</code></pre>
 <h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ol>
 <li>不使用含有两个以上表达式的列表推导，难理解尽量避免</li>
 <li>列表推导支持多级循环，每一级循环也支持多项条件</li>
@@ -187,58 +166,28 @@
 <h4 id="用生成器表达式来改写数据量较大的列表推导"><a href="#用生成器表达式来改写数据量较大的列表推导" class="headerlink" title="用生成器表达式来改写数据量较大的列表推导"></a>用生成器表达式来改写数据量较大的列表推导</h4><h5 id="什么是生成器"><a href="#什么是生成器" class="headerlink" title="什么是生成器"></a>什么是生成器</h5><pre><code>    通过列表生成式，我们可以直接创建一个列表，但是，受到内存限制，列表容量肯定是有限的，而且创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。
     所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程中不断推算出后续的元素呢？这样就不必创建完整的list，从而节省大量的空间，在Python中，这种一边循环一边计算的机制，称为生成器：generator。
 </code></pre>
-<pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
-        eg. 读取日志文件
-    '''</span>
-    it <span class="token operator">=</span> <span class="token punctuation">(</span>len<span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> open<span class="token punctuation">(</span><span class="token string">'/var/log.log'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span>
-    <span class="token operator">>></span><span class="token operator">></span> <span class="token operator">&lt;</span>generator object <span class="token operator">&lt;</span>genexpr<span class="token operator">></span> at <span class="token number">0x101b81480</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token operator">>></span><span class="token operator">></span> <span class="token string">"logs"</span>
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    eg. 读取日志文件</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">it = (<span class="built_in">len</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">open</span>(<span class="string">&#x27;/var/log.log&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(it)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&lt;generator <span class="built_in">object</span> &lt;genexpr&gt; at <span class="number">0x101b81480</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(it))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;logs&quot;</span></span><br></pre></td></tr></table></figure>
+
 <h5 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h5><ol>
 <li>当输入数据量较大时，列表推导可能会因为占用太多内存而出现问题</li>
 <li>由生成器表达式返回的迭代器，可以逐次产生输出值，从而避免内存用量问题</li>
 <li>把某个生成器表达式所返回的迭代器，放在另一个生成器表达式的for子表达式中，即可将二者结合起来</li>
 </ol>
-<pre class=" language-python"><code class="language-python">    a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
-    res <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> a<span class="token punctuation">)</span>
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">res = ((x, x ** <span class="number">2</span>) <span class="keyword">for</span> x <span class="keyword">in</span> a)</span><br></pre></td></tr></table></figure>
+
 <ol start="4">
 <li>串在一起的生成器表达式执行速度很快</li>
 </ol>
-<h4 id="尽量用enumerate取代range"><a href="#尽量用enumerate取代range" class="headerlink" title="尽量用enumerate取代range"></a>尽量用enumerate取代range</h4><pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
-        场景说明：当想同时打印元素在列表中的索引和值的时候，使用range略显生硬
-    '''</span>
-    <span class="token comment" spellcheck="true"># range写法</span>
-    <span class="token keyword">for</span> i range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        value <span class="token operator">=</span> list<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-        index <span class="token operator">=</span> i
-    <span class="token comment" spellcheck="true"># enumerate写法</span>
-    <span class="token keyword">for</span> i<span class="token punctuation">,</span> value <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d: %s'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</code></pre>
+<h4 id="尽量用enumerate取代range"><a href="#尽量用enumerate取代range" class="headerlink" title="尽量用enumerate取代range"></a>尽量用enumerate取代range</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    场景说明：当想同时打印元素在列表中的索引和值的时候，使用range略显生硬</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># range写法</span></span><br><span class="line"><span class="keyword">for</span> i <span class="built_in">range</span>(<span class="built_in">len</span>(<span class="built_in">list</span>)):</span><br><span class="line">    value = <span class="built_in">list</span>[i]</span><br><span class="line">    index = i</span><br><span class="line"><span class="comment"># enumerate写法</span></span><br><span class="line"><span class="keyword">for</span> i, value <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">list</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;%d: %s&#x27;</span> % (i + <span class="number">1</span>, value))</span><br></pre></td></tr></table></figure>
+
 <h5 id="要点-1"><a href="#要点-1" class="headerlink" title="要点"></a>要点</h5><ol>
 <li>尽量使用enumerate来改写那种将range与下标访问结合的序列遍历代码</li>
 <li>可以给enumerate提供第二个参数， 以指定开始计数时所用的值</li>
 </ol>
 <h4 id="用zip函数同时遍历两个迭代器"><a href="#用zip函数同时遍历两个迭代器" class="headerlink" title="用zip函数同时遍历两个迭代器"></a>用zip函数同时遍历两个迭代器</h4><pre><code>zip可以将两个或者多个迭代器封装成一个生成器
 </code></pre>
-<pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
-        场景说明：需要平行对两个列表进行操作时
-    '''</span>
-    names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'alice'</span><span class="token punctuation">,</span> <span class="token string">'bob'</span><span class="token punctuation">,</span> <span class="token string">'cendy'</span><span class="token punctuation">]</span>
-    letters <span class="token operator">=</span> <span class="token punctuation">[</span>len<span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token keyword">for</span> n <span class="token keyword">in</span> names<span class="token punctuation">]</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    场景说明：需要平行对两个列表进行操作时</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">names = [<span class="string">&#x27;alice&#x27;</span>, <span class="string">&#x27;bob&#x27;</span>, <span class="string">&#x27;cendy&#x27;</span>]</span><br><span class="line">letters = [<span class="built_in">len</span>(n) <span class="keyword">for</span> n <span class="keyword">in</span> names]</span><br><span class="line"></span><br><span class="line">longest_name = <span class="literal">None</span></span><br><span class="line">max_letters = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> name, count <span class="keyword">in</span> <span class="built_in">zip</span>(names, letters):</span><br><span class="line">    <span class="keyword">if</span> count &gt; max_letters:</span><br><span class="line">        longest_name = name</span><br><span class="line">        max_letters = count</span><br><span class="line"><span class="built_in">print</span>(longest_name)</span><br></pre></td></tr></table></figure>
 
-    longest_name <span class="token operator">=</span> None
-    max_letters <span class="token operator">=</span> <span class="token number">0</span>
-
-    <span class="token keyword">for</span> name<span class="token punctuation">,</span> count <span class="token keyword">in</span> zip<span class="token punctuation">(</span>names<span class="token punctuation">,</span> letters<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> count <span class="token operator">></span> max_letters<span class="token punctuation">:</span>
-            longest_name <span class="token operator">=</span> name
-            max_letters <span class="token operator">=</span> count
-    <span class="token keyword">print</span><span class="token punctuation">(</span>longest_name<span class="token punctuation">)</span>
-</code></pre>
 <h5 id="要点-2"><a href="#要点-2" class="headerlink" title="要点"></a>要点</h5><ol>
 <li>内置的zip函数可以平行地遍历多个迭代器</li>
 <li>python3中的zip函数相当于生成器，会在遍历过程中产生元组</li>

@@ -49,7 +49,7 @@
     
 	<!-- mathjax -->
 	
-<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -171,62 +171,14 @@
 <li><p>把二进制数据字符转换成Unicode就必须使用decode方法</p>
 </li>
 <li><p>实现：</p>
-<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">to_str</span><span class="token punctuation">(</span>bytes_or_str<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>bytes_or_str<span class="token punctuation">,</span> bytes<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        value <span class="token operator">=</span> bytes_or_str<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        value <span class="token operator">=</span> bytes_or_str
-    <span class="token keyword">return</span> value
-
-<span class="token keyword">def</span> <span class="token function">to_bytes</span><span class="token punctuation">(</span>str_to_bytes<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>str_to_bytes<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        value <span class="token operator">=</span> str_to_bytes<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        value <span class="token operator">=</span> str_to_bytes
-    <span class="token keyword">return</span> value
-</code></pre>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">to_str</span>(<span class="params">bytes_or_str</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bytes_or_str, <span class="built_in">bytes</span>):</span><br><span class="line">        value = bytes_or_str.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        value = bytes_or_str</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">to_bytes</span>(<span class="params">str_to_bytes</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(str_to_bytes, <span class="built_in">str</span>):</span><br><span class="line">        value = str_to_bytes.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        value = str_to_bytes</span><br><span class="line">    <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>编写程序时，一定要把编码和解码操作放在界面外围来做。程序最核心的部分应该使用Unicode字符类型，而且不对编码做任何假设。这种方法既可以令程序接受多种类型的文本编码（如Latin-1、Shift JIS和Big 5），又可以保证输出的文本信息只采用一种编码形式（最好是UTF-8）</p>
 </li>
 <li><p>open函数添加了名为encoding的新参数，默认值为utf-8，这就要求再写入时必须传入unicode字符的str实例，而不接受二进制数据的bytes实例。解决方法：采用字符写入模式wb，读取采用rb，如：</p>
-<pre class=" language-python"><code class="language-python"><span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'file.txt'</span><span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
-    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>os<span class="token punctuation">.</span>urandom<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</code></pre>
-</li>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(os.urandom(<span class="number">10</span>))</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h4 id="用辅助函数取代复杂的表达式"><a href="#用辅助函数取代复杂的表达式" class="headerlink" title="用辅助函数取代复杂的表达式"></a>用辅助函数取代复杂的表达式</h4><pre><code>```python
-&#39;&#39;&#39;
-    eg. 需求：查询字符串
-&#39;&#39;&#39;
-
-from urllib.parse import parse_qs
-    my_values = parse_qs(&#39;red=5&amp;blue=0&amp;green=&#39;, keep_blank_values=True)
-    print(repr(my_values))
-
-&gt;&gt;&gt; &#123;&#39;red&#39;: [&#39;5&#39;], &#39;blue&#39;: [&#39;0&#39;], &#39;green&#39;: [&#39;&#39;]&#125;
-
-# 方法一：用get方法在my_values字典中查询不同参数
-print(&#39;RED:     &#39;, my_values.get(&#39;red&#39;))
-print(&#39;GREEN:   &#39;, my_values.get(&#39;green&#39;))
-&gt;&gt;&gt; RED:       [&#39;5&#39;]
-    GREEN:     [&#39;&#39;]     #无法将空值输出为0
-
-#方法二
-green = int(my_values.get(&#39;green&#39;, [])[0] or 0)
-print(&#39;GREEN:   %r&#39; % green)
-&gt;&gt;&gt; GREEN:   0  #表达式复杂，不易理解
-
-# 总结辅助函数
-def get_first_int(values, key, default=0):
-    found = values.get(key, [&#39;&#39;])
-    if found[0]:
-        found = found[0]
-    else:
-        found = default
-    return found
-
-green = get_first_int(my_values, &#39;green&#39;)
-```
+<h4 id="用辅助函数取代复杂的表达式"><a href="#用辅助函数取代复杂的表达式" class="headerlink" title="用辅助函数取代复杂的表达式"></a>用辅助函数取代复杂的表达式</h4><pre><code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    eg. 需求：查询字符串</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> parse_qs</span><br><span class="line">    my_values = parse_qs(<span class="string">&#x27;red=5&amp;blue=0&amp;green=&#x27;</span>, keep_blank_values=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">repr</span>(my_values))</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;<span class="string">&#x27;red&#x27;</span>: [<span class="string">&#x27;5&#x27;</span>], <span class="string">&#x27;blue&#x27;</span>: [<span class="string">&#x27;0&#x27;</span>], <span class="string">&#x27;green&#x27;</span>: [<span class="string">&#x27;&#x27;</span>]&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法一：用get方法在my_values字典中查询不同参数</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;RED:     &#x27;</span>, my_values.get(<span class="string">&#x27;red&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;GREEN:   &#x27;</span>, my_values.get(<span class="string">&#x27;green&#x27;</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>RED:       [<span class="string">&#x27;5&#x27;</span>]</span><br><span class="line">    GREEN:     [<span class="string">&#x27;&#x27;</span>]     <span class="comment">#无法将空值输出为0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#方法二</span></span><br><span class="line">green = <span class="built_in">int</span>(my_values.get(<span class="string">&#x27;green&#x27;</span>, [])[<span class="number">0</span>] <span class="keyword">or</span> <span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;GREEN:   %r&#x27;</span> % green)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>GREEN:   <span class="number">0</span>  <span class="comment">#表达式复杂，不易理解</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 总结辅助函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_first_int</span>(<span class="params">values, key, default=<span class="number">0</span></span>):</span><br><span class="line">    found = values.get(key, [<span class="string">&#x27;&#x27;</span>])</span><br><span class="line">    <span class="keyword">if</span> found[<span class="number">0</span>]:</span><br><span class="line">        found = found[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        found = default</span><br><span class="line">    <span class="keyword">return</span> found</span><br><span class="line"></span><br><span class="line">green = get_first_int(my_values, <span class="string">&#x27;green&#x27;</span>)</span><br></pre></td></tr></table></figure>
 </code></pre>
 <h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
 <li>用if&#x2F;else表达式会比用or或and这样的Boolean操作符更清晰</li>

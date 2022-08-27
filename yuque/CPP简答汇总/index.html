@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="CPP 简答汇总绪论 面向对象的编程语言有哪些特点？  解：面向对象的编程语言与以往各种编程语言有根本的不同，它设计的出发点就是为了能更直接的描述客观世界中存在的事物以及它们之间的关系。面向对象的编程语言将客观事物看作具有属性和行为的对象，通过抽象找出同一类对象的共同属性（静态特征）和行为（动态特征），形成类。通过类的继承与多态可以很方便地实现代码重用，大大缩短了软件开发周期，并使得软件风格统一。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPP简答汇总">
+<meta property="og:url" content="https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="CPP 简答汇总绪论 面向对象的编程语言有哪些特点？  解：面向对象的编程语言与以往各种编程语言有根本的不同，它设计的出发点就是为了能更直接的描述客观世界中存在的事物以及它们之间的关系。面向对象的编程语言将客观事物看作具有属性和行为的对象，通过抽象找出同一类对象的共同属性（静态特征）和行为（动态特征），形成类。通过类的继承与多态可以很方便地实现代码重用，大大缩短了软件开发周期，并使得软件风格统一。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-15T05:54:45.000Z">
+<meta property="article:modified_time" content="2022-08-27T11:49:24.673Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="focuseds, blog, 博客">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CPP简答汇总</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&text=CPP简答汇总"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&is_video=false&description=CPP简答汇总"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CPP简答汇总&body=Check out this article: https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&name=CPP简答汇总&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&t=CPP简答汇总"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CPP-%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB"><span class="toc-number">1.</span> <span class="toc-text">CPP 简答汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.1.</span> <span class="toc-text">绪论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CPP-%E7%AE%80%E5%8D%95%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.2.</span> <span class="toc-text">CPP 简单程序设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB"><span class="toc-number">1.4.</span> <span class="toc-text">类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%85%B1%E4%BA%AB%E4%B8%8E%E4%BF%9D%E6%8A%A4"><span class="toc-number">1.5.</span> <span class="toc-text">数据的共享与保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.6.</span> <span class="toc-text">数组、指针与字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%B4%BE%E7%94%9F"><span class="toc-number">1.7.</span> <span class="toc-text">继承与派生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%80%81%E6%80%A7"><span class="toc-number">1.8.</span> <span class="toc-text">多态性</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CPP简答汇总
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-03-15T05:54:45.000Z" itemprop="datePublished">2021-03-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="CPP-简答汇总"><a href="#CPP-简答汇总" class="headerlink" title="CPP 简答汇总"></a>CPP 简答汇总</h1><h2 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h2><ol>
+<li>面向对象的编程语言有哪些特点？</li>
+</ol>
+<p><strong>解：</strong>面向对象的编程语言与以往各种编程语言有根本的不同，它设计的出发点就是为了能更直接的描述客观世界中存在的事物以及它们之间的关系。面向对象的编程语言将客观事物看作具有属性和行为的对象，通过抽象找出同一类对象的共同属性（静态特征）和行为（动态特征），形成类。通过类的继承与多态可以很方便地实现代码重用，大大缩短了软件开发周期，并使得软件风格统一。因此，面向对象的编程语言使程序能够比较直接地反问题域的本来面目，软件开发人员能够利用人类认识事物所采用的一般思维方法来进行软件开发。C++语言是目前应用最广的面向对象的编程语言。</p>
+<ol>
+<li>什么是对象？什么是面向对象方法？这种方法有哪些特点？</li>
+</ol>
+<p><strong>解：</strong>从一般意义上讲，对象是现实世界中一个实际存在的事物，它可以是有形的，也可以是无形的。对象是构成世界的一个独立单位，它具有自己的静态特征和动态特征。面向对象方法中的对象，是系统中用来描述客观事物的一个实体，它是用来构成系统的一个基本单位，由一组属性和一组行为构成。<br>面向对象的方法将数据及对数据的操作方法放在一起，作为一个相互依存、不可分离的整体——对象。对同类型对象抽象出其共性，形成类。类中的大多数数据，只能用本类的方法进行处理。类通过一个简单的外部接口，与外界发生关系，对象与对象之间通过消息进行通讯。这样，程序模块间的关系更为简单，程序模块的独立性、数据的安全性就有了良好的保障。通过实现继承与多态性，还可以大大提高程序的可重用性，使得软件的开发和维护都更为方便。<br>面向对象方法所强调的基本原则，就是直接面对客观存在的事物来进行软件开发，将人们在日常生活中习惯的思维方式和表达方式应用在软件开发中，使软件开发从过分专业化的方法、规则和技巧中回到客观世界，回到人们通常的思维。</p>
+<ol>
+<li>什么叫做封装？</li>
+</ol>
+<p><strong>解：</strong>封装是面向对象方法的一个重要原则，就是把对象的属性和服务结合成一个独立的系统单位，并尽可能隐蔽对象的内部细节。</p>
+<ol>
+<li>面向对象的软件工程包括哪些主要内容？</li>
+</ol>
+<p><strong>解：</strong>面向对象的软件工程是面向对象方法在软件工程领域的全面应用，它包括面向对象的分析（OOA）、面向对象的设计（OOD）、面向对象的编程（OOP）、面向对象的测试（OOT）和面向对象的软件维护（OOSM）等主要内容。</p>
+<h2 id="CPP-简单程序设计"><a href="#CPP-简单程序设计" class="headerlink" title="CPP 简单程序设计"></a>CPP 简单程序设计</h2><ol>
+<li>使用关键字 const 而不是#define 语句的好处有哪些？</li>
+</ol>
+<p><strong>解：</strong>const 定义的常量是有类型的，所以在使用它们时编译器可以查错；而且，这些变量在调试时仍然是可见的。</p>
+<ol>
+<li>什么叫做表达式？</li>
+</ol>
+<p><strong>解：</strong>任何一个计算值的公示都叫表达式。</p>
+<ol>
+<li>变量有哪几种存储类型？</li>
+</ol>
+<p><strong>解：</strong>变量有以下几种存储类型：<br>auto 存储类型：采用堆栈方式分配内存空间，属于一时性存储，其存储空间可以被若干变量多次覆盖使用；<br>register 存储类型：存放在通用寄存器中；<br>extern 存储类型：在所有函数和程序段中都可引用；<br>static 存储类型：在内存中是以固定地址存放的，在整个程序运行期间都有效。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><ol>
+<li>C++中的函数是什么？什么叫主调函数，什么叫被调函数，二者之间有什么关系？如何调用一个函数？</li>
+</ol>
+<p><strong>解：</strong> 一个较为复杂的系统往往需要划分为若干子系统，高级语言中的子程序就是用来实现这种模块划分的。C 和 C++语言中的子程序就体现为函数。调用其它函数的函数被称为主调函数，被其它函数调用的函数称为被调函数。一个函数很可能既调用别的函数又被另外的函数调用，这样它可能在某一个调用与被调用关系中充当主调函数，而在另一个调用与被调用关系中充当被调函数。调用函数之前先要声明函数原型。按如下形式声明：类型标识符 被调函数名 (含类型说明的形参表);声明了函数原型之后，便可以按如下形式调用子函数：函数名（实参列表）</p>
+<ol>
+<li>比较值调用和引用调用的相同点与不同点。</li>
+</ol>
+<p><strong>解：</strong>值调用是指当发生函数调用时，给形参分配内存空间，并用实参来初始化形参（直接将实参的值传递给形参）。这一过程是参数值的单向传递过程，一旦形参获得了值便与实参脱离关系，此后无论形参发生了怎样的改变，都不会影响到实参。<br>引用调用将引用作为形参，在执行主调函数中的调用语句时，系统自动用实参来初始化形参。这样形参就成为实参的一个别名，对形参的任何操作也就直接作用于实参。</p>
+<ol>
+<li>什么叫内联函数?它有哪些特点？</li>
+</ol>
+<p><strong>解：</strong>定义时使用关键字 inline 的函数叫做内联函数；编译器在编译时在调用处用函数体进行替换,节省了参数传递、控制转移等开销；内联函数体内不能有循环语句和 switch 语句；内联函数的定义必须出现在内联函数第一次被调用之前；对内联函数不能进行异常接口声明；</p>
+<ol>
+<li>函数原型中的参数名与函数定义中的参数名以及函数调用中的参数名必须一致吗</li>
+</ol>
+<p><strong>解：</strong>不必一致，所有的参数是根据位置和类型而不是名字来区分的。</p>
+<ol>
+<li>重载函数时通过什么来区分？</li>
+</ol>
+<p><strong>解：</strong>重载的函数的函数名是相同的，但它们的参数的个数和数据类型不同，编译器根据实参和形参的类型及个数的最佳匹配，自动确定调用哪一个函数。</p>
+<ol>
+<li>什么叫作嵌套调用？什么叫作递归调用？</li>
+</ol>
+<p><strong>解：</strong>函数允许嵌套调用，如果函数 1 调用了函数 2，函数 2 再调用函数 3，便形成了函数的嵌套调用。函数可以直接或间接地调用自身，称为递归调用。</p>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><ol>
+<li>解释 public 和 private 的作用，公有类型成员与私有类型成员有些什么区别？</li>
+</ol>
+<p><strong>解：</strong>公有类型成员用 public 关键字声明，公有类型定义了类的外部接口；私有类型的成员用 private 关键字声明，只允许本类的函数成员来访问，而类外部的任何访问都是非法的，这样，私有的成员就整个隐蔽在类中，在类的外部根本就无法看到，实现了访问权限的有效控制。</p>
+<ol>
+<li>protected 关键字有何作用？</li>
+</ol>
+<p><strong>解：</strong>protected 用来声明保护类型的成员，保护类型的性质和私有类型的性质相似，其差别在于继承和派生时派生类的成员函数可以访问基类的保护成员。</p>
+<ol>
+<li>构造函数和析构函数有什么作用？</li>
+</ol>
+<p><strong>解：</strong>构造函数的作用就是在对象被创建时利用特定的值构造对象，将对象初始化为一个特定的状态，使此对象具有区别于彼对象的特征，完成的就是是一个从一般到具体的过程，构造函数在对象创建的时候由系统自动调用。<br>析构函数与构造函数的作用几乎正好相反，它是用来完成对象被删除前的一些清理工作，也就是专门作扫尾工作的。一般情况下，析构函数是在对象的生存期即将结束的时刻由系统自动调用的，它的调用完成之后，对象也就消失了，相应的内存空间也被释放。</p>
+<ol>
+<li>数据成员可以为公有的吗？成员函数可以为私有的吗？</li>
+</ol>
+<p><strong>解：</strong>可以，二者都是合法的。数据成员和成员函数都可以为公有或私有的。但数据成员最好定义为私有的。</p>
+<ol>
+<li>已知 class A 中有数据成员 int a，如果定义了 A 的两个对象 A1、A2，它们各自的数据成员 a 的值可以不同吗？</li>
+</ol>
+<p><strong>解：</strong>可以，类的每一个对象都有自己的数据成员。</p>
+<ol>
+<li>什么叫做拷贝构造函数？拷贝构造函数何时被调用？</li>
+</ol>
+<p><strong>解：</strong>拷贝构造函数是一种特殊的构造函数，具有一般构造函数的所有特性，其形参是本类的对象的引用，其作用是使用一个已经存在的对象，去初始化一个新的同类的对象。在以下三种情况下会被调用：在当用类的一个对象去初始化该类的另一个对象时；如果函数的形参是类对象，调用函数进行形参和实参结合时；如果函数的返回值是类对象，函数调用完成返回时；</p>
+<ol>
+<li>拷贝构造函数与赋值运算符(&#x3D;)有何不同？</li>
+</ol>
+<p><strong>解：</strong>赋值运算符(&#x3D;)作用于一个已存在的对象；而拷贝构造函数会创建一个新的对象。</p>
+<h2 id="数据的共享与保护"><a href="#数据的共享与保护" class="headerlink" title="数据的共享与保护"></a>数据的共享与保护</h2><ol>
+<li>什么叫做作用域？有哪几种类型的作用域？</li>
+</ol>
+<p><strong>解：</strong>作用域讨论的是标识符的有效范围，作用域是一个标识符在程序正文中有效的区域。C++的作用域分为函数原形作用域、块作用域(局部作用域)、类作用域和文件作用域.</p>
+<ol>
+<li>什么叫做可见性？可见性的一般规则是什么？</li>
+</ol>
+<p><strong>解：</strong>可见性是标识符是否可以引用的问题；可见性的一般规则是：标识符要声明在前，引用在后，在同一作用域中，不能声明同名的标识符。对于在不同的作用域声明的标识符，遵循的原则是：若有两个或多个具有包含关系的作用域，外层声明的标识符如果在内层没有声明同名标识符时仍可见，如果内层声明了同名标识符则外层标识符不可见。</p>
+<ol>
+<li>什么叫做静态数据成员？它有何特点？</li>
+</ol>
+<p><strong>解：</strong>类的静态数据成员是类的数据成员的一种特例，采用 static 关键字来声明。对于类的普通数据成员，每一个类的对象都拥有一个拷贝，就是说每个对象的同名数据成员可以分别存储不同的数值，这也是保证对象拥有自身区别于其它对象的特征的需要，但是静态数据成员，每个类只要一个拷贝，由所有该类的对象共同维护和使用，这个共同维护、使用也就实现了同一类的不同对象之间的数据共享。</p>
+<ol>
+<li>什么叫做静态函数成员？它有何特点？</li>
+</ol>
+<p><strong>解：</strong>使用 static 关键字声明的函数成员是静态的，静态函数成员属于整个类，同一个类的所有对象共同维护，为这些对象所共享。静态函数成员具有以下两个方面的好处，一是由于静态成员函数只能直接访问同一个类的静态数据成员，可以保证不会对该类的其余数据成员造成负面影响；二是同一个类只维护一个静态函数成员的拷贝，节约了系统的开销，提高程序的运行效率。</p>
+<ol>
+<li>什么叫做友元函数？什么叫做友元类？</li>
+</ol>
+<p><strong>解：</strong>友元函数是使用 friend 关键字声明的函数，它可以访问相应类的保护成员和私有成员。友元类是使用 friend 关键字声明的类，它的所有成员函数都是相应类的友元函数。</p>
+<ol>
+<li>如果类 A 是类 B 的友元，类 B 是类 C 的友元，类 D 是类 A 的派生类，那么类 B 是类 A 的友元吗？类 C 是类 A 的友元吗？类 D 是类 B 的友元吗？</li>
+</ol>
+<p><strong>解：</strong>类 B 不是类 A 的友元，友元关系不具有交换性；<br>类 C 不是类 A 的友元，友元关系不具有传递性；<br>类 D 不是类 B 的友元，友元关系不能被继承。</p>
+<ol>
+<li>静态成员变量可以为私有的吗？声明一个私有的静态整型成员变量。</li>
+</ol>
+<p><strong>解：</strong>可以，例如：<br>private:<br>static int a;</p>
+<ol>
+<li>如果在类模板的定义中有一个静态数据成员，则在程序运行中会产生多少个相应的静态变量？</li>
+</ol>
+<p><strong>解：</strong>这个类模板的每一个实例类都会产生一个相应的静态变量。</p>
+<ol>
+<li>在函数内部定义的普通局部变量和静态局部变量在功能上有何不同？计算机底层对这两类变量做了怎样不同的处理，导致了这种差异？</li>
+</ol>
+<p><strong>解：</strong>静态变量：程序级别的变量，生命周期是整个程序，在程序结束后释放；<br>普通变量：作用域为当前函数，当前会话，或者当前文件，离开后自动释放；<br>全局变量：作用于整个工程，自动分配；<br>静态局部变量：静态局部变量只在定义的函数内有效，程序只分配一次内存，函数返回后，该变量值不会变化。<br>静态函数：静态函数只能在本文件中使用，是文件的内部函数；<br>普通函数：普通函数则是为整个工程，要实现外部调用添加 extern 即可；</p>
+<p>全局变量、静态全局变量和静态局部变量都存放在内存的静态存储区域；<br>局部变量存放在内存的栈区。</p>
+<p>栈：由系统自动分配，速度较快。但程序员是无法控制的,栈获得的空间较小；<br>堆：是由 malloc，new 分配的内存，一般速度比较慢，而且容易产生内存碎片,不过用起来最方便。</p>
+<h2 id="数组、指针与字符串"><a href="#数组、指针与字符串" class="headerlink" title="数组、指针与字符串"></a>数组、指针与字符串</h2><ol>
+<li>运算符*和&amp;的作用是什么？</li>
+</ol>
+<p>**解：***称为指针运算符，是一个一元操作符，表示指针所指向的对象的值；&amp;称为取地址运算符，也是一个一元操作符，是用来得到一个对象的地址。</p>
+<ol>
+<li>什么叫做指针？指针中储存的地址和这个地址中的值有何区别？</li>
+</ol>
+<p><strong>解：</strong>指针是一种数据类型，具有指针类型的变量称为指针变量。指针变量存放的是另外一个对象的地址，这个地址中的值就是另一个对象的内容。</p>
+<ol>
+<li>在字符串”Hello，world!”中结束符是什么？</li>
+</ol>
+<p><strong>解：</strong>是 NULL 字符。</p>
+<ol>
+<li>引用和指针有何区别？何时只能使用指针而不能使用引用？</li>
+</ol>
+<p>解： 引用是一个别名，不能为 NULL 值，不能被重新分配；指针是一个存放地址的变量。当需要对变量重新赋以另外的地址或赋值为 NULL 时只能使用指针。</p>
+<h2 id="继承与派生"><a href="#继承与派生" class="headerlink" title="继承与派生"></a>继承与派生</h2><ol>
+<li>比较类的三种继承方式 public 公有继承、protected 保护继承、private 私有继承之间的差别。</li>
+</ol>
+<p><strong>解：</strong>不同的继承方式，导致不同访问属性的基类成员在派生类中的访问属性也有所不同：<br>公有继承，使得基类 public(公有)和 protected(保护)成员的访问属性在派生类中不变，而基类 private(私有)成员不可访问。<br>私有继承，使得基类 public(公有)和 protected(保护)成员都以 private(私有)成员身份出现在派生类中，而基类 private(私有)成员不可访问。<br>保护继承中，基类 public(公有)和 protected(保护)成员都以 protected(保护)成员身份出现在派生类中，而基类 private(私有)成员不可访问。</p>
+<ol>
+<li>派生类构造函数执行的次序是怎样的？</li>
+</ol>
+<p><strong>解：</strong>派生类构造函数执行的一般次序为：调用基类构造函数；调用成员对象的构造函数；派生类的构造函数体中的内容。</p>
+<ol>
+<li>什么叫做虚基类？有何作用？</li>
+</ol>
+<p><strong>解：</strong>当某类的部分或全部直接基类是从另一个基类派生而来，这些直接基类中，从上一级基类继承来的成员就拥有相同的名称，派生类的对象的这些同名成员在内存中同时拥有多个拷贝，我们可以使用作用域分辨符来唯一标识并分别访问它们。我们也可以将直接基类的共同基类设置为虚基类，这时从不同的路径继承过来的该类成员在内存中只拥有一个拷贝，这样就解决了同名成员的唯一标识问题。<br>虚基类的声明是在派生类的定义过程，其语法格式为：<br>class 派生类名：virtual 继承方式 基类名<br>上述语句声明基类为派生类的虚基类，在多继承情况下，虚基类关键字的作用范围和继承方式关键字相同，只对紧跟其后的基类起作用。声明了虚基类之后，虚基类的成员在进一步派生过程中，和派生类一起维护一个内存数据拷贝。</p>
+<ol>
+<li>组合与继承有什么共同点和差异？通过组合生成的类与被组合的类之间的逻辑关系是什么？继承呢？</li>
+</ol>
+<p><strong>解：</strong>组合和继承的共同点：继承和组合的使用都可以减少重复代码，同时若类 B 是类 A 的内嵌对象，则 B 类具有 A 类的全部数据。<br>不同点：组合是通过在其他类中定义对象来使用类中的方法和属性，不能访问父类的任何接口。而继承则是从父类中得到方法和属性，即可以得到父类的全部接口，并加以调用。<br>通过组合生成的类和被组合的类之间的逻辑关系：组合生成的类具有被组合类的全部内容，但是并不包括被组合类的全部接口，就是通过被组合的类的对象只能访问组合类的成员函数，但不能直接访问到被组合类的成员函数。<br>继承类与基类的逻辑关系：即通过派生类的对象不但可以访问派生类的成员函数，也能访问基类的成员函数，派生类是可以完全继承基类的任何内容的包括全部接口。</p>
+<ol>
+<li>基类与派生类的对象、指针及引用之间，哪些情况下可以隐含转换，哪些情况可以显示转换？在涉及多重继承或虚拟继承的情况下，在转换时会面临哪些新问题？</li>
+</ol>
+<p><strong>解：</strong>派生类指针可以隐含转换为基类指针，之所以允许这种隐含转换发生，是因为它是安全的转换。例如：Base _ pb&#x3D;new Derived; &#x2F;&#x2F;将 Derived 指针隐式转换为 Base 指针。Derived _ pb&#x3D;static_cast&lt;Derived*&gt; (pb); &#x2F;&#x2F;将 Base 指针显示转换为 Derived 指针。<br>基类指针可以指向任何派生类对象，因此基类指针和派生类指针具有一般和特殊的关系。C++对这两种关系的处理方式是：从特殊的指针转换到一般的指针是安全的，因此允许隐含转换；从一般的指针转换到特殊的指针是不安全的，因此只能显示的转换。续：P301</p>
+<h2 id="多态性"><a href="#多态性" class="headerlink" title="多态性"></a>多态性</h2><ol>
+<li>什么叫做多态性 ?在 C++中是如何实现多态的？</li>
+</ol>
+<p><strong>解：</strong>多态是指同样的消息被不同类型的对象接收时导致完全不同的行为，是对类的特定成员函数的再抽象。C++支持的多态有多种类型，重载(包括函数重载和运算符重载)和虚函数是其中主要的方式。</p>
+<ol>
+<li>什么叫做抽象类？抽象类有何作用？抽象类的派生类是否一定要给出纯虚函数的实现？</li>
+</ol>
+<p><strong>解：</strong>带有纯虚函数的类是抽象类。抽象类的主要作用是通过它为一个类族建立一个公共的接口，使它们能够更有效地发挥多态特性。抽象类声明了一组派生类共同操作接口的通用语义，而接口的完整实现，即纯虚函数的函数体，要由派生类自己给出。但抽象类的派生类并非一定要给出纯虚函数的实现，如果派生类没有给出纯虚函数的实现，这个派生类仍然是一个抽象类。</p>
+<ol>
+<li>在 C++中，能否声明虚构造函数？为什么？能否声明虚析构函数？有何用途？</li>
+</ol>
+<p><strong>解：</strong>在 C++中，不能声明虚构造函数，多态是不同的对象对同一消息有不同的行为特性，虚函数作为运行过程中多态的基础，主要是针对对象的，而构造函数是在对象产生之前运行的，因此虚构造函数是没有意义的；可以声明虚析构函数，析构函数的功能是在该类对象消亡之前进行一些必要的清理工作，如果一个类的析构函数是虚函数，那么，由它派生而来的所有子类的析构函数也是虚函数。析构函数设置为虚函数之后，在使用指针引用时可以动态联编，实现运行时的多态，保证使用基类的指针就能够调用适当的析构函数针对不同的对象进行清理工作。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CPP-%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB"><span class="toc-number">1.</span> <span class="toc-text">CPP 简答汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.1.</span> <span class="toc-text">绪论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CPP-%E7%AE%80%E5%8D%95%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.2.</span> <span class="toc-text">CPP 简单程序设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB"><span class="toc-number">1.4.</span> <span class="toc-text">类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%85%B1%E4%BA%AB%E4%B8%8E%E4%BF%9D%E6%8A%A4"><span class="toc-number">1.5.</span> <span class="toc-text">数据的共享与保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E3%80%81%E6%8C%87%E9%92%88%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.6.</span> <span class="toc-text">数组、指针与字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%B4%BE%E7%94%9F"><span class="toc-number">1.7.</span> <span class="toc-text">继承与派生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%80%81%E6%80%A7"><span class="toc-number">1.8.</span> <span class="toc-text">多态性</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&text=CPP简答汇总"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&is_video=false&description=CPP简答汇总"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CPP简答汇总&body=Check out this article: https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&title=CPP简答汇总"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&name=CPP简答汇总&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/&t=CPP简答汇总"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

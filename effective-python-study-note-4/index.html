@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="尽量使用异常来表示特殊情况，而不要返回None    _表示用不到的变量  要点 用None这个返回值来表示特殊意义的函数，很容易使调用者犯错，以为None和0及空字符串之类的值，在表达式里面都会评估为False 函数遇到特特殊情况时应该抛出异常，而不是返回None  了解如何在闭包里使用外围作用域中的变量    &#39;&#39;&#39;         eg. 有一份列表，其中元素都是数字，现在对其排序，要把出现">
+    <meta name="description" content="尽量使用异常来表示特殊情况，而不要返回None    _表示用不到的变量  要点 用None这个返回值来表示特殊意义的函数，很容易使调用者犯错，以为None和0及空字符串之类的值，在表达式里面都会评估为False 函数遇到特特殊情况时应该抛出异常，而不是返回None  了解如何在闭包里使用外围作用域中的变量123456789101112131415161718192021&amp;#x27;&amp;#x27;&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Effective Python 学习笔记 4">
 <meta property="og:url" content="https://focuseds.github.io/effective-python-study-note-4/">
 <meta property="og:site_name" content="Focuseds Blog">
-<meta property="og:description" content="尽量使用异常来表示特殊情况，而不要返回None    _表示用不到的变量  要点 用None这个返回值来表示特殊意义的函数，很容易使调用者犯错，以为None和0及空字符串之类的值，在表达式里面都会评估为False 函数遇到特特殊情况时应该抛出异常，而不是返回None  了解如何在闭包里使用外围作用域中的变量    &#39;&#39;&#39;         eg. 有一份列表，其中元素都是数字，现在对其排序，要把出现">
+<meta property="og:description" content="尽量使用异常来表示特殊情况，而不要返回None    _表示用不到的变量  要点 用None这个返回值来表示特殊意义的函数，很容易使调用者犯错，以为None和0及空字符串之类的值，在表达式里面都会评估为False 函数遇到特特殊情况时应该抛出异常，而不是返回None  了解如何在闭包里使用外围作用域中的变量123456789101112131415161718192021&amp;#x27;&amp;#x27;&amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-08-04T05:50:19.000Z">
 <meta property="article:modified_time" content="2022-08-13T04:28:01.258Z">
@@ -49,7 +49,7 @@
     
 	<!-- mathjax -->
 	
-<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -154,65 +154,22 @@
 <li>用None这个返回值来表示特殊意义的函数，很容易使调用者犯错，以为None和0及空字符串之类的值，在表达式里面都会评估为False</li>
 <li>函数遇到特特殊情况时应该抛出异常，而不是返回None</li>
 </ol>
-<h4 id="了解如何在闭包里使用外围作用域中的变量"><a href="#了解如何在闭包里使用外围作用域中的变量" class="headerlink" title="了解如何在闭包里使用外围作用域中的变量"></a>了解如何在闭包里使用外围作用域中的变量</h4><pre class=" language-python"><code class="language-python">    <span class="token triple-quoted-string string">'''
-        eg. 有一份列表，其中元素都是数字，现在对其排序，要把出现在某个群组内的数字，放在群组外的那些数字之前。
-    '''</span>
-    <span class="token keyword">def</span> <span class="token function">sort_pri</span><span class="token punctuation">(</span>values<span class="token punctuation">,</span> group<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">def</span> <span class="token function">helper</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> x <span class="token keyword">in</span> group<span class="token punctuation">:</span>
-                <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-            <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-        values<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key <span class="token operator">=</span> helper<span class="token punctuation">)</span>
-        <span class="token triple-quoted-string string">'''
-            上述函数成立的原因：
-                1. 函数是一等对象(first-class object)
-                2. python支持闭包
-                3. python中使用特殊的规则来比较两个元组。它首先比较各元组中下标为0的对应元素，如果相等，再比较下标为1的元素，如果还是想等，就继续依次比较。
-        '''</span>
+<h4 id="了解如何在闭包里使用外围作用域中的变量"><a href="#了解如何在闭包里使用外围作用域中的变量" class="headerlink" title="了解如何在闭包里使用外围作用域中的变量"></a>了解如何在闭包里使用外围作用域中的变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    eg. 有一份列表，其中元素都是数字，现在对其排序，要把出现在某个群组内的数字，放在群组外的那些数字之前。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sort_pri</span>(<span class="params">values, group</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> group:</span><br><span class="line">            <span class="keyword">return</span> (<span class="number">0</span>, x)</span><br><span class="line">        <span class="keyword">return</span> (<span class="number">1</span>, x)</span><br><span class="line">    values.sort(key = helper)</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        上述函数成立的原因：</span></span><br><span class="line"><span class="string">            1. 函数是一等对象(first-class object)</span></span><br><span class="line"><span class="string">            2. python支持闭包</span></span><br><span class="line"><span class="string">            3. python中使用特殊的规则来比较两个元组。它首先比较各元组中下标为0的对应元素，如果相等，再比较下标为1的元素，如果还是想等，就继续依次比较。</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">numbers = [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">6</span>]</span><br><span class="line">group = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>&#125;</span><br><span class="line">sort_pri(numbers, group)</span><br><span class="line"><span class="built_in">print</span>(numbers)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
 
-    numbers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
-    group <span class="token operator">=</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;2, 3, 5, 7&amp;#125;</span>
-    sort_pri<span class="token punctuation">(</span>numbers<span class="token punctuation">,</span> group<span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>numbers<span class="token punctuation">)</span>
-    <span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span>
-</code></pre>
 <h5 id="要点-1"><a href="#要点-1" class="headerlink" title="要点"></a>要点</h5><ol>
 <li>对于定义在某作用域内的闭包来说，它可以引用这些作用域中的变量</li>
 <li>使用默认方式对闭包内的变量赋值，不会影响外围作用域的同名变量</li>
 <li>在python 3中，程序可以在闭包内用nonlocal语句来修饰某个名称，使该闭包能够修改外围作用域中的同名变量</li>
 <li>除了简单的函数，尽量不要使用nonlocal语句</li>
 </ol>
-<h4 id="考虑使用生成器来改写直接返回列表的函数"><a href="#考虑使用生成器来改写直接返回列表的函数" class="headerlink" title="考虑使用生成器来改写直接返回列表的函数"></a>考虑使用生成器来改写直接返回列表的函数</h4><pre class=" language-python"><code class="language-python">    <span class="token comment" spellcheck="true"># eg.返回字符串中英文单词的首字母和其下标</span>
-    <span class="token keyword">def</span> <span class="token function">index_words</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        <span class="token keyword">if</span> text<span class="token punctuation">:</span>
-            result<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-        <span class="token keyword">for</span> index<span class="token punctuation">,</span> letter <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> letter <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">:</span>
-                result<span class="token punctuation">.</span>append<span class="token punctuation">(</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> result
+<h4 id="考虑使用生成器来改写直接返回列表的函数"><a href="#考虑使用生成器来改写直接返回列表的函数" class="headerlink" title="考虑使用生成器来改写直接返回列表的函数"></a>考虑使用生成器来改写直接返回列表的函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># eg.返回字符串中英文单词的首字母和其下标</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index_words</span>(<span class="params">text</span>):</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">if</span> text:</span><br><span class="line">        result.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> index, letter <span class="keyword">in</span> <span class="built_in">enumerate</span>(text):</span><br><span class="line">        <span class="keyword">if</span> letter == <span class="string">&#x27; &#x27;</span>:</span><br><span class="line">            result.append(index + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">words = <span class="string">&#x27;I am python&#x27;</span></span><br><span class="line">re = index_words(words)</span><br><span class="line"><span class="built_in">print</span>(re)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="number">0</span>, <span class="number">2</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
 
-    words <span class="token operator">=</span> <span class="token string">'I am python'</span>
-    re <span class="token operator">=</span> index_words<span class="token punctuation">(</span>words<span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">)</span>
-    <span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
-</code></pre>
 <p>以上程序的问题：</p>
 <ol>
 <li>代码拥挤，每次找到新的结果，都要调用append方法。而我们真正强调的不是对append的调用，而是该方法给列表中添加的那个值且函数首位都要对resut进行创建和返回</li>
 </ol>
-<pre class=" language-python"><code class="language-python">    <span class="token comment" spellcheck="true"># 生成器改写</span>
-    <span class="token keyword">def</span> index<span class="token punctuation">)</span>words_iter<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">if</span> text<span class="token punctuation">:</span>
-            <span class="token keyword">yield</span> <span class="token number">0</span>
-        <span class="token keyword">for</span> index<span class="token punctuation">,</span> letter <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> letter <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">:</span>
-                <span class="token keyword">yield</span> index <span class="token operator">+</span> <span class="token number">1</span>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成器改写</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>)words_iter(text):</span><br><span class="line">    <span class="keyword">if</span> text:</span><br><span class="line">        <span class="keyword">yield</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> index, letter <span class="keyword">in</span> <span class="built_in">enumerate</span>(text):</span><br><span class="line">        <span class="keyword">if</span> letter == <span class="string">&#x27; &#x27;</span>:</span><br><span class="line">            <span class="keyword">yield</span> index + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">### ···</span></span><br><span class="line"></span><br><span class="line">    re = <span class="built_in">list</span>(index_words_iter(address))</span><br></pre></td></tr></table></figure>
 
-        <span class="token comment" spellcheck="true">### ···</span>
-
-        re <span class="token operator">=</span> list<span class="token punctuation">(</span>index_words_iter<span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</code></pre>
 <ol start="2">
 <li>index_words函数在它返回前，要把所有结果都放在列表中。如果数据量非常大，那么程序可能会耗尽内存。用生成器改写后，可以应对任意长度的输入数据</li>
 </ol>
@@ -243,14 +200,8 @@
 <li>对生成器使用*操作符，可能导致内存耗尽</li>
 <li>在已经接受*args参数的函数上继续添加位置参数，可能会产生难以排查的bug</li>
 </ol>
-<h4 id="用关键字参数来表达可选行为"><a href="#用关键字参数来表达可选行为" class="headerlink" title="用关键字参数来表达可选行为"></a>用关键字参数来表达可选行为</h4><pre class=" language-python"><code class="language-python">    <span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> arg1 <span class="token operator">+</span> arg2
-    <span class="token comment" spellcheck="true"># 以下写法等效</span>
-    func<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    func<span class="token punctuation">(</span>arg1 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    func<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> arg2 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    func<span class="token punctuation">(</span>arg1 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">,</span> arg2 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
-</code></pre>
+<h4 id="用关键字参数来表达可选行为"><a href="#用关键字参数来表达可选行为" class="headerlink" title="用关键字参数来表达可选行为"></a>用关键字参数来表达可选行为</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">arg1, arg2</span>):</span><br><span class="line">    <span class="keyword">return</span> arg1 + arg2</span><br><span class="line"><span class="comment"># 以下写法等效</span></span><br><span class="line">func(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">func(arg1 = <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">func(<span class="number">1</span>, arg2 = <span class="number">1</span>)</span><br><span class="line">func(arg1 = <span class="number">1</span>, arg2 = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
 <h5 id="关键字参数的好处"><a href="#关键字参数的好处" class="headerlink" title="关键字参数的好处"></a>关键字参数的好处</h5><ol>
 <li>易于理解，参数含义与参数值都呈现在面前</li>
 <li>可以在函数中提供默认值</li>

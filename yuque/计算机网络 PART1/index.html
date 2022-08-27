@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第一章 计算机网络体系结构（一）相关概念 计算机网络的概念    广义观点      资源共享观点 以能够相互共享资源的方式互联起来的自治计算机系统的集合。① 目的：资源共享；② 组成单位：分布在不同地理位置的多台独立的“自治计算机”；③ 网络中的计算机必须遵从统一规则——网络协议。    用户透明性观点      计算机网络的组成    从组成部分上看      从工作方式上看     从功能组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络 PART1">
+<meta property="og:url" content="https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="第一章 计算机网络体系结构（一）相关概念 计算机网络的概念    广义观点      资源共享观点 以能够相互共享资源的方式互联起来的自治计算机系统的集合。① 目的：资源共享；② 组成单位：分布在不同地理位置的多台独立的“自治计算机”；③ 网络中的计算机必须遵从统一规则——网络协议。    用户透明性观点      计算机网络的组成    从组成部分上看      从工作方式上看     从功能组">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1602575229502-c57fb459-983f-4686-bb0b-18dca7ace558.jpeg#align=left&display=inline&height=1080&margin=%5Bobject%20Object%5D&name=overwatch5.jpg&originHeight=1080&originWidth=1920&size=662348&status=done&style=none&width=1920">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/f25c0540b83f0196efa285bca222464a.svg#card=math&code=%E6%9C%80%E5%B0%8F%E5%B8%A7%E9%95%BF%3D%E6%80%BB%E7%BA%BF%E4%BC%A0%E6%92%AD%E6%97%B6%E5%BB%B6%2A%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%8E%87%2A2&height=24&width=297">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/70976af72a9ee0e1e31238fea934a695.svg#card=math&code=%E7%A6%BB%E6%95%A3%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88%E4%B8%AD%5B0%2C2%5Ek-1%5D%2A2rt&height=25&width=218">
+<meta property="article:published_time" content="2020-10-13T07:26:35.000Z">
+<meta property="article:modified_time" content="2022-08-27T11:49:24.676Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="focuseds, blog, 博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1602575229502-c57fb459-983f-4686-bb0b-18dca7ace558.jpeg#align=left&display=inline&height=1080&margin=%5Bobject%20Object%5D&name=overwatch5.jpg&originHeight=1080&originWidth=1920&size=662348&status=done&style=none&width=1920">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>计算机网络 PART1</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/yuque/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&text=计算机网络 PART1"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&is_video=false&description=计算机网络 PART1"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机网络 PART1&body=Check out this article: https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&name=计算机网络 PART1&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&t=计算机网络 PART1"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">第一章 计算机网络体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">（一）相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%81%E6%8E%A5%E5%8F%A3%E3%80%81%E6%9C%8D%E5%8A%A1%E5%92%8C%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.2.</span> <span class="toc-text">（二）计算机网络协议、接口、服务和网络模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E7%96%91%E9%9A%BE%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-number">2.3.</span> <span class="toc-text">（三）疑难点总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">第二章 物理层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80"><span class="toc-number">3.1.</span> <span class="toc-text">（一）通信基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E7%89%A9%E7%90%86%E5%B1%82%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="toc-number">3.2.</span> <span class="toc-text">（二）物理层的设备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">4.</span> <span class="toc-text">第三章 数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">4.1.</span> <span class="toc-text">（一）数据链路层的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E7%BB%84%E5%B8%A7"><span class="toc-number">4.2.</span> <span class="toc-text">（二）组帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">4.3.</span> <span class="toc-text">（三）差错控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E4%B8%8E%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.</span> <span class="toc-text">（四）流量控制与可靠传输机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="toc-number">4.5.</span> <span class="toc-text">（五）介质访问控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AD%EF%BC%89%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">4.6.</span> <span class="toc-text">（六）局域网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%83%EF%BC%89%E5%B9%BF%E5%9F%9F%E7%BD%91"><span class="toc-number">4.7.</span> <span class="toc-text">（七）广域网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AB%EF%BC%89%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="toc-number">4.8.</span> <span class="toc-text">（八）数据链路层设备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B9%9D%EF%BC%89%E7%96%91%E9%9A%BE%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-number">4.9.</span> <span class="toc-text">（九）疑难点总结</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        计算机网络 PART1
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-10-13T07:26:35.000Z" itemprop="datePublished">2020-10-13</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1602575229502-c57fb459-983f-4686-bb0b-18dca7ace558.jpeg#align=left&display=inline&height=1080&margin=%5Bobject%20Object%5D&name=overwatch5.jpg&originHeight=1080&originWidth=1920&size=662348&status=done&style=none&width=1920" alt="overwatch5.jpg"></h2><h2 id="第一章-计算机网络体系结构"><a href="#第一章-计算机网络体系结构" class="headerlink" title="第一章 计算机网络体系结构"></a>第一章 计算机网络体系结构</h2><h3 id="（一）相关概念"><a href="#（一）相关概念" class="headerlink" title="（一）相关概念"></a>（一）相关概念</h3><ol>
+<li><p><strong>计算机网络的概念</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>广义观点</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>资源共享观点</strong></td>
+<td>以能够相互共享资源的方式互联起来的自治计算机系统的集合。① 目的：资源共享；② 组成单位：分布在不同地理位置的多台独立的“自治计算机”；③ 网络中的计算机必须遵从统一规则——网络协议。</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>用户透明性观点</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>计算机网络的组成</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>从组成部分上看</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>从工作方式上看</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>从功能组成上看</strong></td>
+<td><strong>通信子网：</strong>由各种传输介质、通信设备和相应的网络协议组成，它使网络具有数据传输、交换、控制和存储的能力，实现计算机之间的数据通信。</td>
+<td><strong>资源子网：</strong>实现资源共享功能的设备及其软件的集合，向网络用户提供共享其他计算机上的硬件资源、软件资源和数据资源的服务。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>计算机网络的功能</p>
+<ul>
+<li>数据通信</li>
+<li>资源共享</li>
+<li>分布式处理</li>
+<li>提高可靠性</li>
+<li>负载均衡</li>
+</ul>
+</li>
+<li><p>计算机网络的分类<br>| 按分布范围 |</p>
+</li>
+<li><p>广域网 WAN</p>
+</li>
+<li><p>城域网 MAN</p>
+</li>
+<li><p>局域网 LAN</p>
+</li>
+<li><p>个人局域网 PAN<br>| | |<br>| — | — | — | — |<br>| 按传输技术 |</p>
+</li>
+<li><p>广播式网络</p>
+</li>
+<li><p>点对点网络<br>| | 是否采用分组存储转发与路由选择机制是点对点是网络与广播式网络的重要区别，广域网基本都属于点对点网络。 |<br>| 按拓扑分类 | 星形、总线形、环形和网络形 | | |<br>| 按使用者分类 | 公用网和专用网 | | |<br>| 按交换技术分类 |</p>
+</li>
+<li><p>电路交换网络</p>
+</li>
+<li><p>报文交换网络</p>
+</li>
+<li><p>分组交换网络<br>| | |<br>| 按传输介质分类 | 无线 | 有线 | |</p>
+</li>
+<li><p>交换技术分类</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>概述</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电路交换网络</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>报文交换网络</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>分组交换网络</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>网络性能指标</p>
+<ul>
+<li>宽带</li>
+<li>时延<ul>
+<li>发送时延</li>
+<li>传播时延</li>
+<li>处理时延</li>
+<li>排队时延</li>
+</ul>
+</li>
+<li>时延带宽积</li>
+<li>往返时延 RTT</li>
+<li>吞吐量</li>
+<li>速率</li>
+<li>信道利用率</li>
+</ul>
+</li>
+</ol>
+<h3 id="（二）计算机网络协议、接口、服务和网络模型"><a href="#（二）计算机网络协议、接口、服务和网络模型" class="headerlink" title="（二）计算机网络协议、接口、服务和网络模型"></a>（二）计算机网络协议、接口、服务和网络模型</h3><ol>
+<li>计算机网络协议、接口和服务</li>
+<li>服务类型（面向连接和无连接的服务协议）及相关协议</li>
+<li>OSI&#x2F;RM 分层及各层协议</li>
+<li>TCP&#x2F;IP 模型</li>
+<li>OSI&#x2F;RM 与 TCP&#x2F;IP 的比较</li>
+</ol>
+<h3 id="（三）疑难点总结"><a href="#（三）疑难点总结" class="headerlink" title="（三）疑难点总结"></a>（三）疑难点总结</h3><h2 id="第二章-物理层"><a href="#第二章-物理层" class="headerlink" title="第二章 物理层"></a>第二章 物理层</h2><h3 id="（一）通信基础"><a href="#（一）通信基础" class="headerlink" title="（一）通信基础"></a>（一）通信基础</h3><ol>
+<li>速率、波特与带宽</li>
+<li>奈奎斯特定理和香农定理</li>
+<li>编码与调制</li>
+<li>基带传输与宽带传输（频带传输）</li>
+</ol>
+<h3 id="（二）物理层的设备"><a href="#（二）物理层的设备" class="headerlink" title="（二）物理层的设备"></a>（二）物理层的设备</h3><ol>
+<li>中继器</li>
+<li>集线器</li>
+<li>冲突域和广播域</li>
+<li></li>
+</ol>
+<h2 id="第三章-数据链路层"><a href="#第三章-数据链路层" class="headerlink" title="第三章 数据链路层"></a>第三章 数据链路层</h2><h3 id="（一）数据链路层的功能"><a href="#（一）数据链路层的功能" class="headerlink" title="（一）数据链路层的功能"></a>（一）数据链路层的功能</h3><ol>
+<li>概述及主要功能</li>
+<li>数据链路层提供的服务<ol>
+<li>无确认无连接服务</li>
+<li>有确认无连接服务</li>
+<li>有确认面向连接服务</li>
+</ol>
+</li>
+</ol>
+<p><em>注：有确认就一定要有连接，即不存在无确认的面向连接的服务</em></p>
+<ol start="3">
+<li><p>流量控制</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>控制对象</th>
+<th>方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据链路层</td>
+<td>相邻节点间数据链路层的流量</td>
+<td>限制发送方的速率</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>控制源端到目的端之间的流量</td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>差错控制</p>
+<ol>
+<li>位错<ol>
+<li>解决办法：<strong>循环冗余校验</strong>（CRC）方式发现位错，通过<strong>ARQ</strong>方式重传出错帧</li>
+</ol>
+</li>
+<li>帧错<ol>
+<li>分类：① 丢失；② 重复；③ 失序</li>
+<li>解决办法：定时器（<strong>①</strong>）；编号机制（<strong>②③</strong>）</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="（二）组帧"><a href="#（二）组帧" class="headerlink" title="（二）组帧"></a>（二）组帧</h3><ol>
+<li>组帧的目的：把比特组合成帧为单位传输，是为了在出错时只重发出错的帧，而不是全部数据，从而提高效率</li>
+<li>组帧要解决的问题<ol>
+<li>帧定界</li>
+<li>帧同步</li>
+<li>透明传输</li>
+</ol>
+</li>
+<li>组帧方法（常用后两种）<ol>
+<li>字符计数法</li>
+<li>字符填充的首位定界法</li>
+<li>零比特填充法：逢 5 个 1 添 0</li>
+<li>违规编码法</li>
+</ol>
+</li>
+</ol>
+<h3 id="（三）差错控制"><a href="#（三）差错控制" class="headerlink" title="（三）差错控制"></a>（三）差错控制</h3><ol>
+<li>差错原因：噪声引起的</li>
+<li>噪声的分类<ol>
+<li>全局性<ol>
+<li>由于线路本身电气特性产生的随机噪声（热噪声），固有的</li>
+<li>解决办法：提高信噪比或避免干扰（对传感器下手）</li>
+</ol>
+</li>
+<li>局部性<ol>
+<li>外界特定的短暂因素造成的冲击噪声，是产生差错的主要原因</li>
+<li>利用<strong>编码技术</strong>解决</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>编码技术 - 检错编码<ol>
+<li>奇偶校验码</li>
+<li>循环冗余码<ol>
+<li>检错过程：每个帧初以同样的除数，得余数 R，为 0 则接受，反之。（即，只要接收了，就认为该帧无差错。）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>编码技术 - 纠错编码<ol>
+<li>海明码：发现双比特错，纠正单比特错</li>
+<li>海明距<strong>？</strong><ol>
+<li><strong>纠错 d 位，码距 2d+1</strong></li>
+<li><strong>检错 d 位，码距 d+1</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="（四）流量控制与可靠传输机制"><a href="#（四）流量控制与可靠传输机制" class="headerlink" title="（四）流量控制与可靠传输机制"></a>（四）流量控制与可靠传输机制</h3><blockquote>
+<p>数据链路层中的流量控制机制和可靠传输机制是交织在一起的</p>
+</blockquote>
+<p><strong>流量控制：</strong></p>
+<ol>
+<li>停止-等待流量控制基本原理：发送方 -&gt; 确认 -&gt; 再发送</li>
+<li>滑动窗口的特性<ol>
+<li>只有接收窗口向前滑动（同时接收方发送了确认帧）时，发送窗口才有可能（只有发送方收到确认帧后才一定）向前滑动；</li>
+<li>滑动窗口的大小</li>
+<li>接收窗口为 1 时，可保证帧的有序接收</li>
+<li>数据链路层的滑动窗口协议中，窗口的大小在传输过程中是固定的（<strong>注意与传输层的滑动窗口协议的区别</strong>）</li>
+</ol>
+</li>
+</ol>
+<p><strong>可靠传输：</strong></p>
+<ol start="3">
+<li>可靠传输机制（数据链路层）<ol>
+<li>确认</li>
+<li>超时重传：发送方定时器超时，重传</li>
+</ol>
+</li>
+<li>ARQ 进行流量控制（点到点）的方法</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>发送窗口大小</strong></th>
+<th><strong>接收窗口大小</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>停止-等待 ARQ</td>
+<td>&#x3D;1</td>
+<td>&#x3D;1</td>
+<td></td>
+</tr>
+<tr>
+<td>后退 N 帧 ARQ</td>
+<td>&gt;1</td>
+<td>&#x3D;1</td>
+<td>滑动窗口技术和请求重发技术的结合</td>
+</tr>
+<tr>
+<td>选择性重传 ARQ</td>
+<td>&gt;1</td>
+<td>&gt;1</td>
+<td></td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li><p>ARQ</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>确认方式</strong></th>
+<th><strong>接收顺序</strong></th>
+<th><strong>重传范围</strong></th>
+<th><strong>是否有定时器</strong></th>
+<th><strong>是否有缓存</strong></th>
+<th><strong>窗口大小</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>停止-等待</td>
+<td>逐一确认</td>
+<td>按序接收</td>
+<td>对应帧</td>
+<td>是</td>
+<td>双方都有</td>
+<td>1</td>
+</tr>
+<tr>
+<td>GBN</td>
+<td>累积确认</td>
+<td>按序接收</td>
+<td>出错帧及之后所有帧</td>
+<td>是</td>
+<td></td>
+<td>-1</td>
+</tr>
+<tr>
+<td>SR</td>
+<td>逐一确认</td>
+<td>&#x2F;</td>
+<td>只重传错帧</td>
+<td>是</td>
+<td>接收方有，大小与窗口大小相等</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>书上笔记</strong></p>
+</li>
+<li><p>发送周期：T，周期内发送 L 比特数据，传输速率为 C，则发送有效数据的时间为 L&#x2F;C，在这种情况下：</p>
+<ol>
+<li>信道利用率 &#x3D; (L&#x2F;C)&#x2F;T</li>
+<li>信道吞吐率 &#x3D; 信道利用率 * 发送方的发送速率</li>
+<li><strong>不同方式下的利用率、吞吐率计算</strong></li>
+</ol>
+</li>
+</ol>
+<h3 id="（五）介质访问控制"><a href="#（五）介质访问控制" class="headerlink" title="（五）介质访问控制"></a>（五）介质访问控制</h3><ol>
+<li>任务：隔离来自同一信道上其他结点所传送的信号，以协调活动结点的传输。用来决定广播信道中信道分配的协议属于数据链路层的一个字层，称为活动控制子层（Medium Access Control, MAC）。</li>
+<li>介质访问控制方法<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>方法</strong></th>
+<th><strong>描述</strong></th>
+<th></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>静态</td>
+<td>信道划分介质访问控制</td>
+<td>FDM：共享空间</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>TDM：共享时间。其中，STDM 统计时分多路或异步时分多路复用为改进技术，它并不固定分配时隙，而按需分配时隙</td>
+<td></td>
+<td>8000b&#x2F;s 线路分 4 个用户，TDM 最高每用户 2000b&#x2F;s，STDM8000b&#x2F;s</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>WDM：光的频分多路</td>
+<td></td>
+<td>需要合波器和分波器</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>CDM：即共享频率，又共享时间</td>
+<td></td>
+<td>CDMA 码分多址：不同码片序列正交</td>
+</tr>
+<tr>
+<td>动态</td>
+<td>随机访问介质访问控制</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>（不同协议核心思想：胜利者通过争用获得信道，为争用型协议）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<p>ALOHA：随机接入系统</p>
+<p>CS：载波侦听，就是发送前先要检测一下总线是否空闲</p>
+<p>MA：多路检测</p>
+<p>CD：碰撞检测</p>
+<p>CA：碰撞避免 | ALOHA<br>——总线型，无线信道 | 纯 ALOHA：想发就发 |<br>|<br>| | | | 时隙 ALOHA：划分等长时隙，每个时隙开始时才可发送一个帧 | |<br>| | | CSMA | 1-坚持 CSMA | 发前侦听，空闲就发，忙则<strong>持续</strong>侦听 |<br>| | | | 非-坚持 CSMA | 发前侦听，空闲就发，忙则<strong>放弃</strong>侦听，随机时间后重复 |<br>| | | | P-坚持 CSMA | 发前侦听，空闲以概率 P 发，忙则<strong>以概率 1-P 推迟</strong>到下一个时隙 |<br>| | | CSMA&#x2F;CA<br>——适用于总线型或半双工或以太网网络环境 | 先听后发，边听边发（区别于 CSMA），冲突停发，随机重发 | |<br>| | | CSMA&#x2F;CD<br>——应用于无线局域网 | 使用二进制退避算法。任何站发送数据帧时不仅要等待一个时间间隔还要进入争用窗口，并计算随机退避时间。仅当检测到信道空闲且这个数据帧是要发送的第一个数据帧时才不使用退避算法。</p>
+<p>三种机制进行碰撞避免：<br>① 预约信道<br>②ACK 帧<br>③RTS&#x2F;CTS 帧（Request To Send, Clear To Send），解决“隐蔽站”问题 | |<br>| | 轮询访问介质访问控制 | 令牌传递协议 | 既不共享时间也不共享空间，实际上是在随机介质访问控制的基础上，限定了有权利发送数据的结点只有一个 | |</p>
+<ol start="3">
+<li>争用期：2t</li>
+<li>最小帧长问题</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/__latex/f25c0540b83f0196efa285bca222464a.svg#card=math&code=%E6%9C%80%E5%B0%8F%E5%B8%A7%E9%95%BF%3D%E6%80%BB%E7%BA%BF%E4%BC%A0%E6%92%AD%E6%97%B6%E5%BB%B6%2A%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%8E%87%2A2&height=24&width=297"></p>
+<ol start="5">
+<li>二进制退避算法<ol>
+<li>原因：避免两结点紧接着发送冲突帧</li>
+<li>注意<ol>
+<li>新的退避时间 &#x3D; <img src="https://cdn.nlark.com/yuque/__latex/70976af72a9ee0e1e31238fea934a695.svg#card=math&code=%E7%A6%BB%E6%95%A3%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88%E4%B8%AD%5B0%2C2%5Ek-1%5D%2A2rt&height=25&width=218"></li>
+<li>重传参数 k≤10，即无论重传多少次，<strong>k 最大不超过 10</strong></li>
+<li>重传达到<strong>16 次</strong>时，认为此帧永远无法正确发出，向高层抛出错误</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>CSMA&#x2F;CD 与 CSMA&#x2F;CA 的区别<ol>
+<li>CSMA&#x2F;CD 可以检测冲突，但无法避免；CSMA&#x2F;CA 发送包的的同时不能检测到信道上有无冲突，本结点没有冲突不意味着在接收结点就没有冲突，只能尽量避免</li>
+<li>传输介质不同。CSMA&#x2F;CD 用于总线型以太网，CSMA&#x2F;CA 用于无线局域网 802.11a&#x2F;b&#x2F;g&#x2F;n 等</li>
+<li>检测方式不同。CSMA&#x2F;CD 通过电缆电压变化来检测；而 CSMA&#x2F;CA 采用能量检测、载波检测和能量载波混合检测三种检测信道空闲的方式</li>
+<li>在本结点有（无）冲突，并不意味着在接收结点处就有（无）冲突</li>
+</ol>
+</li>
+<li>使用 CSMA&#x2F;CD 的条件<ol>
+<li>总线形线路（非点对点）</li>
+<li>存在最小帧长（PPP 就不需要）</li>
+</ol>
+</li>
+</ol>
+<p><strong>总结：</strong>CSMA&#x2F;CA 协议的基本思想是在发送数据时先广播告知其它结点，让其它结点在某段时间内不要发送数据，以免出现碰撞。CSMA&#x2F;CD 协议的基本思想是发送前侦听，边发送边侦听，一旦出现碰撞马上停止发送。</p>
+<ol start="7">
+<li>轮询问题<ol>
+<li>轮询开销</li>
+<li>等待延迟</li>
+<li>单点故障</li>
+</ol>
+</li>
+<li>令牌问题<ol>
+<li>令牌开销</li>
+<li>等待延迟</li>
+<li>单点故障</li>
+</ol>
+</li>
+</ol>
+<h3 id="（六）局域网"><a href="#（六）局域网" class="headerlink" title="（六）局域网"></a>（六）局域网</h3><ol>
+<li><p>LAN：是指在较小地理范围内，将计算机、外部设备和数据库系统等通过<strong>基带同轴电缆粗缆（10BASE5）、基带同轴电缆细缆（10BASE2）、非屏蔽双绞线（10BASE-T）和光纤（10BASE-FL）</strong>等连接介质互相连接起来，组成资源信息共享的计算机互联网络。</p>
+</li>
+<li><p>特点</p>
+<ol>
+<li>为一个单位所有，地理范围和数目有限</li>
+<li>所有站点共享较高的的带宽</li>
+<li>较低的时延和误码率</li>
+<li>各站点为平等关系，而非主从</li>
+<li>能进行广播和组播</li>
+</ol>
+</li>
+<li><p>决定局域网特性的三要素</p>
+<ol>
+<li>拓扑结构</li>
+<li>传输介质</li>
+<li>介质访问控制方式（决定技术特性）</li>
+</ol>
+</li>
+<li><p>局域网拓扑的结构</p>
+<ol>
+<li>星形结构</li>
+<li>总线形结构</li>
+<li>环形结构</li>
+<li>星形和总线形结合的复合结构</li>
+</ol>
+</li>
+<li><p>局域网常用介质控制方法</p>
+<ol>
+<li>CSMA&#x2F;CD（前两种应用于总线型网）</li>
+<li>令牌总线</li>
+<li>令牌环（应用于令牌环网）</li>
+</ol>
+</li>
+<li><p>三种特殊局域网拓扑实现</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>物理拓扑</th>
+<th>逻辑拓扑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>以太网</td>
+<td>星形或拓展星形</td>
+<td>总线形</td>
+</tr>
+<tr>
+<td>令牌环</td>
+<td>星形</td>
+<td>环形</td>
+</tr>
+<tr>
+<td>FDFI（光纤分布数字接口）</td>
+<td>双环结构</td>
+<td>环形</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>IEEE 802 下的局域网参考模型</p>
+<ol>
+<li>对应于 OSI 参考模型的数据链路层和物理层</li>
+<li>并被拆分<table>
+<thead>
+<tr>
+<th></th>
+<th>介绍</th>
+<th>主要功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MAC（媒体接入控制）</td>
+<td>放入与接入传输媒体有关的内容，向上屏蔽对物理层访问的各种差异，提供对物理层统一访问接口</td>
+<td>组帧和拆卸帧、比特传输差错检测、透明传输</td>
+</tr>
+<tr>
+<td>LLC（逻辑链路控制）</td>
+<td>与传输媒体无关，它向网络层提供无确认无连接、面向连接、带确认无连接、高速传送四种不同的连接服务类型</td>
+<td>LLC 已经逐步被淘汰</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+</li>
+<li><p>以太网与 IEEE 802.3</p>
+</li>
+</ol>
+<p>严格来说以太网应该是符合 DIX Ethernet V2 标准的局域网，但其与 IEEE 802.3 差异甚小，因此通常称 IEEE 802.3 局域网为以太网。</p>
+<ol start="9">
+<li>以太网简化通信的两种措施<ol>
+<li>采用无连接的工作方式</li>
+<li>不对发送的数据帧编号，也不要求接收方发送确认，即以最大努力交付数据，提供的是不可靠服务，对于纠错功能由高层提供（传输层）。</li>
+</ol>
+</li>
+<li>网络接口板</li>
+</ol>
+<p>网络接口卡，装有处理器和存储器，是工作在数据链路层的网路组件。另外，网卡控制着主机对介质的访问，因此网卡也工作在物理层，因为它只关注比特，而不关注任何高层信息。</p>
+<ol start="11">
+<li>MAC 帧格式：<strong>P108</strong></li>
+<li>高速以太网</li>
+<li>100BASE-T 以太网：双绞线，全双工+半双工（全双工下不支持 CSMA&#x2F;CD）</li>
+<li>吉比特以太网：向后兼容，全双工+半双工</li>
+<li>10 吉比特以太网：仅光纤，仅全双工，无争用不使用 CSMA&#x2F;CD</li>
+<li>IEEE 802.11</li>
+</ol>
+<p>无线局域网系列标准。<br>注意：① 无线局域网中，即使发生碰撞，也要把数据帧发送完；② 有线局域网中，检测到碰撞就立即停止发送数据。</p>
+<ol start="14">
+<li>无线局域网的分类</li>
+<li>固定基础设施无线局域网</li>
+<li>无固定基础设施无线局域网自组织网络</li>
+</ol>
+<h3 id="（七）广域网"><a href="#（七）广域网" class="headerlink" title="（七）广域网"></a>（七）广域网</h3><ol>
+<li>概念：覆盖范围很广的长距离网络。广域网不等于互联网，互联网可以连接不同类型的网络，通常使用路由器来连接</li>
+<li>构成：广域网由一些结点交换机（注意不是路由器，结点交换机和路由器都用来转发分组，它们的工作原理也类似。结点交换机在单个网络中转发分组，而路由器在多个网络构成的互联网中转发分组）及连接这些交换机的链路组成。结点交换机的功能是存储转发</li>
+<li>广域网的重要问题：① 路由选择；② 分组转发</li>
+<li>如何理解“局域网主要使用的协议在数据链路层，广域网使用的协议主要在网络层。”这句话？</li>
+</ol>
+<p>如果网络中的两个结点要进行数据交换，那么结点除要给出数据外，还要给数据“包装”上一层控制信息，用于实现检错纠错等功能。如果这层控制信息是数据链路层协议的控制信息，那么就称使用了数据链路层协议；如果这层控制信息是网络层的控制信息，那么就称使用了网络层协议</p>
+<ol start="4">
+<li><p>广域网与局域网的区别和联系</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>广域网</th>
+<th>局域网</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>覆盖范围</td>
+<td>广很，通常跨区域</td>
+<td>较小，通常在一个区域内</td>
+</tr>
+<tr>
+<td>连接方式</td>
+<td>节点之间都是点到点连接，但为了提高网络的可靠性，一个节点交换机往往与多个节点交换机相连</td>
+<td>普遍采用多点接入技术</td>
+</tr>
+<tr>
+<td>OSI 层次</td>
+<td>三层：物理层、数据链路层和网络层</td>
+<td>两层：物理层和数据链路层</td>
+</tr>
+<tr>
+<td>联系和相似点</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>广域网和局域网都是互联网的重要组成构件，从互联网的角度看，二者平等（不是包含关系）</p>
+</li>
+<li><p>连接到一个广域网或一个局域网的主机在该网内进行通信时只需要知道其网络的物理地址<br>| |<br>| 着重点 | 强调资源共享 | 强调数据传输 |</p>
+</li>
+<li><p>广域网数据链路层控制协议</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>PPP 协议（<strong>P119</strong>）</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>特点</td>
+<td>只支持全双工，不提供可靠传输</td>
+<td></td>
+</tr>
+<tr>
+<td>描述</td>
+<td>使用串行线路通信的面向字节的协议</td>
+<td></td>
+</tr>
+<tr>
+<td>组成部分</td>
+<td>链路控制协议 LCP</td>
+<td>一种扩展链路控制协议，用于建立（身份验证）、配置、测试和管理数据链路</td>
+</tr>
+<tr>
+<td></td>
+<td>网络控制协议 NCP</td>
+<td>PPP 允许采用多种网络层协议，每个网络层协议用一个相应的 NCP 来配置，为网络层协议建立和配置逻辑链接</td>
+</tr>
+<tr>
+<td></td>
+<td>一个将 IP 数据包封装到串行链路的方法</td>
+<td>IP 数据包在其中就是信息部分，这个长度受最大传说送单元 MTU 限制</td>
+</tr>
+<tr>
+<td>PPP 帧格式</td>
+<td>标志字段 F：7E(01111101)</td>
+<td>1B</td>
+</tr>
+<tr>
+<td></td>
+<td>地址字段 A：0xFF</td>
+<td>1B</td>
+</tr>
+<tr>
+<td></td>
+<td>控制字段 C：0x03</td>
+<td>1B</td>
+</tr>
+<tr>
+<td></td>
+<td>协议字段</td>
+<td>2B</td>
+</tr>
+<tr>
+<td></td>
+<td>信息部分</td>
+<td>0-1500B</td>
+</tr>
+<tr>
+<td></td>
+<td>FCS</td>
+<td>2B</td>
+</tr>
+<tr>
+<td></td>
+<td>标志字段 F</td>
+<td>1B</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HDLC 协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>特点</td>
+<td>采用全双工，提供可靠传输</td>
+</tr>
+<tr>
+<td>描述</td>
+<td>面向比特的数据链路层协议</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ol start="6">
+<li>PPP 与 HDLC 的不同点</li>
+</ol>
+<h3 id="（八）数据链路层设备"><a href="#（八）数据链路层设备" class="headerlink" title="（八）数据链路层设备"></a>（八）数据链路层设备</h3><ol>
+<li><p>网桥</p>
+<blockquote>
+<p>都是根据往返时间来判断是否可达</p>
+</blockquote>
+<ol>
+<li>透明网桥（自学习生成树，不是最佳路由）</li>
+<li>源路由网桥（最佳路由）</li>
+</ol>
+</li>
+<li><p>局域网交换机</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">不同点</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直通式交换机</td>
+<td align="center"></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>只检查帧的目的地址</p>
+</li>
+<li><p>速度快，缺乏安全性</p>
+</li>
+<li><p>无法支持具有不同速率的端口的交换<br>| |<br>| 存储转发式交换机 |</p>
+</li>
+<li><p>先接收到帧缓存，检查数据是否正确，再转发</p>
+</li>
+<li><p>可靠性高，延迟大</p>
+</li>
+<li><p>能支持不同速率端口之间的转换<br>| |</p>
+</li>
+</ol>
+<h3 id="（九）疑难点总结"><a href="#（九）疑难点总结" class="headerlink" title="（九）疑难点总结"></a>（九）疑难点总结</h3><ol>
+<li>冲突域和广播域</li>
+</ol>
+<p><strong>CONTINUE…</strong><br><a target="_blank" rel="noopener" href="https://www.yuque.com/u1063509/st66mv/tdt0gb?view=doc_embed">计算机网络 PART2</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">第一章 计算机网络体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">（一）相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%81%E6%8E%A5%E5%8F%A3%E3%80%81%E6%9C%8D%E5%8A%A1%E5%92%8C%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.2.</span> <span class="toc-text">（二）计算机网络协议、接口、服务和网络模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E7%96%91%E9%9A%BE%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-number">2.3.</span> <span class="toc-text">（三）疑难点总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">第二章 物理层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80"><span class="toc-number">3.1.</span> <span class="toc-text">（一）通信基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E7%89%A9%E7%90%86%E5%B1%82%E7%9A%84%E8%AE%BE%E5%A4%87"><span class="toc-number">3.2.</span> <span class="toc-text">（二）物理层的设备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">4.</span> <span class="toc-text">第三章 数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">4.1.</span> <span class="toc-text">（一）数据链路层的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E7%BB%84%E5%B8%A7"><span class="toc-number">4.2.</span> <span class="toc-text">（二）组帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">4.3.</span> <span class="toc-text">（三）差错控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E4%B8%8E%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.</span> <span class="toc-text">（四）流量控制与可靠传输机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="toc-number">4.5.</span> <span class="toc-text">（五）介质访问控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AD%EF%BC%89%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">4.6.</span> <span class="toc-text">（六）局域网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%83%EF%BC%89%E5%B9%BF%E5%9F%9F%E7%BD%91"><span class="toc-number">4.7.</span> <span class="toc-text">（七）广域网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AB%EF%BC%89%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="toc-number">4.8.</span> <span class="toc-text">（八）数据链路层设备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B9%9D%EF%BC%89%E7%96%91%E9%9A%BE%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-number">4.9.</span> <span class="toc-text">（九）疑难点总结</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&text=计算机网络 PART1"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&is_video=false&description=计算机网络 PART1"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机网络 PART1&body=Check out this article: https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&title=计算机网络 PART1"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&name=计算机网络 PART1&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/&t=计算机网络 PART1"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

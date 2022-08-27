@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第四章 网络层（一）网络层的功能 异构网络互联  所谓网络互联，是指将两个以上的计算机网络，通过一定方法，用一种或多种通信处理设备（即中间设备）相互连接起来，以构成更大的网络系统。中间设备又叫中间系统或中继系统。    物理层中继系统 中继器、集线器    数据链路层中继系统 网桥或交换机   网络层中继系统 路由器   网络层以上的中继系统 网关    路由与转发  路由器的两大功能：  路由选">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络 PART2">
+<meta property="og:url" content="https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="第四章 网络层（一）网络层的功能 异构网络互联  所谓网络互联，是指将两个以上的计算机网络，通过一定方法，用一种或多种通信处理设备（即中间设备）相互连接起来，以构成更大的网络系统。中间设备又叫中间系统或中继系统。    物理层中继系统 中继器、集线器    数据链路层中继系统 网桥或交换机   网络层中继系统 路由器   网络层以上的中继系统 网关    路由与转发  路由器的两大功能：  路由选">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/15f1fdb80843660b9c1ddec64686f90b.svg#card=math&code=2%5E7-2%0A&height=20&width=45">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/844495834dc496c5ab2bb75dd4c172be.svg#card=math&code=2%5E%7B14%7D-1&height=20&width=50">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/25d3ef61a1ddb721fba32443872207d7.svg#card=math&code=2%5E%7B21%7D-1&height=20&width=50">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1604214951075-42fd66d7-ee33-4c8c-b776-74f92e037611.jpeg#align=left&display=inline&height=319&margin=%5Bobject%20Object%5D&name=IMG_20201101_151331.jpg&originHeight=2474&originWidth=4000&size=2436635&status=done&style=none&width=515">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1604217649059-69d22c04-ab4e-4a83-84b5-20a4ff45105d.jpeg#align=left&display=inline&height=309&margin=%5Bobject%20Object%5D&name=notepad1604217507962.jpg&originHeight=960&originWidth=1851&size=785738&status=done&style=none&width=595">
+<meta property="article:published_time" content="2020-11-01T05:46:25.000Z">
+<meta property="article:modified_time" content="2022-08-27T11:49:24.675Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="focuseds, blog, 博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/__latex/15f1fdb80843660b9c1ddec64686f90b.svg#card=math&code=2%5E7-2%0A&height=20&width=45">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>计算机网络 PART2</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&text=计算机网络 PART2"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&is_video=false&description=计算机网络 PART2"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机网络 PART2&body=Check out this article: https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&name=计算机网络 PART2&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&t=计算机网络 PART2"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">第四章 网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.</span> <span class="toc-text">（一）网络层的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">（二）路由算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89IPv4"><span class="toc-number">1.3.</span> <span class="toc-text">（三）IPv4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89IPv6"><span class="toc-number">1.4.</span> <span class="toc-text">（四）IPv6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.5.</span> <span class="toc-text">（五）路由协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AD%EF%BC%89IP-%E7%BB%84%E6%92%AD"><span class="toc-number">1.6.</span> <span class="toc-text">（六）IP 组播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%83%EF%BC%89%E7%A7%BB%E5%8A%A8-IP"><span class="toc-number">1.7.</span> <span class="toc-text">（七）移动 IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AB%EF%BC%89%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="toc-number">1.8.</span> <span class="toc-text">（八）网络层设备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">2.</span> <span class="toc-text">第五章 传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E4%BC%A0%E8%BE%93%E5%B1%82%E6%8F%90%E4%BE%9B%E7%9A%84%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">（一）传输层提供的服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89UDP"><span class="toc-number">2.2.</span> <span class="toc-text">（二）UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89TCP"><span class="toc-number">2.3.</span> <span class="toc-text">（三）TCP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">第六章 应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">（一）网络应用模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.2.</span> <span class="toc-text">（二）域名系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.3.</span> <span class="toc-text">（三）文本传输协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">3.4.</span> <span class="toc-text">（四）电子邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89%E4%B8%87%E7%BB%B4%E7%BD%91"><span class="toc-number">3.5.</span> <span class="toc-text">（五）万维网</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        计算机网络 PART2
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-11-01T05:46:25.000Z" itemprop="datePublished">2020-11-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="第四章-网络层"><a href="#第四章-网络层" class="headerlink" title="第四章 网络层"></a>第四章 网络层</h2><h3 id="（一）网络层的功能"><a href="#（一）网络层的功能" class="headerlink" title="（一）网络层的功能"></a>（一）网络层的功能</h3><ol>
+<li>异构网络互联</li>
+</ol>
+<p>所谓网络互联，是指将两个以上的计算机网络，通过一定方法，用一种或多种通信处理设备（即中间设备）相互连接起来，以构成更大的网络系统。中间设备又叫中间系统或中继系统。</p>
+<table>
+<thead>
+<tr>
+<th>物理层中继系统</th>
+<th>中继器、集线器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据链路层中继系统</td>
+<td>网桥或交换机</td>
+</tr>
+<tr>
+<td>网络层中继系统</td>
+<td>路由器</td>
+</tr>
+<tr>
+<td>网络层以上的中继系统</td>
+<td>网关</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>路由与转发</li>
+</ol>
+<p>路由器的两大功能：</p>
+<ol>
+<li><p>路由选择</p>
+</li>
+<li><p>分组转发</p>
+</li>
+<li><p>拥塞控制</p>
+<ol>
+<li>判断网络是否进入拥塞状态的方法：观察网络的吞吐量与网络负载的关系<ol>
+<li>若网络负载增加，网络吞吐量明显小于正常吞吐量，则可能已经进入“轻度拥塞”</li>
+<li>若网络吞吐量随着网络负载的增大而下降，则可能已经进入拥塞状态</li>
+<li>若网络的负载持续增大，而网络吞吐量下降为 0，则可能已经进入死锁状态</li>
+</ol>
+</li>
+<li>拥塞控制的作用：确保子网能够承载所达到的流量，单一地增加资源不能解决拥塞</li>
+<li>流量控制与拥塞控制的区别<br>| <strong>流量控制</strong> |</li>
+</ol>
+</li>
+<li><p>流量控制往往是指在发送端和接收端之间的点对点通信量的控制</p>
+</li>
+<li><p>它所要做的是抑制发送端发送数据的速率，以便接收端来得及接收<br>|<br>| :—: | :— |<br>| <strong>拥塞控制</strong> |</p>
+</li>
+<li><p>确保通信子网能够传送待传送的数据</p>
+</li>
+<li><p>是一个全局性的问题</p>
+</li>
+<li><p>涉及网络中所有主机、路由器及导致网络传输能力下降的所有因素<br>|</p>
+<ol>
+<li>拥塞控制的方法<table>
+<thead>
+<tr>
+<th>开环控制</th>
+<th>描述</th>
+<th>一种静态的预防方法。设计网络时先将有关发生拥塞的因素考虑周到，力求在工作时不产生拥塞，中途不再修改</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>方法</td>
+<td>包括确定何时可接收新流量、何时可丢弃分组及丢弃哪些分组，确定何种调度决策等。这些共性是，在做决定时不考虑当前网络状态</td>
+</tr>
+<tr>
+<td>闭环控制</td>
+<td>描述</td>
+<td>基于反馈环路的概念，是一种动态的方法。</td>
+</tr>
+<tr>
+<td></td>
+<td>方法</td>
+<td>事先不考虑有关网络拥塞的因素，采用系统监视，及时检测那里发生了拥塞，然后将拥塞信息传达到合适地方，以便调整网络的运行，并解决出现的问题</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="（二）路由算法"><a href="#（二）路由算法" class="headerlink" title="（二）路由算法"></a>（二）路由算法</h3><ol>
+<li><p>静态路由与动态路由</p>
+<ol>
+<li>静态路由</li>
+<li>动态路由<ol>
+<li>常见的动态路由算法：① 距离-向量路由算法；② 链路状态路由算法</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>距离向量路由算法：① 向所有<strong>相邻结点</strong>发送；</p>
+</li>
+<li><p>链路状态路由算法：① 向网上<strong>所有其他结点</strong>发送；② 拥有完全拓扑信息</p>
+</li>
+<li><p>距离-向量路由算法与链路状态路由算法的比较</p>
+<table>
+<thead>
+<tr>
+<th>距离-向量路由算法</th>
+<th>仅与邻居交谈，为邻居提供自己从自己到其他结点的最低费用估计</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>链路状态路由算法</td>
+<td>通过广播的方式与所有其他结点交谈，但仅告诉它们与它直接相连的费用</td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>层次路由</p>
+</li>
+</ol>
+<p>因特网将整个互联网划分为许多较小的自治系统（注意一个自治系统包含很多局域网），每个自治系统有权自主决定本系统内应采用何种路由协议。如果两个自治系统需要通信，就需要有一种在两个自治系统之间的协议来“屏蔽”这种差异。据此，因特网把路由选择协议划分为两大类：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>使用范围</th>
+<th>具体协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内部网关协议 IGP</td>
+<td>自治系统内部使用，也称域内路由选择</td>
+<td>RIP（UDP）、OSPF（IP 数据报）</td>
+</tr>
+<tr>
+<td>外部网关协议 EGP</td>
+<td>自治系统间使用，也称域间路由选择</td>
+<td>BGP（通过 TCP）</td>
+</tr>
+</tbody></table>
+<p>在使用层次路由时，OSPF 将一个自治系统再划分为若干区域（Area），每个路由器都知道在本区域内如何把分组路由到目的地的细节，但不用知道其他区域的内部结构。</p>
+<ol start="6">
+<li>两个概念<ol>
+<li>慢收敛：在距离-向量路由选择协议中，“好消息传得快，坏消息传得慢”，这就导致了当路由信息发生变化时，该变化未能及时地被所有路由器知道，而仍然可能在路由器之间进行传递，这就是“慢收敛”现象。慢收敛是导致发生路由回路的根本原因</li>
+<li>直接交付与间接交付：路由选择分为直接和间接交付，当发送站与目的站在同一网段时，就使用直接交付，反之使用间接交付。（间接交付地最后一个路由器还是直接交付）</li>
+</ol>
+</li>
+</ol>
+<h3 id="（三）IPv4"><a href="#（三）IPv4" class="headerlink" title="（三）IPv4"></a>（三）IPv4</h3><ol>
+<li>IPv4 分组格式：<strong>P148</strong></li>
+<li>IPv4 地址</li>
+</ol>
+<p>A(1-126)，B(128-191)，C(192-223)，D(224-239)，E(240-255)，注意：</p>
+<ol>
+<li>A 类地址可用网络数为<img src="https://cdn.nlark.com/yuque/__latex/15f1fdb80843660b9c1ddec64686f90b.svg#card=math&code=2%5E7-2%0A&height=20&width=45">，因为：① 全 0 保留不用；②127 为回环</li>
+<li>B 类地址可用网络数为<img src="https://cdn.nlark.com/yuque/__latex/844495834dc496c5ab2bb75dd4c172be.svg#card=math&code=2%5E%7B14%7D-1&height=20&width=50">，因为：128.0 这个网络不可指派</li>
+<li>C 类地址可用网络数为，因为<img src="https://cdn.nlark.com/yuque/__latex/25d3ef61a1ddb721fba32443872207d7.svg#card=math&code=2%5E%7B21%7D-1&height=20&width=50">，：192.0.0 这个网络不可指派</li>
+<li>IP 地址的重要特点<ol>
+<li>管理机构只分配网络号</li>
+<li>IP 网络上的路由器至少有两个 IP 地址</li>
+<li>用转发器或桥接器（网桥等）连接的若干 LAN 仍然是同一个网络（同一个广播域），因此该 LAN 中的所有主机的 IP 地址的网络号必须相同</li>
+<li>路由器总是有两个或两个以上的 IP 地址，路由器的每个端口都有一个不同网络号的 IP 地址</li>
+</ol>
+</li>
+<li>私有地址<ol>
+<li>A 类：10.0.0.0 - 10.255.255.255</li>
+<li>B 类：172.16.0.0 - 172.31.255.255</li>
+<li>C 类：192.168.0.0 - 192.168.255.255</li>
+</ol>
+</li>
+<li>普通路由器与 NAT 路由器的区别</li>
+</ol>
+<p>普通路由器仅工作在网络层，而 NAT 路由器转发数据报时需要查看和转换传输层端口号，所以工作在传输层</p>
+<ol start="6">
+<li>子网划分与 CIDR</li>
+<li>IP 与硬件地址</li>
+</ol>
+<p>由于路由器的隔离且 IP 数据报被路由转发时，此 IP 分组在每个网络中都被路由器解封再封装，所使用的 MAC 地址一直在变。所以 IP 网络中无法通过广播的方式依靠 MAC 地址来完成跨网络的寻址，因此在 IP 网络的网络层只是用 IP 地址来完成寻址。IP 分组到达目标网络后，改为在目标 LAN 中通过数据链路层的 MAC 地址以广播方式寻址。<br>路由器由于互联多个网络，因此它不仅有多个 IP 地址，也有多个硬件地址。</p>
+<ol start="8">
+<li>ARP</li>
+</ol>
+<p>工作在网络层。每台主机都有 ARP 高速缓存表，使用 ARP 来动态更新。ARP 请求分组是广播，但 ARP 相应分组是单播。</p>
+<ol start="9">
+<li>DHCP</li>
+</ol>
+<p>DHCP 是应用层协议，基于 UDP，使用客户&#x2F;服务器模式，全程使用多播</p>
+<ol start="10">
+<li>ICMP</li>
+</ol>
+<p>工作在网络层。PING 工作在应用层，直接使用 ICMP，而未使用 TCP 或 UDP。Traceroute&#x2F;Tracert 工作在网络层</p>
+<h3 id="（四）IPv6"><a href="#（四）IPv6" class="headerlink" title="（四）IPv6"></a>（四）IPv6</h3><ol>
+<li>长度：128 位</li>
+<li>目的地址类型：<ol>
+<li>单播</li>
+<li>多播</li>
+<li>任播：目的站是一组计算机，但数据报在交付时只交付其中一台主机（实为一对一）</li>
+</ol>
+</li>
+<li>IPv4 向 IPv6 的过渡方法<ol>
+<li>双协议栈技术</li>
+<li>隧道技术</li>
+</ol>
+</li>
+</ol>
+<h3 id="（五）路由协议"><a href="#（五）路由协议" class="headerlink" title="（五）路由协议"></a>（五）路由协议</h3><ol>
+<li>RIP<ol>
+<li>基于：距离向量</li>
+<li>规定：<ol>
+<li>维护自身到其他每个目的网络的距离记录</li>
+<li>每经过一个<strong>路由器</strong>，距离（跳数）+1</li>
+<li>RIP 最多只能包含 15 个路由器。因此，距离为 16 时，表示网络不可达（只适用于小型互联网）</li>
+<li>每 30s 广播一次 RIP 路由更新信息，以便自动建立并维护路由表（动态维护）</li>
+<li>RIP 中不支持子网掩码的 RIP 广播，所以子网掩码必须相同。RIP2 中可以使用变长子网掩码和 CIDR</li>
+</ol>
+</li>
+<li>特点：<ol>
+<li>仅和相邻路由器交换信息</li>
+<li>交换的信息是当前路由器知道的<strong>所有</strong>路由表</li>
+<li>每隔 30s 交换一次信息</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>OSPF<ol>
+<li>OSPF 与 RIP 的区别：<ol>
+<li>向自治系统全部主机发信息，泛洪法</li>
+<li>交换的信息是与本路由器相邻的所有路由器的链路状态</li>
+<li>只有链路变化是才会使用泛洪法发送此信息</li>
+<li><strong>OSPF 是网络层协议</strong>，直接使用 IP 数据报传送；而<strong>RIP 是应用层协议</strong>，它在传输层使用 UDP</li>
+</ol>
+</li>
+<li>特点：<ol>
+<li>可根据不同类型的业务可计算出不同的路由</li>
+<li>多路径之间的负载平衡</li>
+<li>在 OSPF 路由器之间交换的分组具有鉴别功能，保证了仅在可信赖的路由器之间交换链路状态信息</li>
+<li>支持可变子网划分和 CIDR</li>
+<li>每个链路状态都带上了一个 32 位的序号，序号越大，状态越新</li>
+</ol>
+</li>
+<li>OSPF 分组类型：TODO</li>
+</ol>
+</li>
+<li>边界网关协议（BGP）</li>
+</ol>
+<p>只能力求寻找到一条能够到达目的网络且比较好的路由（不能兜圈子），而并非一条最佳路由。</p>
+<ol>
+<li>基于：路径向量路由选择协议</li>
+<li>每个自治系统的管理员选择至少一个路由器，作为该自治系统的“BGP 发言人”</li>
+<li>每个“BGP 发言人”除了运行 BGP 之外，还需运用该 AS 所用的内部网关协议</li>
+<li>特点：<ol>
+<li>BGP 路由交换信息的节点数量级是自治系统的数量级</li>
+<li>每个自治系统发言人数目较少</li>
+<li>支持 CIDR</li>
+<li>在 BGP 刚运行时，BGP 的临站交换整个 BGP 路由表，以后只需更新变化的部分</li>
+</ol>
+</li>
+<li>分组类型：TODO</li>
+<li>三种协议的比较<table>
+<thead>
+<tr>
+<th><strong>协议</strong></th>
+<th><strong>RIP</strong></th>
+<th><strong>OSPF</strong></th>
+<th><strong>BGP</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类型</td>
+<td>内部</td>
+<td>内部</td>
+<td>外部</td>
+</tr>
+<tr>
+<td>路由算法</td>
+<td><strong>距离</strong>-向量</td>
+<td>链路状态</td>
+<td><strong>路径</strong>-向量</td>
+</tr>
+<tr>
+<td>传递协议</td>
+<td>UDP</td>
+<td>IP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>路径选择</td>
+<td>跳数最少</td>
+<td>代价最低</td>
+<td>较好，非最佳</td>
+</tr>
+<tr>
+<td>交换节点</td>
+<td>和本结点相邻的路由器</td>
+<td>网络中所有路由器</td>
+<td>和本结点相邻的路由器</td>
+</tr>
+<tr>
+<td>交换内容</td>
+<td>当前本路由器知道的全部信息，即自己的路由表</td>
+<td>与本路由器相邻的所有路由器的链路状态</td>
+<td>首次：整个路由表</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>非首次：有变化的部分</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h3 id="（六）IP-组播"><a href="#（六）IP-组播" class="headerlink" title="（六）IP 组播"></a>（六）IP 组播</h3><p>为了能够支持像视频点播和视频会议这样的多媒体应用，是让源主机一次发送的单个分组可以抵达用一个组播地址标识的若干目标主机，并被它们正确接收。组播一定仅用于 UDP。<br>主机可以选择加入或离开一个组，因此同一台主机可能属于多个组。</p>
+<ol>
+<li>IP 组播地址</li>
+</ol>
+<p>使用 D 类地址，范围是 224.0.0.0 ~ 239.255.255.255，每个 D 类 IP 地址标志一个组播组。<br>注意：</p>
+<ol>
+<li>组播数据报也是“尽最大努力交付”，不提供可靠服务</li>
+<li>组播地址只可用于目的地址</li>
+<li>对组播数据报不产生 ICMP 差错报文</li>
+<li>并非所有 D 类地址都可用于组播</li>
+<li>IP 组播的分类<ol>
+<li>只在本局域网上进行硬件组播</li>
+<li>在因特网的范围内进行组播：在最后阶段，还是要把组播数据报在局域网上用硬件组播交付给组播组的所有成员</li>
+</ol>
+</li>
+<li>硬件组播</li>
+</ol>
+<p>IANA 拥有的以太网组播地址的范围是从：01-00-5E-00-00-00 到 01-00-5E-7F-FF-FF，只有 23 位用于组播。<br>D 类 IP 地址可供分配的有 28 位，前 5 位不能用来构成以太网地址，因此只有<strong>后 23 位</strong>可用作组播；<br>IP 地址的后 23 位映射到 MAC 地址；<br>因为映射不是唯一的，还需要在 IP 层利用软件进行过滤，把不是本主机要接受的数据报丢弃。</p>
+<ol start="4">
+<li>IGMP 与组播路由算法<ol>
+<li>IGMP 让连接到本地局域网上的组播路由器知道本局域网上是否有主机参加或退出了某个组播组</li>
+<li>ICMP 的工作阶段<ol>
+<li>某台主加入新的组播组时，该主机应向组播路由器发送一个 IGMP 报文，声明自己要成为该组成员；本地组播路由器收到 IGMP 报文后，将组成员关系发给因特网上的其他组播路由器</li>
+<li>组成员关系是动态的，本地组播路由器要周期性地探寻本地局域网上的主机；但一个组在经过几次的探寻后仍然没有一台主机响应时，则不再将该组的成员关系转发给其他组播路由器</li>
+</ol>
+</li>
+<li>组播路由选择实际上就是要找出以源主机根节点的组播转发树（避免环路路由）；不同多播组对应于不同的多播转发树；同一多播组，对不同的源点也会有不同的多播转发树</li>
+</ol>
+</li>
+<li>在许多由路由器互联的支持硬件多点传送的网络上实现因特网组播时，主要有三种路由算法：<ol>
+<li>基于链路状态</li>
+<li>基于距离向量的路由选择</li>
+<li>可以建立在任何路由器协议之上，称为<strong>协议无关的组播（PIM）</strong></li>
+</ol>
+</li>
+</ol>
+<h3 id="（七）移动-IP"><a href="#（七）移动-IP" class="headerlink" title="（七）移动 IP"></a>（七）移动 IP</h3><p>移动 IP 技术是指<strong>移动节点以固定的网络 IP 地址</strong>，实现跨越不同网段的漫游功能，并保证基于网络 IP 的网络权限在漫游过程中不发生任何改变。使用移动 IP 可以在不改变其 IP 地址的情况下改变其驻留位置。<br>即为移动结点设置了两个 IP 地址：一个主地址、一个辅地址（转交地址）</p>
+<ol>
+<li>移动 IP 定义的功能实体：<ol>
+<li>移动结点：具有永久 IP 地址的移动结点</li>
+<li>本地代理：在归属网络中代表移动节点执行移动管理功能的实体成为归属代理（本地代理）。它根据移动用户的转交地址，采用隧道技术转交移动结点的数据包</li>
+<li>外部代理：在外部网络中帮助移动结点完成移动管理功能的实体成为外部代理</li>
+</ol>
+</li>
+<li>移动 IP 通信过程：<strong>P197</strong></li>
+</ol>
+<h3 id="（八）网络层设备"><a href="#（八）网络层设备" class="headerlink" title="（八）网络层设备"></a>（八）网络层设备</h3><ol>
+<li>路由器的选择和功能：<strong>P199</strong><ol>
+<li>任务：连接异构网络并完成路由转发</li>
+<li>结构：<ol>
+<li>路由选择</li>
+<li>分组转发</li>
+</ol>
+</li>
+<li>路由器与网桥的区别：网桥和高层协议无关，路由器是面向协议的。它根据网络地址进行操作，并进行路径选择、分段、帧格式转换、对数据报的生存时间和流量进行控制等。</li>
+<li>路由器支持的协议：OSI、TCP&#x2F;IP、IPX 等</li>
+</ol>
+</li>
+<li>路由表与路由转发<ol>
+<li>路由表的项目：<ol>
+<li>目的网络 IP 地址</li>
+<li>子网掩码</li>
+<li>下一跳 IP 地址</li>
+<li>接口</li>
+</ol>
+</li>
+<li>转发表</li>
+</ol>
+</li>
+</ol>
+<p>转发表由路由表得出；转发表中含有一个分组将要发往的目的地址，以及分组的下一跳（即下一步接收者的目的地址，实际为 MAC 地址），为减少转发表的重复项目，可使用默认路由代替所有具有相同下一跳的项目，并将默认路由设置得比其他项目的优先级低。</p>
+<ol start="3">
+<li>转发和路由的区别<ol>
+<li>“转发”是路由器根据转发表把收到的 IP 数据报从合适的端口转发出去，它仅涉及路由器</li>
+<li>“路由选择”则涉及很多路由器，路由表是许多路由器协同工作的结果</li>
+<li>分组的转发实际上是靠直接查找转发表，而不是直接查找路由表</li>
+</ol>
+</li>
+</ol>
+<h2 id="第五章-传输层"><a href="#第五章-传输层" class="headerlink" title="第五章 传输层"></a>第五章 传输层</h2><h3 id="（一）传输层提供的服务"><a href="#（一）传输层提供的服务" class="headerlink" title="（一）传输层提供的服务"></a>（一）传输层提供的服务</h3><ol>
+<li>传输层的功能<ol>
+<li>提供应用进程之间的逻辑通信（即端到端的通信）</li>
+<li>复用和分用：<ol>
+<li>复用：发送方不同的应用进程可以使用同一个传输层协议传送数据（网络层复用是指发送方不同协议的数据可以封装成 IP 数据报发送出去）</li>
+<li>分用：接收方的传输层在剥去首部之后能够把数据正确交付到目的的应用进程（网络层分用是指接收方在剥去首部之后把数据交付给相应的协议）</li>
+</ol>
+</li>
+<li>传输层对收到的报文进行差错检测（首部和数据部分）。而网络层只检查首部</li>
+<li>提供两种不同的传输协议，即面向连接的 TCP 和无连接的 UDP。而网络层无法同时实现两种协议（即在网络层要么只提供面向连接的服务，如：虚电路；要么只提供无连接服务，如数据报，而不能共存）</li>
+</ol>
+</li>
+<li>传输层寻址与端口<ol>
+<li>TSAP： 端口，通过端口来标识主机中的应用进程</li>
+<li>端口号：只标识本计算机应用层中的各进程</li>
+<li>套接字：唯一标识网络上一台主机和其上的一个应用（进程）<ol>
+<li>套接字 &#x3D; （主机地址，端口号）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>无连接和面向连接服务<ol>
+<li>采用 TCP 时，传输层向上提供的是一条<strong>全双工</strong>的<strong>可靠逻辑信道</strong></li>
+<li>采用 UDP 时，传输层向上提供的是一条不可靠的逻辑信道，它在 IP 之上提供两个附加服务：多路复用和对数据的错误检查</li>
+</ol>
+</li>
+<li>IP 数据报和 UDP 数据报的区别：P212</li>
+<li>TCP 和网路层虚电路的区别：P212</li>
+</ol>
+<h3 id="（二）UDP"><a href="#（二）UDP" class="headerlink" title="（二）UDP"></a>（二）UDP</h3><ol>
+<li>UDP 数据报<ol>
+<li>概述：UDP 只是做了传输协议能够做的最少工作，仅在 IP 的数据包服务上增加了两个最基本的服务：<strong>复用和分用</strong>以及<strong>差错检测</strong></li>
+</ol>
+</li>
+<li>UDP 的优点<ol>
+<li>无需建立连接</li>
+<li>无连接状态</li>
+<li>分组首部开销小。TCP 有<strong>20B</strong>的首部，UDP 仅有<strong>8B</strong></li>
+<li>应用层可以更好地控制要发送的数据和发送时间。UDP 无拥塞控制</li>
+<li>UDP 是面向报文的。发送方 UDP 对应用层交下来的报文，既不合并，也不拆分，而是保留这些报文的边界；<strong>因此报文不可分割，是 UDP 数据报处理的最小单位。</strong></li>
+</ol>
+</li>
+<li>UDP 的首部格式<ol>
+<li>源端口号：在需要对方回信时选用</li>
+<li>目的端口：在终点交付时必须使用到</li>
+<li>长度：UDP 数据报的长度，最小值是 8（UDP 首部长度）</li>
+<li>校验和：检测 UDP 中数据是否有错。有错就丢弃。</li>
+</ol>
+</li>
+</ol>
+<p><em>当分用时的端口不正确，UDP 会丢弃报文，并用 ICMP 发送“端口不可达”报文给发送方。</em></p>
+<ol start="4">
+<li>UDP 校验</li>
+</ol>
+<p>在计算校验和时，要在 UDP 数据包之前增加 12B 的伪首部，伪首部并不是 UDP 真正的首部。只是在计算校验和时临时添加到前面的，得到一个临时的 UDP 数据报。伪首部包括：源 IP 地址、目的 IP 地址、0、17、UDP 长度。<br><strong><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1604214951075-42fd66d7-ee33-4c8c-b776-74f92e037611.jpeg#align=left&display=inline&height=319&margin=%5Bobject%20Object%5D&name=IMG_20201101_151331.jpg&originHeight=2474&originWidth=4000&size=2436635&status=done&style=none&width=515" alt="IMG_20201101_151331.jpg"></strong><br><strong>校验过程：</strong><br><strong><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1302535/1604217649059-69d22c04-ab4e-4a83-84b5-20a4ff45105d.jpeg#align=left&display=inline&height=309&margin=%5Bobject%20Object%5D&name=notepad1604217507962.jpg&originHeight=960&originWidth=1851&size=785738&status=done&style=none&width=595" alt="notepad1604217507962.jpg"></strong><br><em>注意：若校验结果为全 0，则校验位全写 1。</em></p>
+<h3 id="（三）TCP"><a href="#（三）TCP" class="headerlink" title="（三）TCP"></a>（三）TCP</h3><ol>
+<li>TCP 段</li>
+</ol>
+<p>主要解决传输的可靠、有序、无丢失和不重复问题。</p>
+<ol>
+<li>TCP 协议的特点<ol>
+<li>TCP 是<strong>面向连接</strong>的传输层协议</li>
+<li>每条 TCP 连接只能有两个端点，每条 TCP 连接只能是<strong>点对点</strong>的</li>
+<li>TCP 提供可靠的交付服务，<strong>可靠有序、不丢不重</strong>。</li>
+<li>TCP 提供<strong>全双工</strong>通信，允许通信双方的应用进程在任何时候发送数据</li>
+<li>TCP 连接的两端都设有<strong>发送缓存</strong>和<strong>接收缓存</strong></li>
+<li>发送缓存存放：① 准备发送的数据；② 已发送但未确认的数据</li>
+<li>接收缓存存放：① 按需到达，但是未被接收应用程序读取的数据；② 不按序到达的数据</li>
+<li>TCP 是<strong>面向字节流</strong>的，虽然应用程序和 TCP 的交互是一次一个数据块（大小不等），但 TCP 把应用程序交下来的数据仅视为一连串的无结构字节流</li>
+</ol>
+</li>
+<li>TCP 的报文段：<strong>P221 - P223</strong></li>
+<li>TCP 连接管理</li>
+<li>TCP 可靠传输</li>
+<li>TCP 流量控制与拥塞控制</li>
+</ol>
+<h2 id="第六章-应用层"><a href="#第六章-应用层" class="headerlink" title="第六章 应用层"></a>第六章 应用层</h2><h3 id="（一）网络应用模型"><a href="#（一）网络应用模型" class="headerlink" title="（一）网络应用模型"></a>（一）网络应用模型</h3><ol>
+<li>客户&#x2F;服务器模型</li>
+<li>P2P 模型</li>
+<li>区别<table>
+<thead>
+<tr>
+<th></th>
+<th align="center"><strong>C&#x2F;S</strong></th>
+<th align="center"><strong>P2P</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>特点</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+</li>
+<li>客户是服务请求方，服务器是服务提供方</li>
+<li>客户机是面向用户的，服务机是面向任务的</li>
+<li>网络中计算机的地位不平等，服务器可以对用户权限的限制来达到管理客户机的目的</li>
+<li>客户机互相之间不直接通信</li>
+<li>可扩展性不佳<br>|</li>
+<li>任意一堆计算机称为——对等方</li>
+<li>每个结点即作为客户，也作为服务器</li>
+<li>P2P 是逻辑网络，而非物理网络<br>|<br>| | |<br>| 对比 | C&#x2F;S 对比 P2P 来说的优点：</li>
+<li>减轻了服务器压力，消除了对服务器的完全依赖，可以将任务分配到各个结点，大大提高了系统效率和资源利用率</li>
+<li>多个客户机之间可以直接共享文档</li>
+<li>可扩展性好</li>
+<li>网络健壮性强<br>| |<br>| 缺点 | |</li>
+<li>在获取服务的同时，还要提供服务，因此占用了较高的内存，从而影响整机速度</li>
+<li>占用较高的带宽<br>|</li>
+</ol>
+<h3 id="（二）域名系统"><a href="#（二）域名系统" class="headerlink" title="（二）域名系统"></a>（二）域名系统</h3><h3 id="（三）文本传输协议"><a href="#（三）文本传输协议" class="headerlink" title="（三）文本传输协议"></a>（三）文本传输协议</h3><h3 id="（四）电子邮件"><a href="#（四）电子邮件" class="headerlink" title="（四）电子邮件"></a>（四）电子邮件</h3><h3 id="（五）万维网"><a href="#（五）万维网" class="headerlink" title="（五）万维网"></a>（五）万维网</h3>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">第四章 网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.</span> <span class="toc-text">（一）网络层的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">（二）路由算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89IPv4"><span class="toc-number">1.3.</span> <span class="toc-text">（三）IPv4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89IPv6"><span class="toc-number">1.4.</span> <span class="toc-text">（四）IPv6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.5.</span> <span class="toc-text">（五）路由协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AD%EF%BC%89IP-%E7%BB%84%E6%92%AD"><span class="toc-number">1.6.</span> <span class="toc-text">（六）IP 组播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%83%EF%BC%89%E7%A7%BB%E5%8A%A8-IP"><span class="toc-number">1.7.</span> <span class="toc-text">（七）移动 IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%85%AB%EF%BC%89%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="toc-number">1.8.</span> <span class="toc-text">（八）网络层设备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">2.</span> <span class="toc-text">第五章 传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E4%BC%A0%E8%BE%93%E5%B1%82%E6%8F%90%E4%BE%9B%E7%9A%84%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">（一）传输层提供的服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89UDP"><span class="toc-number">2.2.</span> <span class="toc-text">（二）UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89TCP"><span class="toc-number">2.3.</span> <span class="toc-text">（三）TCP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">第六章 应用层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">（一）网络应用模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.2.</span> <span class="toc-text">（二）域名系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.3.</span> <span class="toc-text">（三）文本传输协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">3.4.</span> <span class="toc-text">（四）电子邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88%E4%BA%94%EF%BC%89%E4%B8%87%E7%BB%B4%E7%BD%91"><span class="toc-number">3.5.</span> <span class="toc-text">（五）万维网</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&text=计算机网络 PART2"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&is_video=false&description=计算机网络 PART2"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=计算机网络 PART2&body=Check out this article: https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&title=计算机网络 PART2"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&name=计算机网络 PART2&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/&t=计算机网络 PART2"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

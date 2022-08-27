@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第一章 绪论 C++支持的程序设计方法 面向过程的程序设计方法 面向对象的程序设计方法 范型程序设计方法   软件 &#x3D; 程序 + 文档 面向对象的语言 问题域：一个软件所要解决的问题，这些问题所涉及的业务范围称为该软件的问题域 面向对象的编程语言将客观事物看作具有属性和行为（或服务）的对象，通过抽象找出同一类对象的共同属性（静态特征）和行为（动态特征），形成类。   面向对象方法的由来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPP学习笔记">
+<meta property="og:url" content="https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="第一章 绪论 C++支持的程序设计方法 面向过程的程序设计方法 面向对象的程序设计方法 范型程序设计方法   软件 &#x3D; 程序 + 文档 面向对象的语言 问题域：一个软件所要解决的问题，这些问题所涉及的业务范围称为该软件的问题域 面向对象的编程语言将客观事物看作具有属性和行为（或服务）的对象，通过抽象找出同一类对象的共同属性（静态特征）和行为（动态特征），形成类。   面向对象方法的由来">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-15T02:07:45.000Z">
+<meta property="article:modified_time" content="2022-08-27T11:49:24.674Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="focuseds, blog, 博客">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CPP学习笔记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/yuque/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20PART2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&text=CPP学习笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&is_video=false&description=CPP学习笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CPP学习笔记&body=Check out this article: https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&name=CPP学习笔记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&t=CPP学习笔记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">第一章 绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-CPP-%E7%AE%80%E5%8D%95%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">第二章 CPP 简单程序设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">第三章 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.3.</span> <span class="toc-text">第四章 类与对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%85%B1%E4%BA%AB%E4%B8%8E%E4%BF%9D%E6%8A%A4"><span class="toc-number">1.4.</span> <span class="toc-text">第五章 数据的共享与保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E6%95%B0%E7%BB%84%E3%80%81%E6%8C%87%E9%92%88%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.5.</span> <span class="toc-text">第六章 数组、指针和字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0-%E7%BB%A7%E6%89%BF%E5%92%8C%E6%B4%BE%E7%94%9F"><span class="toc-number">1.6.</span> <span class="toc-text">第七章 继承和派生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-%E5%A4%9A%E6%80%81%E6%80%A7"><span class="toc-number">1.7.</span> <span class="toc-text">第八章 多态性</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CPP学习笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-03-15T02:07:45.000Z" itemprop="datePublished">2021-03-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="第一章-绪论"><a href="#第一章-绪论" class="headerlink" title="第一章 绪论"></a>第一章 绪论</h1><ol>
+<li>C++支持的程序设计方法<ol>
+<li>面向过程的程序设计方法</li>
+<li>面向对象的程序设计方法</li>
+<li>范型程序设计方法</li>
+</ol>
+</li>
+<li>软件 &#x3D; 程序 + 文档</li>
+<li>面向对象的语言<ol>
+<li>问题域：一个软件所要解决的问题，这些问题所涉及的业务范围称为该软件的问题域</li>
+<li>面向对象的编程语言将客观事物看作具有属性和行为（或服务）的对象，通过<strong>抽象</strong>找出同一类对象的<strong>共同属性</strong>（静态特征）和<strong>行为</strong>（动态特征），形成<strong>类</strong>。</li>
+</ol>
+</li>
+<li>面向对象方法的由来<ol>
+<li>结构化程序设计思想：自顶向下、逐步求精；按功能划分为若干基本模块，这些模块形成一个树状结构；每个模块内部均是由顺序、选择和循环 3 种基本机构组成；其模块化实现的具体方法是子程序。</li>
+<li>面向对象方法：首先，它将数据及对数据的操作方法放在一起，作为一个相互依存、不可分割的整体——对象。对同类型对象抽象出其共性，形成类。类中的大多数数据，只能用本类的方法进行处理，类通过一个简单的外部接口与外界发生关系，对象与对象之间通过消息进行通信。</li>
+</ol>
+</li>
+<li>面向对象的基本概念<ol>
+<li>对象——是系统中用来描述客观事物的一个实体，它是用来构成系统的一个基本单位。对象由一组属性和一组行为构成；</li>
+<li>类——分类的依据是抽象；它是具有相同属性和服务的一组对象的集合；</li>
+<li>封装——是面向对象中的一个重要原则，就是把对象的属性和服务结合成一个独立的系统单位，并尽可能隐蔽对象的内部细节；</li>
+<li>继承——特殊类的对象拥有其一般类的全部属性与服务，称做特殊类对一般类的继承；</li>
+<li>多态性——是指在一般类中定义的属性或行为，被特殊类继承之后，可以具有不同的数据类型或表现出不同的行为。</li>
+</ol>
+</li>
+<li>面向对象开发过程<br>算法与数据结构设计-源程序编辑-编译-连接-测试-调试</li>
+</ol>
+<h2 id="第二章-CPP-简单程序设计"><a href="#第二章-CPP-简单程序设计" class="headerlink" title="第二章 CPP 简单程序设计"></a>第二章 CPP 简单程序设计</h2><ol>
+<li>什么是常量？什么是变量？<br>常量是指在程序运行的整个过程中其值始终不可改变的量，除了用文字表示常量外，也可以为常量命名，这就是符号常量；<br>在程序的执行过程中其值可以变化的量称为变量，变量是需要用名字来标识的。</li>
+<li>符号常量<br>符号常量在声明时一定要赋值，而在程序中间不能改变其值。</li>
+</ol>
+<h2 id="第三章-函数"><a href="#第三章-函数" class="headerlink" title="第三章 函数"></a>第三章 函数</h2><ol>
+<li>函数的调用关系<br>调用其他函数的函数称为主调函数，被其他函数调用的函数称为被调函数。</li>
+<li>形参的作用<br>实现主调函数与被调函数之间的联系。函数在没被调用时形参只是一个符号，它标志着形参出现的位置应该有一个怎样的类型。只有在函数被调用时主调函数才将实参赋予形参。</li>
+<li><code>return</code>的作用<ol>
+<li>指定函数返回值</li>
+<li>结束当前函数的执行</li>
+</ol>
+</li>
+<li>函数的参数传递<br>指的就是形参与实参结合的过程，形实结合的方式有值传递和引用传递。<ol>
+<li>值传递（为什么值传递不会造成值得改变？）<br>是指当发生函数调用时，给形参分配内存空间，并用实参来初始化形参（直接将实参的值传递给形参）。<br>但这一过程是单向的，一旦形参获得值之后便与实参脱离关系，形参值的改变不会造成实参的改变。</li>
+<li>引用传递<br>用引用作为形参，在函数调用时发生的参数传递，称为引用传递。</li>
+</ol>
+</li>
+<li>函数重载<br>两个以上的函数，具有相同的函数名，但是形参的个数或者类型不同，编译器根据实参和形参的类型和个数的最佳匹配，自动确定调用哪一个函数，这就是函数的重载。<br><em>⚠️ 注意：1⃣️ 重载的形参必须不同（个数或类型）；2⃣️ 如果要声明一个参数为空的函数，括号内必须写 void</em></li>
+<li>函数声明与类型安全<br>不同类型的数据，在内存中都以二进制序列表示，在运行时并没有保存它的信息，有关类型的特性全部蕴含在了数据所执行的操作之中。正因如此，在使用变量前必须声明。</li>
+<li>深度探索<ol>
+<li><code>3-16</code></li>
+</ol>
+</li>
+</ol>
+<h2 id="第四章-类与对象"><a href="#第四章-类与对象" class="headerlink" title="第四章 类与对象"></a>第四章 类与对象</h2><ol>
+<li>面向对象程序设计的主要特点<br>抽象、封装、继承和多态。</li>
+<li>UML<ol>
+<li>UML 规定数据成员表示的语法为：</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[访问控制属性] 名称 [重数] [:类型] [=默认值] [&#123;约束特征&#125;]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>UML 规定函数成员表示的语法为：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[访问控制属性] 名称 [(参数表)] [:返回类型] [&#123;约束特征&#125;]</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>抽象<br>对具体问题（对象）进行概括，抽出一类对象的公共性质并加以描述的过程。对一个问题的抽象分为两个方面：</p>
+<ol>
+<li>数据抽象：描述的是此类对象区别于彼类对象的属性或者状态；</li>
+<li>行为抽象：描述的是某类对象的共同行为或功能特征。</li>
+</ol>
+</li>
+<li><p>封装<br>就是将抽象得到的数据和行为（或功能）相结合，形成一个有机整体，也就是将操作数据和函数代码进行有机的结合，形成“类”。其中，数据和函数都是类的成员。</p>
+<ol>
+<li>public：为类提供外部接口；</li>
+<li>protected：与私有类似，差别在于继承和派生时<code>派生类的成员函数可以访问基类的保护成员</code>。</li>
+<li>private：隐蔽部分成员，达到对成员访问权限的合理控制，使不同的类之间的相互影响减少到最低限度，进而增强数据的安全性和简化程序编写工作。</li>
+</ol>
+</li>
+<li><p>继承<br>允许程序员在原有类特性的基础上，进行更具体、更详细的说明。</p>
+</li>
+<li><p>多态<br>多态性是指一段程序能够处理多种类型对象的能力。在<code>CPP</code>中，这种多态性可以通过强制多态、重载多态、类型参数化多态、包含多态 4 种形式来实现。</p>
+</li>
+<li><p>结构体和联合体</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>控制访问权限</th>
+<th>数据成员和函数成员</th>
+<th>默认访问控制属性</th>
+<th>全部数据成员共享一组内存</th>
+<th>继承&#x2F;多态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类</td>
+<td>有</td>
+<td>有</td>
+<td>私有</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>结构体</td>
+<td>有</td>
+<td>有</td>
+<td>公有</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>联合体</td>
+<td>有</td>
+<td>有</td>
+<td>公有</td>
+<td>是</td>
+<td>否</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>复制构造函数的调用场景</p>
+<ol>
+<li>当用类的一个对象去初始化一个新的同类的对象；</li>
+<li>如果函数的形参是类对象，调用函数进行形参和实参结合时；</li>
+<li>如果函数的返回值是类对象，函数调用完成返回时。</li>
+</ol>
+</li>
+<li><p>复制构造函数和赋值运算符有何不同？<br>前置创建了一个新的对象，后者作用于已有对象。<br><em>⚠️ 注意：为什么要有类？用基本数据类型不行吗？每一种数据类型都包括了数据本身的属性以及对数据的操作。但基本数据类型的操作都是有限的。</em></p>
+</li>
+<li><p>拥有内嵌对象的构造函数调用顺序</p>
+<ol>
+<li>调用内嵌对象的构造函数，调用顺序按照内嵌对象在组合类的定义中出现的次序。</li>
+<li>执行本类构造函数的函数体。<br><em>⚠️ 注意：内嵌对象在构造函数的初始化列表中出现的顺序与内嵌对象构造函数的调用顺序无关。</em></li>
+</ol>
+</li>
+</ol>
+<h2 id="第五章-数据的共享与保护"><a href="#第五章-数据的共享与保护" class="headerlink" title="第五章 数据的共享与保护"></a>第五章 数据的共享与保护</h2><ol>
+<li>标识符的作用域和可见性<ol>
+<li>作用域：指的是标识符的有效范围</li>
+<li>可见性：标识符是否可以被引用 </li>
+</ol>
+</li>
+<li>静态变量<br>不会随着每次函数调用产生副本，也不会随着函数返回而失效。也就是说，当一个函数返回时，下一次的调用，该变量还是会保持上一回的值（定义时未赋值会被初始化为<code>0</code>）。</li>
+<li>对象生存期<ol>
+<li>静态生存期<br>如果对象的生存期与程序的运行期相同，则称它具有静态生存期。</li>
+<li>动态生存期<br>在局部作用域中声明的具有动态生存期的对象，习惯上也称为局部生存期对象。局部生存期对象诞生于声明点，结束于声明所在的块执行完毕之时。</li>
+</ol>
+</li>
+<li>静态数据成员<br>静态数据成员具有静态生存周期。是描述类的所有对象共同特征的一个数据项，对于任何对象实例，它的属性值是相同的。<br>它是为了解决同一个类的不同对象之间数据和函数共享的问题的。</li>
+<li>静态函数成员<br>静态成员函数可以直接访问该类的静态数据和函数成员。而访问非静态成员，必须通过对象名。</li>
+<li>友元函数<br>在它的函数体中可以通过对象名访问类的私有和保护成员。<br>一般在<code>public</code>中声明。</li>
+<li>友元类<br>若<code>A</code>类是<code>B</code>类的友元类，则<code>A</code>类的所有成员函数都是<code>B</code>类的友元函数，都可以访问<code>B</code>类的私有和保护成员。<br><em>⚠️ 注意：① 友元关系不可传递；② 友元关系是单向的；③ 友元关系是不被继承的。</em></li>
+<li>共享数据的保护<br>对于既要共享又需要防止改变的数据应该声明为常量。对于无需改变对象状态的成员函数，都应当使用<code>const</code>。<ol>
+<li>常对象在整个生存期内不能被改变；</li>
+<li>常对象必须进行初始化，且不能被更新。<br><em>⚠️ 注意：类成员中的静态变量和常量都应当在类定义之外加以定义，但有个例外：类的静态常量如果有整数型或枚举类型可以直接在类定义中为它指定常量值。</em></li>
+<li>常成员函数<ol>
+<li><code>const</code>是函数类型的一个组成部分。</li>
+<li>如果将一个对象说明为常对象，则通过该常对象<code>只能</code>调用它的常成员函数，而不能调用其他成员函数。这也是常对象唯一的对外接口方式。</li>
+<li>无论是否通过常对象调用常成员函数，调用期间目的对象都被视为常对象，因此常成员函数不能更新目的对象的数据成员，也不能针对目的对象调用该类中没有<code>const</code>修饰的成员函数。</li>
+<li><code>const</code>关键字可以用于对重载函数的区分。例如，如果在类中这样声明<code>void print(); void print() const;</code>这是对<code>print</code>的有效重载。</li>
+<li>如果仅以<code>const</code>关键字为区分对成员函数重载，那么通过非<code>const</code>的对象调用该函数，两个重载的函数都可以与之匹配，这是编译器将选择最近的重载函数——不带<code>const</code>关键字的函数。</li>
+</ol>
+</li>
+<li>常数据成员<ol>
+<li>常数据成员只能通过初始化列表来获得初值。</li>
+<li>静态常数据成员在类外说明和初始化。</li>
+<li>类成员中的静态变量和常量都应当在类定义之外加以定义，整型和枚举型可以直接指定常量值。<code>eg. static const int b = 10;</code></li>
+</ol>
+</li>
+<li>常引用<ol>
+<li>常引用所引用的对象不能被更新。</li>
+<li>一个常引用，无论绑定的是普通还是常对象，都只能把它当作常对象。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>编译预处理<ol>
+<li><code>#include</code>指令</li>
+<li><code>#define</code>和<code>#undef</code>指令</li>
+<li>条件编译指令<code>#if#elif#else#endif#ifdef#ifndef</code></li>
+<li><code>defined</code>操作符<br>是一个预处理操作符，而不是指令，不用以<code>#</code>开头。使用方法：<code>defined(操作符)</code></li>
+</ol>
+</li>
+</ol>
+<h2 id="第六章-数组、指针和字符串"><a href="#第六章-数组、指针和字符串" class="headerlink" title="第六章 数组、指针和字符串"></a>第六章 数组、指针和字符串</h2><ol>
+<li>指针变量是干什么的？<br>指针变量是用于存储内存单元地址的。</li>
+<li>与地址相关的运算<code>*</code>和<code>&amp;</code><ol>
+<li><code>*</code>：指针运算符，标识获取指针所指向变量的值。</li>
+<li><code>&amp;</code>：取缔值运算符，用来得到一个对象的地址。</li>
+</ol>
+</li>
+<li>指向常量的指针、指针类型的常量和 void 型指针<ol>
+<li>指向常量的指针<code>const int * p = &amp;a</code>：p 本身值可以改变，但不能改变所指的对象。</li>
+<li>指针类型的常量<code>int * const p = &amp;a</code>：p 本身的值不能改变。</li>
+<li><code>viod</code>型指针可以访问任何类型的数据。</li>
+</ol>
+</li>
+<li>用指针作为函数参数的作用<ol>
+<li>使实参和形参指针指向共同的内存空间，以达到双向传递的作用；</li>
+<li>减少函数调用时数据传递的开销；</li>
+<li>通过指针向函数的指针传递函数代码的首地址。</li>
+</ol>
+</li>
+<li>指针型函数</li>
+<li>指向函数的指针<br>函数指针是专门用来存放函数代码首地址的变量。P212</li>
+<li>对象指针</li>
+<li>this 指针<br>它是一个隐含于每一个类的非静态成员函数中的特殊指针（包括构造函数和析构函数），它用于指向正在被成员函数操作的对象。</li>
+<li>内存泄漏的原因<br><code>new</code>分配空间后，未用<code>delete</code>回收，导致程序占用内存越来越大。</li>
+<li>用 vector 创建数组对象<br><code>vector&lt;int&gt;name(length, initValue);</code></li>
+<li>深复制与浅复制<br>隐含的复制构造函数只能完成浅复制，因为两个指针指向的是同一内存地址。对于类的浅复制，当程序结束时，原对象和浅复制对象先后会调用两次析构函数，该空间会两次释放，程序出错。对象的深复制可以是循环赋值。P229</li>
+</ol>
+<h2 id="第七章-继承和派生"><a href="#第七章-继承和派生" class="headerlink" title="第七章 继承和派生"></a>第七章 继承和派生</h2><ol>
+<li>类的继承与派生<ol>
+<li>继承：新的类从已有类那里得到已有的特性。</li>
+<li>派生：从已有类产生新类的过程就是类的派生。</li>
+</ol>
+</li>
+<li>多继承、单继承和直接基类、间接基类<ol>
+<li>单继承：一个派生类只有一个基类。</li>
+<li>多继承：一个派生类有多个基类。</li>
+<li>直接基类：直接参与派生出某类的基类。</li>
+<li>间接基类：基类的基类甚至更高层的基类。</li>
+</ol>
+</li>
+<li>继承方式<br>继承方式规定了如何访问从基类继承的成员。继承方式的关键字为：<code>public</code>，<code>protected</code>和<code>private</code>（默认）。<ol>
+<li>公有继承（除构造函数和析构函数）：基类中的公有和保护成员在派生类中的访问属性不变，基类的私有成员不可直接访问。</li>
+<li>保护继承：基类的公有成员和保护成员都以保护成员的身份出现在派生类汇总，而基类的私有成员不可直接访问。</li>
+<li>私有继承：基类中的共有成员和保护成员都以私有成员身份出现在派生类中，而基类的私有成员在派生类中不可直接访问。如果在此被继承的话，基类的全部成员在新的派生类中就无法被直接访问。</li>
+</ol>
+</li>
+<li>派生类成员<br>是指除了从基类继承来的所有成员（除了默认的构造函数和析构函数）之外，新增加的数据和函数成员。</li>
+<li>派生类生成过程<ol>
+<li>吸收基类成员</li>
+<li>改造基类成员：着重学习不同继承方式下的基类成员的访问控制问题。① 基类成员的访问控制；② 对基类数据或函数成员的隐藏。</li>
+<li>添加新的成员：构造与析构函数。</li>
+</ol>
+</li>
+<li>类型兼容规则<br>类型兼容规则是指在需要基类对象的任何地方，都可以使用公有派生类的对象来替代。替代之后，派生类对象就可以作为基类的对象使用，但只能使用从基类继承的成员。</li>
+<li>派生类的构造函数<br>派生类构造函数的执行情况：先调用基类的构造函数，然后调用内嵌对象的构造函数。基类构造函数的调用顺序是按照派生类定义时的顺序；内嵌构造函数调用顺序是按照成员在类中声明的顺序。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//派生类构造函数的一般语法形式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	派生类名::派生类名(参数表): 基类名1(基类1初始化参数表),...,基类名n(基类n初始化参数表), 成员对象名1(成员对象1初始化参数表),...,成员对象名m(成员对象m初始化参数表) &#123;&#125;</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base3</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span> public Base2, public Base1, public Base3 &#123;</span><br><span class="line">public:</span><br><span class="line">  Point(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> c, <span class="type">int</span> d): Base1(a), member2(d), member1(c), Base2(b) &#123;&#125;</span><br><span class="line">private:</span><br><span class="line">  Base1 member1;</span><br><span class="line">  Base2 member2;</span><br><span class="line">  Base3 member3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>派生类的复制构造函数<br>如果程序员没有编写复制构造函数，编译系统会在必要时自动生成一个隐含的复制构造函数，这个隐含的复制构造函数会自动调用基类的复制构造函数，然后对派生类新增的成员对象一一执行复制。</li>
+<li>派生类的析构函数<br>调用次序与构造函数相反。</li>
+<li>虚基类<br>在派生类的对象中，同名的数据成员在内存中会有多个副本，同一函数名会有多个映射。可以使用作用域分辨符来唯一标识分别访问它们，也可以将共同基类设置为虚基类，这时从不同的路径继承过来的同名数据成员在内存中就只有一个副本，同一函数名也只有一个映射。</li>
+<li>虚基类及其派生类构造函数<br>如果虚基类声明有非默认形式的（即带参数的）构造函数，并且<code>没有声明</code>默认形式的构造函数。这时，在整个继承关系中，直接或间接继承虚基类的所有派生类，都必须在构造函数的<code>成员初始化表中</code>列出对虚基类的初始化。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">base0</span> &#123;</span></span><br><span class="line">public:</span><br><span class="line">    <span class="comment">//未声明默认形式的构造函数</span></span><br><span class="line">    base0(<span class="type">int</span> var): var0(var) &#123;&#125;</span><br><span class="line">    <span class="type">int</span> var0;</span><br><span class="line">    <span class="type">void</span> <span class="title function_">fun0</span><span class="params">()</span> &#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;member of base0&quot;</span> &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">base1</span>:</span> virtual public base0 &#123;</span><br><span class="line">public:</span><br><span class="line">    base1(<span class="type">int</span> var): base0(var) &#123;&#125;</span><br><span class="line">    <span class="type">int</span> var1;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">base2</span>:</span> virtual public base0 &#123;</span><br><span class="line">public:</span><br><span class="line">    base2(<span class="type">int</span> var): base0(var) &#123;&#125;</span><br><span class="line">    <span class="type">int</span> var2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">derived</span>:</span> public base1, public base2 &#123;</span><br><span class="line">public:</span><br><span class="line">    derived(<span class="type">int</span> var): base0(var), base1(var), base2(var) &#123;&#125;</span><br><span class="line">    <span class="type">int</span> var;</span><br><span class="line">    <span class="type">void</span> <span class="title function_">fun</span><span class="params">()</span> &#123;<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;member of derived.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;starting...&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    derived <span class="title function_">obj</span><span class="params">(<span class="number">1</span>)</span>;</span><br><span class="line">    obj.var0 = <span class="number">2</span>;</span><br><span class="line">    obj.fun0();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>构造一个类的对象的一般顺序</li>
+<li>如果该类有直接或间接的虚基类，则先执行虚基类的构造函数。</li>
+<li>如果该类有其他基类，则按照他们在继承声明列表中出现的次序，分别执行他们的构造函数，但在构造过程中，不再执行他们的虚基类的构造函数。</li>
+<li>按照在类定义中出现的顺序，对派生类中新增的成员对象进行初始化。对于类类型的成员对象，如未出现，则执行默认构造函数；对于基本数据类型的成员对象，如果出现在构造函数的初始化列表中，则使用其中指定的值为其赋值，否则什么也不做。</li>
+<li>执行构造函数的函数体。</li>
+<li>小结<br>派生类及其对象成员标识和访问问题：① 唯一标识问题；② 成员本身属性，即可见性问题。解决唯一标识问题介绍了同名隐藏规则、作用域分辨符和虚基类。</li>
+</ol>
+<h2 id="第八章-多态性"><a href="#第八章-多态性" class="headerlink" title="第八章 多态性"></a>第八章 多态性</h2><ol>
+<li>什么是多态<br>多态是指同样的消息被<code>不同类型的对象</code>接收时导致不同的行为。 消息是指对类的成员函数的调用，不同的行为是指不同的实现，调用了不同的函数。</li>
+<li>多态的类型<ol>
+<li>重载多态*（专用多态）：普通函数和类的成员函数重载都叫做重载多态。</li>
+<li>强制多态（专用多态）：是指将一个变元的类型加以变化，以符合一个函数或者操作的要求。加法运算符进行整型和浮点型运算时，首先进行类型强制转换，这就是强制多态的实例。</li>
+<li>包含多态*（通用多态）：是类族中定义于不同类的同名成员函数的多态行为，主要通过虚函数实现。</li>
+<li>参数多态（通用多态）：与类模板相关联，在使用时必须赋予实际的类型才可以实例化。</li>
+</ol>
+</li>
+<li>多态的实现<ol>
+<li>编译时多态</li>
+<li>运行时多态（绑定：计算机程序自身彼此关联）<ol>
+<li>静态绑定：绑定工作在编译链接阶段完成。</li>
+<li>动态绑定：绑定工作在程序运行阶段完成。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>运算符重载为成员函数<ol>
+<li>双目运算符的左操作数是对象本身，由<code>this</code>指针指出，右操作数则需要通过运算符重载函数的参数表传递。</li>
+<li>单目运算符操作数由对象的<code>this</code>指针给出，就不需要参数了。</li>
+<li>后置运算符，重载为 A 类的成员函数，这时函数要带有一个整型（int）形参（用于和前置运算符相区别）。</li>
+<li>前置运算符不用加形参。</li>
+<li>仅需要访问参数对象的私有成员才将该函数声明为类的友元函数。</li>
+</ol>
+</li>
+<li>运算符重载为非成员函数<ol>
+<li>运算所需的操作数都要通过参数表传递。</li>
+<li>参数表左右顺序就是运算符操作数顺序。</li>
+<li>仅需要访问参数对象的私有成员才将该函数声明为类的友元函数。</li>
+</ol>
+</li>
+<li>使用非成员函数重载的原因<ol>
+<li>要重载的操作符的第一个操作数不是可以更改的类型，如<code>ostream</code>，是标准库类型，无法添加成员函数。</li>
+<li>以非成员函数形式重载，支持更灵活的类型转换。</li>
+</ol>
+</li>
+<li>虚函数<br>虚函数是动态绑定的基础。虚函数必须是非静态的成员函数。虚函数经过派生之后，在类族中就可以实现运行过程中的多态。<br>问题：如果用基类类型的指针指向派生类的对象，就可以通过这个指针来访问该对象，问题是当访问到的只是从基类继承来的同名成员。<br>解决办法：如果通过基类的指针指向派生类的对象，并通过这个指针访问某个与基类同名的成员，那么首先在<code>基类</code>中将该同名函数说明为虚函数。<br>这样就可以通过基类类型指针，使属于不同派生类的不同对象产生不同的行为，从而实现运行过程中的多态。</li>
+<li>一般虚函数成员<br>虚函数声明只能出现在类定义中的函数原型声明中，不能出现在成员函数实现的时候。<br>运行过程中的多态需要满足 3 个条件：<ol>
+<li>类之间满足赋值兼容规则。</li>
+<li>要声明虚函数。</li>
+<li>要由成员函数来调用或者是通过指针、引用来访问虚函数。*<br><em>⚠️ 注意：如果是使用对象名来访问虚函数，则绑定在编译过程中就可以进行（静态绑定），而无需再运行过程中进行。（<strong>只能用引用或指针来通过-&gt;访问</strong>，不然就是静态绑定输出的都是基类的成员函数。<strong>原因：</strong>基类的指针可以是派生类对象的别名，但是基类对象却不能表示派生类对象。）</em></li>
+</ol>
+</li>
+<li>虚函数注意事项<ol>
+<li>只有虚函数是动态绑定的。</li>
+<li>如果派生类需要修改基类的行为（即重写与基类函数同名的函数），就应该在积累中将相应的函数声明为虚函数。而基类中的非虚函数，通常代表那些不希望被派生类改变的功能，也是不能实现多态的。</li>
+</ol>
+</li>
+<li>虚析构函数<br>在<code>CPP</code>中不能声明虚构造函数，但是可以声明虚析构函数。析构函数无类型和参数，较为简单。虚析构函数设置之后，在使用指针就能够调用适当的析构函数针对不同的对象的清理工作。</li>
+<li>纯虚函数<br>对于在基类中无法实现的函数，在基类中只说明函数原型用来规定整个类族的统一接口形式，而在派生类中再给出函数具体的实现。<br>声明格式：<code>virtual 函数类型 函数名(参数表)=0;</code></li>
+<li>抽象类<br>带有纯虚函数的类是抽象类。抽象类的主要作用是通过它为一个类族建立一个公共的接口，使它们能够更有效发挥出多态特性。抽象类声明了一个类族派生类的公共接口，而接口的完整实现，要有派生类自己定义。<br>抽象类不能实例化。但是可以定义一个抽象类的指针和引用。通过指针或引用就可以指向并访问派生类的对象，进而访问派生类的成员，这种访问是具有多态特征的。</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">第一章 绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-CPP-%E7%AE%80%E5%8D%95%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">第二章 CPP 简单程序设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">第三章 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.3.</span> <span class="toc-text">第四章 类与对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%85%B1%E4%BA%AB%E4%B8%8E%E4%BF%9D%E6%8A%A4"><span class="toc-number">1.4.</span> <span class="toc-text">第五章 数据的共享与保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E6%95%B0%E7%BB%84%E3%80%81%E6%8C%87%E9%92%88%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.5.</span> <span class="toc-text">第六章 数组、指针和字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0-%E7%BB%A7%E6%89%BF%E5%92%8C%E6%B4%BE%E7%94%9F"><span class="toc-number">1.6.</span> <span class="toc-text">第七章 继承和派生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-%E5%A4%9A%E6%80%81%E6%80%A7"><span class="toc-number">1.7.</span> <span class="toc-text">第八章 多态性</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&text=CPP学习笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&is_video=false&description=CPP学习笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CPP学习笔记&body=Check out this article: https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&title=CPP学习笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&name=CPP学习笔记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/yuque/CPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/&t=CPP学习笔记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

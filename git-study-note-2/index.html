@@ -49,7 +49,7 @@
     
 	<!-- mathjax -->
 	
-<meta name="generator" content="Hexo 6.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -157,106 +157,79 @@
 <h4 id="分离头指针注意的问题"><a href="#分离头指针注意的问题" class="headerlink" title="分离头指针注意的问题"></a>分离头指针注意的问题</h4><pre><code>当切换到没有绑定分支的commit时，并对其当中的文件修改，最终提交commit保存后会出现&quot;warning: you are leaving 1 sommit behind, not connected to any of your branches.&quot;
 这时的commit被git看作不重要，可能会被git所清理，如果你要保存这个commit就要新建分支（git branch new-branch-name [分支hash]）
 </code></pre>
-<h4 id="删除不需要的分支"><a href="#删除不需要的分支" class="headerlink" title="删除不需要的分支"></a>删除不需要的分支</h4><pre class=" language-git"><code class="language-git">git branch -d [branch-name / hash]
-</code></pre>
+<h4 id="删除不需要的分支"><a href="#删除不需要的分支" class="headerlink" title="删除不需要的分支"></a>删除不需要的分支</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d [branch-name / hash]</span><br></pre></td></tr></table></figure>
+
 <h4 id="修改commit和massage"><a href="#修改commit和massage" class="headerlink" title="修改commit和massage"></a>修改commit和massage</h4><ol>
 <li>修改最新的commit</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git commit --amend
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit --amend</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
 <li>修改老旧的commit</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git rebase -i [privious-commit-hash]
-<span class="token comment" spellcheck="true"># 按照提示修改</span>
-<span class="token comment" spellcheck="true"># 将pick改为reward</span>
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i [privious-commit-hash]</span><br><span class="line"># 按照提示修改</span><br><span class="line"># 将pick改为reward</span><br></pre></td></tr></table></figure>
+
 <ol start="3">
 <li>合并多次的commit</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git rebase -i [oldest-commit-hash]
-<span class="token comment" spellcheck="true"># 按照提示修改</span>
-<span class="token comment" spellcheck="true"># 将pick改为squash</span>
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i [oldest-commit-hash]</span><br><span class="line"># 按照提示修改</span><br><span class="line"># 将pick改为squash</span><br></pre></td></tr></table></figure>
+
 <ol start="4">
 <li>合并不连续的commit</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git rebase -i [oldest-commit-hash]
-<span class="token comment" spellcheck="true"># 未显示出来的需要用到的commit要按照先后顺序手动添加进来</span>
-<span class="token comment" spellcheck="true"># 把要合并的commit按照先后顺序放在一起</span>
-<span class="token comment" spellcheck="true"># 将pick改为squash</span>
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i [oldest-commit-hash]</span><br><span class="line"># 未显示出来的需要用到的commit要按照先后顺序手动添加进来</span><br><span class="line"># 把要合并的commit按照先后顺序放在一起</span><br><span class="line"># 将pick改为squash</span><br></pre></td></tr></table></figure>
+
 <h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><h5 id="文件的差异"><a href="#文件的差异" class="headerlink" title="文件的差异"></a>文件的差异</h5><ol>
 <li>比较暂存区与head指向的文件差异</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git diff --cached
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
 <li>比较工作区与暂存区文件差异</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git diff
-<span class="token comment" spellcheck="true"># 所以说git diff命令默认比较的是工作区和暂存区的区别，默认所有文件</span>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br><span class="line"># 所以说git diff命令默认比较的是工作区和暂存区的区别，默认所有文件</span><br><span class="line"></span><br><span class="line">git diff -- file.name</span><br><span class="line"># 指定文件的差异</span><br></pre></td></tr></table></figure>
 
-git diff -- file.name
-<span class="token comment" spellcheck="true"># 指定文件的差异</span>
-</code></pre>
 <h5 id="文件提交与回退"><a href="#文件提交与回退" class="headerlink" title="文件提交与回退"></a>文件提交与回退</h5><ol>
 <li><p>暂存区恢复成和HEAD一样</p>
 <p> 命令：git reset HEAD <file>…</p>
 </li>
 </ol>
-<pre class=" language-git"><code class="language-git">git reset HEAD
-<span class="token comment" spellcheck="true"># 清空暂存区所有文件（即取消暂存）</span>
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD</span><br><span class="line"># 清空暂存区所有文件（即取消暂存）</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
 <li><p>工作区恢复成和暂存区一样</p>
 <p> 命令：git checkout – <file>…</p>
 </li>
 </ol>
-<pre class=" language-git"><code class="language-git">git checkout -- file.name
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- file.name</span><br></pre></td></tr></table></figure>
+
 <ol start="3">
 <li><p>取消暂存区部分文件的暂存</p>
 <p> 命令：git reset HEAD <file>…</p>
 </li>
 </ol>
-<pre class=" language-git"><code class="language-git">git resset HEAD -- file1.name file2.name # ...
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git resset HEAD -- file1.name file2.name # ...</span><br></pre></td></tr></table></figure>
+
 <ol start="4">
 <li>清除最近几次提交</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git reset --hard [target-commit-hash]
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard [target-commit-hash]</span><br></pre></td></tr></table></figure>
+
 <ol start="5">
 <li>查看不同提交的指定文件的差异</li>
 </ol>
-<pre class=" language-git"><code class="language-git"><span class="token comment" spellcheck="true"># 比较两分支的差异</span>
-git diff branch1 branch2
-<span class="token comment" spellcheck="true"># 比较特定文件</span>
-git diff branch1 branch2 -- file.name
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 比较两分支的差异</span><br><span class="line">git diff branch1 branch2</span><br><span class="line"># 比较特定文件</span><br><span class="line">git diff branch1 branch2 -- file.name</span><br><span class="line"></span><br><span class="line"># 直接比较两个commit</span><br><span class="line">git diff commit-hash-1 commit-hash-2 -- file.name</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 直接比较两个commit</span>
-git diff commit-hash-1 commit-hash-2 -- file.name
-</code></pre>
 <ol start="6">
 <li>删除文件的正确方法</li>
 </ol>
-<pre class=" language-git"><code class="language-git">git rm file.name
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm file.name</span><br></pre></td></tr></table></figure>
+
 <ol start="7">
 <li>紧急任务处理</li>
 </ol>
-<pre class=" language-git"><code class="language-git"><span class="token comment" spellcheck="true"># 保存当前状态以便处理紧急事件</span>
-git stash
-<span class="token comment" spellcheck="true"># 处理完之后再恢复</span>
-git stash pop # 或 git stash apply
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 保存当前状态以便处理紧急事件</span><br><span class="line">git stash</span><br><span class="line"># 处理完之后再恢复</span><br><span class="line">git stash pop # 或 git stash apply</span><br><span class="line"></span><br><span class="line"># pop 和 apply的区别</span><br><span class="line"># pop恢复并丢掉stash list内容，apply不会</span><br><span class="line"></span><br><span class="line"># 查看stash列表</span><br><span class="line">git stash list</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># pop 和 apply的区别</span>
-<span class="token comment" spellcheck="true"># pop恢复并丢掉stash list内容，apply不会</span>
-
-<span class="token comment" spellcheck="true"># 查看stash列表</span>
-git stash list
-</code></pre>
 <h5 id="指定不需要git管理的文件"><a href="#指定不需要git管理的文件" class="headerlink" title="指定不需要git管理的文件"></a>指定不需要git管理的文件</h5><pre><code>.gitignore文件
 </code></pre>
 
