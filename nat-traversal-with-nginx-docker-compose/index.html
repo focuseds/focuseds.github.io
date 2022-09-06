@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="介绍目前手中有三台NAT后的设备，其中一台有内网穿透的需求，于是选择frp作为内网穿透工具，以便另外两台设备在外网访问。使用nginx对内网穿透的流量进行转发和过滤满足安全需求，使用docker-compose对nginx和frp服务进行编排。 项目地址 拓扑结构因为只有一台设备，所以拓扑结构非常简单，如下对内网服务器提供的80和81服务进行转发。  frp服务配置frp is a fast re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用nginx转发内网穿透服务端流量">
+<meta property="og:url" content="https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="介绍目前手中有三台NAT后的设备，其中一台有内网穿透的需求，于是选择frp作为内网穿透工具，以便另外两台设备在外网访问。使用nginx对内网穿透的流量进行转发和过滤满足安全需求，使用docker-compose对nginx和frp服务进行编排。 项目地址 拓扑结构因为只有一台设备，所以拓扑结构非常简单，如下对内网服务器提供的80和81服务进行转发。  frp服务配置frp is a fast re">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/focuseds/pics/main/img/202209-topological-structure-1">
+<meta property="og:image" content="https://raw.githubusercontent.com/focuseds/pics/main/img/nat-project-running-example.png">
+<meta property="article:published_time" content="2022-09-01T03:22:04.000Z">
+<meta property="article:modified_time" content="2022-09-06T03:40:00.429Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="内网穿透">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/focuseds/pics/main/img/202209-topological-structure-1">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>使用nginx转发内网穿透服务端流量</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/yuque/CPP%E7%AE%80%E7%AD%94%E6%B1%87%E6%80%BB/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&text=使用nginx转发内网穿透服务端流量"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&is_video=false&description=使用nginx转发内网穿透服务端流量"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用nginx转发内网穿透服务端流量&body=Check out this article: https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&name=使用nginx转发内网穿透服务端流量&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&t=使用nginx转发内网穿透服务端流量"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">拓扑结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#frp%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">frp服务配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#frp%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">3.1.</span> <span class="toc-text">frp服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frpc"><span class="toc-number">3.2.</span> <span class="toc-text">frpc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E9%9C%80%E6%B1%82"><span class="toc-number">3.3.</span> <span class="toc-text">安全需求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Token%E8%AE%A4%E8%AF%81"><span class="toc-number">3.3.1.</span> <span class="toc-text">Token认证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OIDC%E8%AE%A4%E8%AF%81"><span class="toc-number">3.3.2.</span> <span class="toc-text">OIDC认证</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#frps%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%82%E8%80%83"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">frps配置文件参考</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#frpc%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%82%E8%80%83"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">frpc配置文件参考</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">参数说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frp%E4%B8%8B%E8%BD%BD"><span class="toc-number">3.4.</span> <span class="toc-text">frp下载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92"><span class="toc-number">4.</span> <span class="toc-text">容器编排</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">文件结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose%E7%BC%96%E6%8E%92%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">docker-compose编排文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frps%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">4.3.</span> <span class="toc-text">frps容器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">4.3.1.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dockerfile"><span class="toc-number">4.3.2.</span> <span class="toc-text">Dockerfile</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.</span> <span class="toc-text">nginx容器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84-1"><span class="toc-number">4.4.1.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.2.</span> <span class="toc-text">nginx配置文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upstream%E9%85%8D%E7%BD%AE"><span class="toc-number">4.5.</span> <span class="toc-text">upstream配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dockerfile-1"><span class="toc-number">4.6.</span> <span class="toc-text">Dockerfile</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">5.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">6.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        使用nginx转发内网穿透服务端流量
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-09-01T03:22:04.000Z" itemprop="datePublished">2022-09-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/docker/" rel="tag">docker</a>, <a class="tag-link-link" href="/tags/nginx/" rel="tag">nginx</a>, <a class="tag-link-link" href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" rel="tag">内网穿透</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>目前手中有三台<code>NAT</code>后的设备，其中一台有内网穿透的需求，于是选择<code>frp</code>作为内网穿透工具，以便另外两台设备在外网访问。使用<code>nginx</code>对内网穿透的流量进行转发和过滤满足安全需求，使用<code>docker-compose</code>对<code>nginx</code>和<code>frp</code>服务进行编排。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/focuseds/NAT-traversal-server-with-nginx/">项目地址</a></p>
+<h2 id="拓扑结构"><a href="#拓扑结构" class="headerlink" title="拓扑结构"></a>拓扑结构</h2><p>因为只有一台设备，所以拓扑结构非常简单，如下对内网服务器提供的<code>80</code>和<code>81</code>服务进行转发。</p>
+<p><img src="https://raw.githubusercontent.com/focuseds/pics/main/img/202209-topological-structure-1" alt="拓扑结构"></p>
+<h2 id="frp服务配置"><a href="#frp服务配置" class="headerlink" title="frp服务配置"></a>frp服务配置</h2><p>frp is a fast reverse proxy to help you expose a local server behind a NAT or firewall to the Internet. As of now, it supports TCP and UDP, as well as HTTP and HTTPS protocols, where requests can be forwarded to internal services by domain name.</p>
+<p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。</p>
+<h3 id="frp服务端"><a href="#frp服务端" class="headerlink" title="frp服务端"></a>frp服务端</h3><p>根据官方文档，可以通过配置<code>frps.ini</code>对服务端进行配置，比如服务端口和身份认证，下面是可以参考的基础配置。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">7000</span></span><br><span class="line"><span class="attr">token</span> = c4bf92d681</span><br></pre></td></tr></table></figure>
+
+<p>上面配置文件的<code>common</code>块中配置了最基础的服务端口和认证口令，认证口令可以防止服务被恶意使用。还有更多地配置项可以参考<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">frp文档</a>。</p>
+<h3 id="frpc"><a href="#frpc" class="headerlink" title="frpc"></a>frpc</h3><p>根据我们的拓扑和服务端配置，公网转发服务器IP为<code>103.12.35.6</code>，故客户端配置文件可配置如下。客户端的配置文件<code>frpc.ini</code>分为两部分：服务端信息和需要转发的端口信息。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> =  <span class="number">103.12</span>.<span class="number">35.6</span> <span class="comment">#服务器地址</span></span><br><span class="line"><span class="attr">server_port</span> = <span class="number">7000</span></span><br><span class="line"><span class="attr">token</span> = c4bf92d681</span><br><span class="line"></span><br><span class="line"><span class="section">[tcp_80]</span></span><br><span class="line"><span class="attr">type</span> = tcp</span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">80</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="section">[tcp_81]</span></span><br><span class="line"><span class="attr">type</span> = tcp</span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">81</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">8081</span></span><br></pre></td></tr></table></figure>
+
+<p>需要修改<code>server_addr</code>为远程<code>frps</code>服务器的IP地址，<code>local_port</code>是<code>NAT</code>设备Web服务的端口，<code>remote_port</code>是映射在服务器上的端口。以上的配置文件只演示了<code>tcp</code>服务的穿透，可以根据自己的需求配置。比如对<code>ssh</code>端口进行转发。<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp#access-your-computer-in-lan-by-ssh">这里</a>是官方提供的例子。</p>
+<h3 id="安全需求"><a href="#安全需求" class="headerlink" title="安全需求"></a>安全需求</h3><p><code>frp</code>提供了两种客户端认证方式：<code>Token认证</code>和<code>OIDC认证</code>。</p>
+<h4 id="Token认证"><a href="#Token认证" class="headerlink" title="Token认证"></a>Token认证</h4><p>在上面的配置中，使用的就是Token认证，需要在服务端和客户端的配置文件下的<code>common</code>块中配置<code>token = *密钥*</code>即可。</p>
+<h4 id="OIDC认证"><a href="#OIDC认证" class="headerlink" title="OIDC认证"></a>OIDC认证</h4><p>使用<code>OIDC认证</code>需要在服务端和客户端的配置文件下的<code>common</code>块中指定认证方式为<code>oidc</code>。</p>
+<h5 id="frps配置文件参考"><a href="#frps配置文件参考" class="headerlink" title="frps配置文件参考"></a>frps配置文件参考</h5><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">authentication_method</span> = oidc</span><br><span class="line"><span class="attr">oidc_issuer</span> = https://example-oidc-issuer.com/</span><br><span class="line"><span class="attr">oidc_audience</span> = https://oidc-audience.com/.default</span><br></pre></td></tr></table></figure>
+
+<h5 id="frpc配置文件参考"><a href="#frpc配置文件参考" class="headerlink" title="frpc配置文件参考"></a>frpc配置文件参考</h5><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">authentication_method</span> = oidc</span><br><span class="line"><span class="attr">oidc_client_id</span> = <span class="number">98692467</span>-<span class="number">37</span>de-<span class="number">409</span>a-<span class="number">9</span>fac-bb2585826f18 <span class="comment"># Replace with OIDC client ID</span></span><br><span class="line"><span class="attr">oidc_client_secret</span> = oidc_secret</span><br><span class="line"><span class="attr">oidc_audience</span> = https://oidc-audience.com/.default</span><br><span class="line"><span class="attr">oidc_token_endpoint_url</span> = https://example-oidc-endpoint.com/oauth2/v2.<span class="number">0</span>/token</span><br></pre></td></tr></table></figure>
+
+<h5 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h5><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>authentication_method</td>
+<td>身份验证方式，token 或 oidc，默认为 token。</td>
+</tr>
+<tr>
+<td>authenticate_heartbeats</td>
+<td>在每一个心跳包中附加上身份认证信息，客户端服务端需要一致。</td>
+</tr>
+<tr>
+<td>authenticate_new_work_conns</td>
+<td>在每次创建工作连接时附加上身份认证信息，客户端服务端需要一致。</td>
+</tr>
+</tbody></table>
+<h3 id="frp下载"><a href="#frp下载" class="headerlink" title="frp下载"></a>frp下载</h3><p>可以到<code>frp</code><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases/">版本发布页下载</a>，选择并下载适合自己平台的版本。在下载的压缩包中包含了服务端和客户端的所有文件，以<code>linux_amd64</code>为例，目录结构为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── LICENSE</span><br><span class="line">├── frpc</span><br><span class="line">├── frpc.ini</span><br><span class="line">├── frpc_full.ini</span><br><span class="line">├── frps</span><br><span class="line">├── frps.ini</span><br><span class="line">└── frps_full.ini</span><br></pre></td></tr></table></figure>
+
+<h2 id="容器编排"><a href="#容器编排" class="headerlink" title="容器编排"></a>容器编排</h2><p>本节使用<code>docker-compose</code>编排<code>frps</code>和<code>nginx</code>，完成对流量的转发和过滤。</p>
+<h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── docker-compose.yml</span><br><span class="line">├── frps</span><br><span class="line">│   ├── Dockerfile</span><br><span class="line">│   └── conf</span><br><span class="line">│       └── frps.ini</span><br><span class="line">├── nginx</span><br><span class="line">│   ├── Dockerfile</span><br><span class="line">│   ├── conf</span><br><span class="line">│   │   ├── firewall_conf</span><br><span class="line">│   │   │   └── firewall.conf</span><br><span class="line">│   │   ├── nginx.conf</span><br><span class="line">│   │   └── tcp_conf</span><br><span class="line">│   │       ├── tcp80.conf</span><br><span class="line">│   │       └── tcp81.conf</span><br><span class="line">│   ├── logs</span><br><span class="line">│   └── templates</span><br><span class="line">│       └── index.html</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker-compose编排文件"><a href="#docker-compose编排文件" class="headerlink" title="docker-compose编排文件"></a>docker-compose编排文件</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.5&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">frps_app:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">frps_server</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./frps/conf:/etc/frp</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./frps</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">nginx_app:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">./nginx</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./nginx/logs:/var/nginx/logs</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:8080&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8081:8081&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="frps容器配置"><a href="#frps容器配置" class="headerlink" title="frps容器配置"></a>frps容器配置</h3><h4 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h4><p>在<code>Dockerfile</code>中配置<code>frps</code>镜像，<code>conf/</code>文件夹中放置配置文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">frps/</span><br><span class="line">├── Dockerfile</span><br><span class="line">└── conf</span><br><span class="line">    └── frps.ini</span><br></pre></td></tr></table></figure>
+
+<h4 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h4><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> snowdreamtech/frps</span><br></pre></td></tr></table></figure>
+
+<h3 id="nginx容器配置"><a href="#nginx容器配置" class="headerlink" title="nginx容器配置"></a>nginx容器配置</h3><p>Nginx是一款轻量级的Web服务器、反向代理服务器，由于它的内存占用少，启动极快，高并发能力强，在互联网项目中广泛应用。</p>
+<h4 id="目录结构-1"><a href="#目录结构-1" class="headerlink" title="目录结构"></a>目录结构</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">nginx/</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── conf</span><br><span class="line">│   ├── firewall_conf</span><br><span class="line">│   │   └── firewall.conf</span><br><span class="line">│   ├── nginx.conf</span><br><span class="line">│   └── tcp_conf</span><br><span class="line">│       ├── tcp80.conf</span><br><span class="line">│       └── tcp81.conf</span><br><span class="line">├── logs</span><br><span class="line">└── templates</span><br><span class="line">    └── index.html</span><br></pre></td></tr></table></figure>
+
+<p><code>nginx</code>这本文场景中除了对流量进行转发，还在<code>80</code>端口提供了<code>html</code>服务。在<code>conf/</code>文件夹中放置了流量过滤和转发的配置文件，流量过滤目前只对国外流量进行了过滤。</p>
+<h4 id="nginx配置文件"><a href="#nginx配置文件" class="headerlink" title="nginx配置文件"></a>nginx配置文件</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">worker_processes</span> auto;</span><br><span class="line"> </span><br><span class="line"><span class="section">events</span> &#123; <span class="attribute">worker_connections</span> <span class="number">1024</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="section">stream</span> &#123;</span><br><span class="line">        <span class="attribute">log_format</span> proxy <span class="string">&#x27;<span class="variable">$remote_addr</span> [<span class="variable">$time_local</span>] &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;<span class="variable">$protocol</span> <span class="variable">$status</span> <span class="variable">$bytes_sent</span> <span class="variable">$bytes_received</span> &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;<span class="variable">$session_time</span> &quot;<span class="variable">$upstream_addr</span>&quot; &#x27;</span></span><br><span class="line">                    <span class="string">&#x27;&quot;<span class="variable">$upstream_bytes_sent</span>&quot; &quot;<span class="variable">$upstream_bytes_received</span>&quot; &quot;<span class="variable">$upstream_connect_time</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">access_log</span> /var/nginx/logs/tcp-access.log proxy ;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">open_log_file_cache</span> <span class="literal">off</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 转发frps流量</span></span><br><span class="line">        <span class="attribute">include</span> tcp_conf/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nopush</span> 		<span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">autoindex</span> 	   <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">server_tokens</span>  <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">gzip</span>	<span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_min_length</span> <span class="number">1k</span>;</span><br><span class="line">    <span class="attribute">gzip_buffers</span> <span class="number">4</span> <span class="number">16k</span>;</span><br><span class="line">    <span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">4</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png; </span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 对国外流量进行过滤</span></span><br><span class="line">	<span class="attribute">include</span> firewall_conf/firewall.conf;</span><br><span class="line"></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span> localhost;</span><br><span class="line">        <span class="attribute">access_log</span> /var/nginx/logs/access-<span class="number">80</span>.log;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 过滤可能的爬虫客户端</span></span><br><span class="line">        <span class="section">location</span> / &#123;</span><br><span class="line">	    	<span class="attribute">if</span> (<span class="variable">$http_user_agent</span> <span class="regexp">~* wget|curl|scrapy|okhttp|httpclient|java|python|go)</span> &#123;</span><br><span class="line">	        	<span class="attribute">return</span> <span class="number">444</span>;</span><br><span class="line">	    	&#125;</span><br><span class="line">        	<span class="attribute">root</span>   /var/www/static;</span><br><span class="line">        	<span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">	    	<span class="attribute">add_header</span> X-XSS-Protection <span class="string">&#x27;1; mode=block&#x27;</span>;</span><br><span class="line">	    	<span class="attribute">limit_except</span> GET &#123; <span class="attribute">deny</span> all; &#125;</span><br><span class="line">       	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="upstream配置"><a href="#upstream配置" class="headerlink" title="upstream配置"></a>upstream配置</h3><p>在<code>nginx</code>的配置文件目录下新建<code>tcp_conf/</code>，并编写需要配置的<code>80</code>和<code>81</code>的配置文件。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 80端口tcp转发</span></span><br><span class="line"><span class="section">upstream</span> tcp80 &#123;</span><br><span class="line">    <span class="attribute">server</span> frps_app:<span class="number">80</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">proxy_connect_timeout</span> <span class="number">8s</span>;</span><br><span class="line">    <span class="attribute">proxy_timeout</span> <span class="number">24h</span>;</span><br><span class="line">    <span class="attribute">proxy_pass</span> tcp80;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 81端口tcp转发</span></span><br><span class="line"><span class="section">upstream</span> tcp81 &#123;</span><br><span class="line">    <span class="attribute">server</span> frps_app:<span class="number">81</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8081</span>;</span><br><span class="line">    <span class="attribute">proxy_connect_timeout</span> <span class="number">8s</span>;</span><br><span class="line">    <span class="attribute">proxy_timeout</span> <span class="number">24h</span>;</span><br><span class="line">    <span class="attribute">proxy_pass</span> tcp81;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dockerfile-1"><a href="#Dockerfile-1" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> TimeZone=Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /etc/nginx/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">cp</span> nginx.conf ./nginx.conf.bak</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./conf/nginx.conf ./</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> <span class="built_in">mkdir</span> tcp_conf</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> <span class="built_in">mkdir</span> firewall_conf</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./conf/tcp_conf/* ./tcp_conf/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./conf/firewall_conf/* ./firewall_conf/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> <span class="built_in">mkdir</span> -p /var/www/static</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /var/www/static</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./templates/index.html ./index.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8081</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>项目写的比较潦草，希望都偶大家交流，感谢。</p>
+<p><img src="https://raw.githubusercontent.com/focuseds/pics/main/img/nat-project-running-example.png" alt="运行截图"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">frp文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/focuseds/NAT-traversal-server-with-nginx/">项目地址</a></li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">拓扑结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#frp%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">frp服务配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#frp%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">3.1.</span> <span class="toc-text">frp服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frpc"><span class="toc-number">3.2.</span> <span class="toc-text">frpc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E9%9C%80%E6%B1%82"><span class="toc-number">3.3.</span> <span class="toc-text">安全需求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Token%E8%AE%A4%E8%AF%81"><span class="toc-number">3.3.1.</span> <span class="toc-text">Token认证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OIDC%E8%AE%A4%E8%AF%81"><span class="toc-number">3.3.2.</span> <span class="toc-text">OIDC认证</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#frps%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%82%E8%80%83"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">frps配置文件参考</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#frpc%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%82%E8%80%83"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">frpc配置文件参考</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">参数说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frp%E4%B8%8B%E8%BD%BD"><span class="toc-number">3.4.</span> <span class="toc-text">frp下载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92"><span class="toc-number">4.</span> <span class="toc-text">容器编排</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">文件结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose%E7%BC%96%E6%8E%92%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">docker-compose编排文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frps%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">4.3.</span> <span class="toc-text">frps容器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">4.3.1.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dockerfile"><span class="toc-number">4.3.2.</span> <span class="toc-text">Dockerfile</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.</span> <span class="toc-text">nginx容器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84-1"><span class="toc-number">4.4.1.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.2.</span> <span class="toc-text">nginx配置文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upstream%E9%85%8D%E7%BD%AE"><span class="toc-number">4.5.</span> <span class="toc-text">upstream配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dockerfile-1"><span class="toc-number">4.6.</span> <span class="toc-text">Dockerfile</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">5.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">6.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&text=使用nginx转发内网穿透服务端流量"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&is_video=false&description=使用nginx转发内网穿透服务端流量"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用nginx转发内网穿透服务端流量&body=Check out this article: https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&title=使用nginx转发内网穿透服务端流量"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&name=使用nginx转发内网穿透服务端流量&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/nat-traversal-with-nginx-docker-compose/&t=使用nginx转发内网穿透服务端流量"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2018-2022
+            Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              首页
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              归档
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              搜索
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              关于
+            </a></li>
+          <!--
+     -->
+          
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+              <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+              
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
