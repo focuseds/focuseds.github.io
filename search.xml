@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title></title>
+      <link href="/data-mining-learning/"/>
+      <url>/data-mining-learning/</url>
+      
+        <content type="html"><![CDATA[<h1 id="数据挖掘"><a href="#数据挖掘" class="headerlink" title="数据挖掘"></a>数据挖掘</h1><p>数据挖掘本质上属于机器学习的内容。</p><h2 id="相关论文"><a href="#相关论文" class="headerlink" title="相关论文"></a>相关论文</h2><h3 id="2020-MTA-Data-mining-tools-a-case-study-for-network-intrusion-detection"><a href="#2020-MTA-Data-mining-tools-a-case-study-for-network-intrusion-detection" class="headerlink" title="[2020][MTA][Data mining tools -a case study for network intrusion detection]"></a>[2020][MTA][Data mining tools -a case study for network intrusion detection]</h3><blockquote><p>评价：数据挖掘入门文章，文中包含较多工具和方法的介绍。</p></blockquote><p>本文着重介绍了数据挖掘和机器学习的工具，包括WEKA, KNIME, Keel, Orange, Azure, IBM SPSS Modeler, R和Scikit-Learn，并考察了网络入侵检测工具Knime和Scikit-Learn所面临的挑战。</p><h2 id="相关方法"><a href="#相关方法" class="headerlink" title="相关方法"></a>相关方法</h2><p>1. </p><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol><li><a href="https://zh.m.wikipedia.org/zh-hans/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98">数据挖掘 - 维基百科</a></li><li><a href="https://zh.m.wikipedia.org/zh-hans/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B">异常检测（数据挖掘方法） - 维基百科</a></li></ol>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>基于对象存储和函数计算的微型博客系统</title>
       <link href="/tiny-blog-system-based-on-OSS-n-FC/"/>
       <url>/tiny-blog-system-based-on-OSS-n-FC/</url>
