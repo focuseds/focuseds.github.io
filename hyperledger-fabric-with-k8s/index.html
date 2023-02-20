@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="👀 本文为个人在使用Kubernetes搭建Hyperledger Facric 2.X网络的个人笔记，原视频教程在这里，有需要可以移步观看。目前该视频没有配套的操作文档，故留此文档用于日后学习。🎈 操作前请先完成依赖安装。或者参考我的另一篇文章。  准备 按照官方教程准备好依赖 配置版本号，避免出现不兼容现象  12345678export PEER_IMAGE&#x3D;hyperledger&#x2F;f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于k8s搭建Hyperledger Fabric网络">
+<meta property="og:url" content="https://focuseds.github.io/hyperledger-fabric-with-k8s/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="👀 本文为个人在使用Kubernetes搭建Hyperledger Facric 2.X网络的个人笔记，原视频教程在这里，有需要可以移步观看。目前该视频没有配套的操作文档，故留此文档用于日后学习。🎈 操作前请先完成依赖安装。或者参考我的另一篇文章。  准备 按照官方教程准备好依赖 配置版本号，避免出现不兼容现象  12345678export PEER_IMAGE&#x3D;hyperledger&#x2F;f">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-18T13:14:53.000Z">
+<meta property="article:modified_time" content="2023-02-20T07:40:39.714Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="区块链">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>基于k8s搭建Hyperledger Fabric网络</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Focuseds Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/prepare-for-hlf-k8s/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/tiny-blog-system-based-on-OSS-n-FC/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&text=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络&body=Check out this article: https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&name=基于k8s搭建Hyperledger Fabric网络&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/&t=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">2.1.</span> <span class="toc-text">创建命名空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E7%90%86CA"><span class="toc-number">2.2.</span> <span class="toc-text">管理CA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E7%90%86Peer"><span class="toc-number">2.3.</span> <span class="toc-text">管理Peer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E5%B9%B6%E5%86%99%E5%85%A5Admin%E8%AF%81%E4%B9%A6"><span class="toc-number">2.4.</span> <span class="toc-text">注册并写入Admin证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%8E%92%E5%BA%8F%E6%9C%8D%E5%8A%A1%E8%87%B3%E7%BD%91%E7%BB%9C"><span class="toc-number">2.5.</span> <span class="toc-text">添加排序服务至网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E9%81%93%E6%93%8D%E4%BD%9C"><span class="toc-number">2.6.</span> <span class="toc-text">通道操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%94%9A%E8%8A%82%E7%82%B9"><span class="toc-number">2.7.</span> <span class="toc-text">配置锚节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%93%BE%E7%A0%81"><span class="toc-number">2.8.</span> <span class="toc-text">安装链码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB"><span class="toc-number">3.</span> <span class="toc-text">问题汇总</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        基于k8s搭建Hyperledger Fabric网络
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-18T13:14:53.000Z" itemprop="datePublished">2023-02-18</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag">区块链</a>
+    </div>
+    
+      
+    <div>
+        <span>
+            共2.8k字
+                阅读时长约14分
+        </span>
+
+        <span id="busuanzi_container_page_pv">
+            访问量<span id="busuanzi_value_page_pv"></span>次
+        </span>
+    </div>
+    
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>👀 本文为个人在使用<code>Kubernetes</code>搭建Hyperledger Facric 2.X网络的个人笔记，原视频教程在<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=docdS_yMNkc&list=PLuAZTZDgj0csRQuNMY8wbYqOCpzggAuMo">这里</a>，有需要可以移步观看。目前该视频没有配套的操作文档，故留此文档用于日后学习。<br>🎈 操作前请先<a target="_blank" rel="noopener" href="https://github.com/hyperledger/bevel-operator-fabric">完成依赖安装</a>。或者参考我的<a target="_blank" rel="noopener" href="https://focuseon.me/prepare-for-hlf-k8s/">另一篇文章</a>。</p>
+</blockquote>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>按照官方教程准备好依赖</li>
+<li>配置版本号，避免出现不兼容现象</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PEER_IMAGE=hyperledger/fabric-peer</span><br><span class="line"><span class="built_in">export</span> PEER_VERSION=2.4.6</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> ORDERER_IMAGE=hyperledger/fabric-orderer</span><br><span class="line"><span class="built_in">export</span> ORDERER_VERSION=2.4.6</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> CA_IMAGE=hyperledger/fabric-ca</span><br><span class="line"><span class="built_in">export</span> CA_VERSION=1.5.6-beta2</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h2><h3 id="创建命名空间"><a href="#创建命名空间" class="headerlink" title="创建命名空间"></a>创建命名空间</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create ns fabric</span><br></pre></td></tr></table></figure>
+
+<h3 id="管理CA"><a href="#管理CA" class="headerlink" title="管理CA"></a>管理CA</h3><ol>
+<li>创建CA</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有几个CA就创建几个，例如：org1-ca/org2-ca/ord-ca</span></span><br><span class="line">kubectl hlf ca create --image=<span class="variable">$CA_IMAGE</span> --version=<span class="variable">$CA_VERSION</span> --storage-class=standard --capacity=1Gi --name=org1-ca --enroll-id=enroll --enroll-pw=enrollpw --namespace=fabric</span><br><span class="line">kubectl hlf ca create --image=<span class="variable">$CA_IMAGE</span> --version=<span class="variable">$CA_VERSION</span> --storage-class=standard --capacity=1Gi --name=org2-ca --enroll-id=enroll --enroll-pw=enrollpw --namespace=fabric</span><br><span class="line">kubectl hlf ca create --image=<span class="variable">$CA_IMAGE</span> --version=<span class="variable">$CA_VERSION</span> --storage-class=standard --capacity=1Gi --name=ord-ca --enroll-id=enroll --enroll-pw=enrollpw --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–storage-class</td>
+<td><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/">存储类</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>–capacity</td>
+<td>存储容量</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–name</td>
+<td>名称</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–enroll-id</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>–enroll-pw</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>–namespace</td>
+<td><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">命名空间</a></td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>验证CA</li>
+</ol>
+<blockquote>
+<p>可以使用<code>source &lt;(kubectl completion bash)</code>填充kubectl命令补全到bash。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get fabriccas.hlf.kungfusoftware.es -A -n fabric</span><br></pre></td></tr></table></figure>
+
+<h3 id="管理Peer"><a href="#管理Peer" class="headerlink" title="管理Peer"></a>管理Peer</h3><ol>
+<li>注册Peer身份</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有几个CA就注册几个，例如：org1-ca/org2-ca</span></span><br><span class="line">kubectl hlf ca register --name=org1-ca --user=org1-peer1 --secret=peerpw --<span class="built_in">type</span>=peer --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org1MSP --namespace=fabric</span><br><span class="line">kubectl hlf ca register --name=org1-ca --user=org1-peer2 --secret=peerpw --<span class="built_in">type</span>=peer --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org1MSP --namespace=fabric</span><br><span class="line">kubectl hlf ca register --name=org2-ca --user=org2-peer1 --secret=peerpw --<span class="built_in">type</span>=peer --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org2MSP --namespace=fabric</span><br><span class="line">kubectl hlf ca register --name=org2-ca --user=org2-peer2 --secret=peerpw --<span class="built_in">type</span>=peer --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org2MSP --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–name</td>
+<td>使用的CA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–user</td>
+<td>Peer用户</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–secret</td>
+<td>Peer密码</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–type</td>
+<td>类型</td>
+</tr>
+<tr>
+<td>5</td>
+<td>–enroll-id</td>
+<td>CA的ID</td>
+</tr>
+<tr>
+<td>6</td>
+<td>–enroll-secret</td>
+<td>对应CA的密码</td>
+</tr>
+<tr>
+<td>7</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+<tr>
+<td>8</td>
+<td>–namespace</td>
+<td>命名空间</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>创建Peer节点</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有几个Peer节点就创建几个，例如：org1-peer1/org2-peer2</span></span><br><span class="line">kubectl hlf peer create --image=<span class="variable">$PEER_IMAGE</span> --version=<span class="variable">$PEER_VERSION</span> --storage-class=standard --capacity=1Gi --enroll-id=org1-peer1 --mspid=Org1MSP --enroll-pw=peerpw --name=org1-peer1 --ca-name=org1-ca.fabric  --namespace=fabric --statedb=couchdb</span><br><span class="line">kubectl hlf peer create --image=<span class="variable">$PEER_IMAGE</span> --version=<span class="variable">$PEER_VERSION</span> --storage-class=standard --capacity=1Gi --enroll-id=org1-peer2 --mspid=Org1MSP --enroll-pw=peerpw --name=org1-peer2 --ca-name=org1-ca.fabric  --namespace=fabric --statedb=couchdb</span><br><span class="line"></span><br><span class="line">kubectl hlf peer create --image=<span class="variable">$PEER_IMAGE</span> --version=<span class="variable">$PEER_VERSION</span> --storage-class=standard --capacity=1Gi --enroll-id=org2-peer1 --mspid=Org2MSP --enroll-pw=peerpw --name=org2-peer1 --ca-name=org2-ca.fabric  --namespace=fabric --statedb=couchdb</span><br><span class="line">kubectl hlf peer create --image=<span class="variable">$PEER_IMAGE</span> --version=<span class="variable">$PEER_VERSION</span> --storage-class=standard --capacity=1Gi --enroll-id=org2-peer2 --mspid=Org2MSP --enroll-pw=peerpw --name=org2-peer2 --ca-name=org2-ca.fabric  --namespace=fabric --statedb=couchdb</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–storage-class</td>
+<td>存储类</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–capacity</td>
+<td>Peer用户</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–enroll-id</td>
+<td>注册Peer的ID</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+<tr>
+<td>5</td>
+<td>–enroll-pw</td>
+<td>Peer密码</td>
+</tr>
+<tr>
+<td>6</td>
+<td>–name</td>
+<td>Peer的名称</td>
+</tr>
+<tr>
+<td>7</td>
+<td>–ca-name</td>
+<td>使用的CA名称</td>
+</tr>
+<tr>
+<td>8</td>
+<td>–namespace</td>
+<td>命名空间</td>
+</tr>
+<tr>
+<td>9</td>
+<td>–statedb</td>
+<td>状态数据库</td>
+</tr>
+<tr>
+<td>10</td>
+<td>–output</td>
+<td>输出至文件（可选）</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>验证Peer创建情况</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get fabricpeers.hlf.kungfusoftware.es -A -n fabric</span><br></pre></td></tr></table></figure>
+
+<h3 id="注册并写入Admin证书"><a href="#注册并写入Admin证书" class="headerlink" title="注册并写入Admin证书"></a>注册并写入Admin证书</h3><ol>
+<li>创建文件夹</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> klf-k8s-demo</span><br><span class="line"><span class="built_in">cd</span> hlf-k8s-demo</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>注册组织Admin</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有几个CA就注册几个，例如：org1-ca/org2-ca</span></span><br><span class="line">kubectl hlf ca register --name=org1-ca --user=admin --secret=adminpw --<span class="built_in">type</span>=admin --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org1MSP --namespace=fabric</span><br><span class="line">kubectl hlf ca register --name=org2-ca --user=admin --secret=adminpw --<span class="built_in">type</span>=admin --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org2MSP --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–name</td>
+<td>CA名称</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–user</td>
+<td>Admin用户名</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–secret</td>
+<td>Admin密码</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–type</td>
+<td>注册类型</td>
+</tr>
+<tr>
+<td>5</td>
+<td>–enroll-id</td>
+<td>注册Admin的ID</td>
+</tr>
+<tr>
+<td>6</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+<tr>
+<td>7</td>
+<td>–enroll-secret</td>
+<td>注册密码</td>
+</tr>
+<tr>
+<td>8</td>
+<td>–namespace</td>
+<td>命名空间</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>获取Admin证书</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有几个CA就写入几个，例如：org1-peer/org2-peer</span></span><br><span class="line">kubectl hlf ca enroll --name=org1-ca --user=admin --secret=adminpw --ca-name=ca --mspid=Org1MSP --namespace=fabric --output=org1-peer.yaml</span><br><span class="line">kubectl hlf ca enroll --name=org2-ca --user=admin --secret=adminpw --ca-name=ca --mspid=Org2MSP --namespace=fabric --output=org2-peer.yaml</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–name</td>
+<td>CA名称</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–user</td>
+<td>Admin用户名</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–secret</td>
+<td>Admin密码</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–ca-name</td>
+<td>CA名称</td>
+</tr>
+<tr>
+<td>5</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+<tr>
+<td>6</td>
+<td>–namespace</td>
+<td>命名空间</td>
+</tr>
+<tr>
+<td>7</td>
+<td>–output</td>
+<td>输出至文件（需要保存文件）</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li>创建连接文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf inspect -o Org1MSP -o Org2MSP -o OrdererMSP --output=networkConfig.yaml</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>-o</td>
+<td>需要连接的MSP</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–output</td>
+<td>输出至文件（需要保存文件）</td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li>添加用户至网络</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有几个添加几个，例如：org1-peer/org2-peer</span></span><br><span class="line">kubectl hlf utils adduser --userPath=org1-peer.yaml --config=networkConfig.yaml --username=admin --mspid=Org1MSP</span><br><span class="line">kubectl hlf utils adduser --userPath=org2-peer.yaml --config=networkConfig.yaml --username=admin --mspid=Org2MSP</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–userPath</td>
+<td>认证文件</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–config</td>
+<td>目标网络配置</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–username</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+</tbody></table>
+<p>可在<code>networkConfig.yaml:Org1/2MSP:users</code>中看到已添加的认证信息。</p>
+<p>使用服务名替换网络配置中的IP以在kubernetes cluster中运行（可选）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># use --internal=true, such as:</span></span><br><span class="line">kubectl hlf inspect -o Org1MSP -o Org2MSP -o OrdererMSP --internal=<span class="literal">true</span> --output=servicename-networkConfig.yaml</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加排序服务至网络"><a href="#添加排序服务至网络" class="headerlink" title="添加排序服务至网络"></a>添加排序服务至网络</h3><ol>
+<li>创建排序服务身份文件</li>
+</ol>
+<blockquote>
+<p>需要先创建排序CA</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 此处只展示一个排序服务，例如：ord-ca</span></span><br><span class="line">kubectl hlf ca register --name=ord-ca --user=orderer --secret=ordererpw --<span class="built_in">type</span>=orderer --enroll-id=enroll --enroll-secret=enrollpw --mspid=OrdererMSP --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–name</td>
+<td>CA名称</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–user</td>
+<td>Admin用户名</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–secret</td>
+<td>Admin密码</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–type</td>
+<td>注册类型</td>
+</tr>
+<tr>
+<td>5</td>
+<td>–enroll-id</td>
+<td>注册Admin的ID</td>
+</tr>
+<tr>
+<td>6</td>
+<td>–enroll-secret</td>
+<td>注册密码</td>
+</tr>
+<tr>
+<td>7</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+<tr>
+<td>8</td>
+<td>–namespace</td>
+<td>命名空间</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>创建排序节点</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 此处只展示一个排序节点，例如：ord-node1</span></span><br><span class="line">kubectl hlf ordnode create --image=<span class="variable">$ORDERER_IMAGE</span> --version=<span class="variable">$ORDERER_VERSION</span> --storage-class=standard --enroll-id=orderer --enroll-pw=ordererpw --mspid=OrdererMSP --capacity=1Gi --name=ord-node1 --ca-name=ord-ca.fabric --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–storage-class</td>
+<td>存储类</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–enroll-id</td>
+<td>注册ID</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–enroll-pw</td>
+<td>注册密码</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–mspid</td>
+<td>MSP的ID</td>
+</tr>
+<tr>
+<td>5</td>
+<td>–capacity</td>
+<td>存储</td>
+</tr>
+<tr>
+<td>6</td>
+<td>–name</td>
+<td>节点名</td>
+</tr>
+<tr>
+<td>7</td>
+<td>–ca-name</td>
+<td>CA名称</td>
+</tr>
+<tr>
+<td>8</td>
+<td>–namespace</td>
+<td>命名空间</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>准备与排序服务交互的文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 要准备连接字符串，我们必须：</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 获取没有用户的连接字符串</span></span><br><span class="line">kubectl hlf inspect --output ordservice.yaml -o OrdererMSP</span><br><span class="line"><span class="comment"># 在证书颁发机构中注册用户以进行签名</span></span><br><span class="line">kubectl hlf ca register --name=ord-ca --user=admin --secret=adminpw --<span class="built_in">type</span>=admin --enroll-id=enroll --enroll-secret=enrollpw --mspid=OrdererMSP --namespace=fabric</span><br><span class="line"><span class="comment"># 使用上面创建的用户获取证书</span></span><br><span class="line">kubectl hlf ca enroll --name=ord-ca --user=admin --secret=adminpw --mspid=OrdererMSP --ca-name=ca  --output=admin-ordservice.yaml --namespace=fabric </span><br><span class="line"><span class="comment"># 将用户附加到连接字符串</span></span><br><span class="line">kubectl hlf utils adduser --userPath=admin-ordservice.yaml --config=ordservice.yaml --username=admin --mspid=OrdererMSP</span><br></pre></td></tr></table></figure>
+
+<h3 id="通道操作"><a href="#通道操作" class="headerlink" title="通道操作"></a>通道操作</h3><ol>
+<li>注册和登记Orderer的身份</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注册</span></span><br><span class="line">kubectl hlf ca register --name=ord-ca --user=admin --secret=adminpw --<span class="built_in">type</span>=admin --enroll-id=enroll --enroll-secret=enrollpw --mspid=OrdererMSP --namespace=fabric</span><br><span class="line"><span class="comment"># 登记</span></span><br><span class="line">kubectl hlf ca enroll --name=ord-ca --user=admin --secret=adminpw --mspid=OrdererMSP --ca-name=tlsca --namespace=fabric  --output=orderermsp.yaml</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>注册和登记Org1&#x2F;Org2的身份</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Org1</span></span><br><span class="line"><span class="comment"># 注册</span></span><br><span class="line">kubectl hlf ca register --name=org1-ca --namespace=default --user=admin --secret=adminpw --<span class="built_in">type</span>=admin --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org1MSP  --namespace=fabric</span><br><span class="line"><span class="comment"># 登记</span></span><br><span class="line">kubectl hlf ca enroll --name=org1-ca --user=admin --secret=adminpw --mspid=Org1MSP --ca-name=ca --namespace=fabric  --output=org1msp.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment"># Org2</span></span><br><span class="line"><span class="comment"># 注册</span></span><br><span class="line">kubectl hlf ca register --name=org2-ca --namespace=default --user=admin --secret=adminpw --<span class="built_in">type</span>=admin --enroll-id=enroll --enroll-secret=enrollpw --mspid=Org2MSP  --namespace=fabric</span><br><span class="line"><span class="comment"># 登记</span></span><br><span class="line">kubectl hlf ca enroll --name=org2-ca --user=admin --secret=adminpw --mspid=Org2MSP --ca-name=ca --namespace=fabric  --output=org2msp.yaml</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建密钥</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic wallet --from-file=org1msp.yaml=<span class="variable">$PWD</span>/org1msp.yaml --from-file=orderermsp.yaml=<span class="variable">$PWD</span>/orderermsp.yaml --from-file=org2msp.yaml=<span class="variable">$PWD</span>/org2msp.yaml --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建连接文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf inspect --output networkConfig.yaml -o Org1MSP -o OrdererMSP -o Org2MSP</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>-o</td>
+<td>需要连接的MSP</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–output</td>
+<td>网络配置文件</td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li>创建通道</li>
+</ol>
+<p>命令1：生成创世块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf channel generate --name=mychannel --organizations=Org1MSP --organizations=Org2MSP --ordererOrganizations=OrdererMSP --output=mychannel.block</span><br></pre></td></tr></table></figure>
+
+<p>命令1参数解释</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>–name</td>
+<td>通道名称</td>
+</tr>
+<tr>
+<td>2</td>
+<td>–organizations</td>
+<td>加入的组织MSP</td>
+</tr>
+<tr>
+<td>3</td>
+<td>–ordererOrganizations</td>
+<td>加入的排序组织MSP</td>
+</tr>
+<tr>
+<td>4</td>
+<td>–output</td>
+<td>输出块</td>
+</tr>
+</tbody></table>
+<p>命令2：加入排序节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里要使用--ca-name=tls生成的Orderer证书</span></span><br><span class="line">kubectl hlf ordnode <span class="built_in">join</span> --block=mychannel.block --name=ord-node1 --identity=orderermsp.yaml --namespace=fabric</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出</span></span><br><span class="line">INFO[0000] name=ord-node1 namespace=fabric           </span><br><span class="line">INFO[0000] Status code=201 </span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Peer加入通道</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf channel <span class="built_in">join</span> --name=mychannel --config=networkConfig.yaml --user=admin -p=org1-peer1.fabric</span><br><span class="line">kubectl hlf channel <span class="built_in">join</span> --name=mychannel --config=networkConfig.yaml --user=admin -p=org1-peer2.fabric</span><br><span class="line">kubectl hlf channel <span class="built_in">join</span> --name=mychannel --config=networkConfig.yaml --user=admin -p=org2-peer1.fabric</span><br><span class="line">kubectl hlf channel <span class="built_in">join</span> --name=mychannel --config=networkConfig.yaml --user=admin -p=org2-peer2.fabric</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出</span></span><br><span class="line">INFO[0000] Channel joined</span><br><span class="line">INFO[0000] Channel joined</span><br><span class="line">INFO[0000] Channel joined</span><br><span class="line">INFO[0000] Channel joined</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可能会出现错误<code>Error: failed to create resmgmt client due to context error: user not found</code>，参见问题汇总2.</p>
+</blockquote>
+<h3 id="配置锚节点"><a href="#配置锚节点" class="headerlink" title="配置锚节点"></a>配置锚节点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf channel addanchorpeer --channel=mychannel --config=networkConfig.yaml --user=admin --peer=org1-peer1.fabric</span><br><span class="line">kubectl hlf channel addanchorpeer --channel=mychannel --config=networkConfig.yaml --user=admin --peer=org2-peer1.fabric</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出</span></span><br><span class="line">INFO[0000] Anchor peers []                              </span><br><span class="line">INFO[0000] anchor anchorPeers added: 84795de5658a970dbebe0ee43c9a33ecb3e9000760371e0e162a6764bae4e6c4 </span><br><span class="line">INFO[0000] Anchor peers []                              </span><br><span class="line">INFO[0000] anchor anchorPeers added: a8159c79cddac86702207054d2f9a57b2cf6900d37df1ce138017090a3938863 </span><br></pre></td></tr></table></figure>
+
+<h3 id="安装链码"><a href="#安装链码" class="headerlink" title="安装链码"></a>安装链码</h3><ol>
+<li>创建链码所需文件夹</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> chaincode/fabcar -p</span><br><span class="line"><span class="built_in">cd</span> chaincode/fabcar</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>准备链码</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 https://github.com/hyperledger/fabric-samples/tree/main/chaincode/fabcar/go 获取源码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 目录结构如下</span></span><br><span class="line">chaincode/</span><br><span class="line">└── fabcar</span><br><span class="line">    └── go</span><br><span class="line">        ├── fabcar.go</span><br><span class="line">        ├── go.mod</span><br><span class="line">        └── go.sum</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安装链码（安装链码为外部服务）</li>
+</ol>
+<p>创建元文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://github.com/adityajoshi12/hlf-operator-meetup</span></span><br><span class="line">CC_NAME=mycc</span><br><span class="line"><span class="built_in">cat</span> &lt;&lt;<span class="string">METADATA-EOF &gt;&quot;metadata.json&quot;</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        &quot;type&quot;: &quot;ccaas&quot;,</span></span><br><span class="line"><span class="string">        &quot;label&quot;: &quot;$&#123;CC_NAME&#125;&quot;</span></span><br><span class="line"><span class="string">     &#125;</span></span><br><span class="line"><span class="string">METADATA</span>-EOF</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &lt;&lt;<span class="string">CONN_EOF &gt;&quot;connection.json&quot;</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">    &quot;address&quot;: &quot;$&#123;CC_NAME&#125;:7052&quot;,</span></span><br><span class="line"><span class="string">    &quot;dial_timeout&quot;: &quot;10s&quot;,</span></span><br><span class="line"><span class="string">    &quot;tls_required&quot;: false</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">CONN_EOF</span></span><br><span class="line"></span><br><span class="line">tar cfz code.tar.gz connection.json</span><br><span class="line">tar cfz <span class="variable">$&#123;CC_NAME&#125;</span>-external.tgz metadata.json code.tar.gz</span><br><span class="line">PACKAGE_ID=$(kubectl-hlf chaincode calculatepackageid --path=<span class="variable">$CC_NAME</span>-external.tgz --language=node --label=<span class="variable">$CC_NAME</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;PACKAGE_ID=<span class="variable">$PACKAGE_ID</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>安装链码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf chaincode install --path=./<span class="variable">$&#123;CC_NAME&#125;</span>-external.tgz --config=networkConfig.yaml --language=node --label=<span class="variable">$CC_NAME</span> --user=admin --peer=org1-peer1.fabric</span><br><span class="line">kubectl hlf chaincode install --path=./<span class="variable">$&#123;CC_NAME&#125;</span>-external.tgz --config=networkConfig.yaml --language=node --label=<span class="variable">$CC_NAME</span> --user=admin --peer=org2-peer1.fabric</span><br></pre></td></tr></table></figure>
+
+<p>部署链码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf externalchaincode <span class="built_in">sync</span> --image=adityajoshi12/hlf-nodejs-external-cc:latest --name=<span class="variable">$CC_NAME</span> --namespace=fabric --package-id=<span class="variable">$PACKAGE_ID</span> --tls-required=<span class="literal">false</span> --replicas=1</span><br></pre></td></tr></table></figure>
+
+<p>批准链码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf chaincode approveformyorg --config=networkConfig.yaml --user=admin --peer=org1-peer1.fabric --package-id=<span class="variable">$PACKAGE_ID</span> --version 1.0 --sequence 1 --name=<span class="variable">$CC_NAME</span> --policy=<span class="string">&quot;OR(&#x27;Org1MSP.member&#x27;,&#x27;Org2MSP.member&#x27;)&quot;</span> --channel=mychannel</span><br><span class="line">kubectl hlf chaincode approveformyorg --config=networkConfig.yaml --user=admin --peer=org2-peer1.fabric --package-id=<span class="variable">$PACKAGE_ID</span> --version 1.0 --sequence 1 --name=<span class="variable">$CC_NAME</span> --policy=<span class="string">&quot;OR(&#x27;Org1MSP.member&#x27;,&#x27;Org2MSP.member&#x27;)&quot;</span> --channel=mychannel</span><br></pre></td></tr></table></figure>
+
+<p>提交链码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf chaincode commit --config=networkConfig.yaml --mspid=Org1MSP --user=admin --version 1.0 --sequence 1 --name=<span class="variable">$CC_NAME</span> --policy=<span class="string">&quot;OR(&#x27;Org1MSP.member&#x27;,&#x27;Org2MSP.member&#x27;)&quot;</span> --channel=mychannel</span><br></pre></td></tr></table></figure>
+
+<p>调用与查询</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 调用</span></span><br><span class="line">kubectl hlf chaincode invoke --config=networkConfig.yaml --user=admin --peer=org1-peer1.fabric --chaincode=<span class="variable">$CC_NAME</span> --channel=mychannel --fcn=createCar -a <span class="string">&quot;1000&quot;</span> -a <span class="string">&quot;honda&quot;</span> -a <span class="string">&quot;civic&quot;</span> -a <span class="string">&quot;red&quot;</span> -a <span class="string">&quot;aditya&quot;</span></span><br><span class="line"><span class="comment"># 查询</span></span><br><span class="line">kubectl hlf chaincode query --config=networkConfig.yaml --user=admin --peer=org1-peer1.fabric --chaincode=<span class="variable">$CC_NAME</span> --channel=mychannel --fcn=queryAllCars -a <span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>其他命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl hlf channel top --channel=mychannel --config=networkConfig.yaml --user=admin -p=org1-peer1.fabric</span><br><span class="line">kubectl hlf channel inspect --channel=mychannel --config=networkConfig.yaml --user=admin -p=org1-peer1.fabric &gt; mychannel.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><ol>
+<li><code>unknown command &quot;krew&quot; for &quot;kubectl&quot;</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt;&gt; ~/.bashrc &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">export PATH=&quot;$&#123;PATH&#125;:$&#123;HOME&#125;/.krew/bin&quot;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><code>Error: failed to create resmgmt client due to context error: user not found</code></li>
+</ol>
+<p>因为连接Orderer时重新生成了<code>networkConfig.yaml</code>文件，所以需要重新添加用户。命令如下.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加Org1/Org2</span></span><br><span class="line">kubectl hlf utils adduser --userPath=org1-peer.yaml --config=networkConfig.yaml --username=admin --mspid=Org1MSP</span><br><span class="line">kubectl hlf utils adduser --userPath=org2-peer.yaml --config=networkConfig.yaml --username=admin --mspid=Org2MSP</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>docker build is disabled error when installing my chaincode on hyperledger fabric</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://stackoverflow.com/questions/73100516/docker-build-is-disabled-error-when-installing-my-chaincode-on-hyperledger-fabri/73153204#73153204</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Peer节点版本不相符，除了上述的解决方案，推荐使用官方文档中对版本进行限定，再使用 --image=$CA_IMAGE --version=$CA_VERSION</span></span><br><span class="line"><span class="built_in">export</span> PEER_IMAGE=hyperledger/fabric-peer</span><br><span class="line"><span class="built_in">export</span> PEER_VERSION=2.4.6</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> ORDERER_IMAGE=hyperledger/fabric-orderer</span><br><span class="line"><span class="built_in">export</span> ORDERER_VERSION=2.4.6</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> CA_IMAGE=hyperledger/fabric-ca</span><br><span class="line"><span class="built_in">export</span> CA_VERSION=1.5.6-beta2</span><br><span class="line"></span><br><span class="line"><span class="comment"># Go配置也可能是出现错误的原因</span></span><br><span class="line">go <span class="built_in">env</span> -w GOPROXY=https://goproxy.io,direct</span><br><span class="line">go <span class="built_in">env</span> -w GO111MODULE=on</span><br><span class="line">go mod vendor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要使用外部服务部署链码</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+<script src="https://giscus.app/client.js"
+        data-repo="focuseds/giscus"
+        data-repo-id="R_kgDOH48gZQ"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOH48gZc4CRE0v"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="1"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">2.1.</span> <span class="toc-text">创建命名空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E7%90%86CA"><span class="toc-number">2.2.</span> <span class="toc-text">管理CA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E7%90%86Peer"><span class="toc-number">2.3.</span> <span class="toc-text">管理Peer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E5%B9%B6%E5%86%99%E5%85%A5Admin%E8%AF%81%E4%B9%A6"><span class="toc-number">2.4.</span> <span class="toc-text">注册并写入Admin证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%8E%92%E5%BA%8F%E6%9C%8D%E5%8A%A1%E8%87%B3%E7%BD%91%E7%BB%9C"><span class="toc-number">2.5.</span> <span class="toc-text">添加排序服务至网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E9%81%93%E6%93%8D%E4%BD%9C"><span class="toc-number">2.6.</span> <span class="toc-text">通道操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%94%9A%E8%8A%82%E7%82%B9"><span class="toc-number">2.7.</span> <span class="toc-text">配置锚节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%93%BE%E7%A0%81"><span class="toc-number">2.8.</span> <span class="toc-text">安装链码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB"><span class="toc-number">3.</span> <span class="toc-text">问题汇总</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&text=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络&body=Check out this article: https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&name=基于k8s搭建Hyperledger Fabric网络&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/&t=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2018-2023
+            Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              首页
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              归档
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              搜索
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              关于
+            </a></li>
+          <!--
+     -->
+          
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+              <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+              
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

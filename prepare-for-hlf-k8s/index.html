@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="环境配置Docker部分 安装docker  Ubuntu 用户 12345678910111213141516171819# 如果你过去安装过 docker，先删掉:sudo apt-get remove docker docker-engine docker.io containerd runc# 首先安装依赖:sudo apt-get install apt-transport-https">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于k8s搭建Hyperledger Fabric网络（准备工作）">
+<meta property="og:url" content="https://focuseds.github.io/prepare-for-hlf-k8s/">
+<meta property="og:site_name" content="Focuseds Blog">
+<meta property="og:description" content="环境配置Docker部分 安装docker  Ubuntu 用户 12345678910111213141516171819# 如果你过去安装过 docker，先删掉:sudo apt-get remove docker docker-engine docker.io containerd runc# 首先安装依赖:sudo apt-get install apt-transport-https">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-19T11:35:21.000Z">
+<meta property="article:modified_time" content="2023-02-20T06:18:53.478Z">
+<meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>基于k8s搭建Hyperledger Fabric网络（准备工作）</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="Focuseds Blog" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/hyperledger-fabric-with-k8s/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/prepare-for-hlf-k8s/&text=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/prepare-for-hlf-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络（准备工作）&body=Check out this article: https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/prepare-for-hlf-k8s/&name=基于k8s搭建Hyperledger Fabric网络（准备工作）&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/prepare-for-hlf-k8s/&t=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">Docker部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K8s%E9%83%A8%E5%88%86"><span class="toc-number">1.2.</span> <span class="toc-text">K8s部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fabric%E9%83%A8%E5%88%86"><span class="toc-number">1.3.</span> <span class="toc-text">Fabric部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">1.4.</span> <span class="toc-text">链码部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB"><span class="toc-number">2.</span> <span class="toc-text">问题汇总</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        基于k8s搭建Hyperledger Fabric网络（准备工作）
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Focuseds</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-02-19T11:35:21.000Z" itemprop="datePublished">2023-02-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/k8s/" rel="tag">k8s</a>
+    </div>
+    
+      
+    <div>
+        <span>
+            共764字
+                阅读时长约4分
+        </span>
+
+        <span id="busuanzi_container_page_pv">
+            访问量<span id="busuanzi_value_page_pv"></span>次
+        </span>
+    </div>
+    
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="Docker部分"><a href="#Docker部分" class="headerlink" title="Docker部分"></a>Docker部分</h3><ol>
+<li>安装docker</li>
+</ol>
+<p>Ubuntu 用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果你过去安装过 docker，先删掉:</span></span><br><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 首先安装依赖:</span></span><br><span class="line">sudo apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据你的发行版，下面的内容有所不同。你使用的发行版： </span></span><br><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line"><span class="comment"># 信任 Docker 的 GPG 公钥:</span></span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加软件仓库:</span></span><br><span class="line"><span class="built_in">echo</span> \</span><br><span class="line">  <span class="string">&quot;deb [arch=<span class="subst">$(dpkg --print-architecture)</span> signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \</span></span><br><span class="line"><span class="string">  <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后安装</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>普通用户执行权限添加</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 docker 用户组</span></span><br><span class="line">sudo groupadd docker</span><br><span class="line"><span class="comment"># 添加你想用普通用户权限的用户名到 docker 用户组</span></span><br><span class="line">sudo usermod -aG docker <span class="variable">$USER</span></span><br><span class="line"><span class="comment"># 系统重启后就可以使用普通用户权限执行 docker, 如果不想重启，可以使用下面的命令更新并激活组权限</span></span><br><span class="line">newgrp docker</span><br><span class="line"><span class="comment"># 验证设置是否成功</span></span><br><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<h3 id="K8s部分"><a href="#K8s部分" class="headerlink" title="K8s部分"></a>K8s部分</h3><ol>
+<li>安装KinD</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官方教程：https://kind.sigs.k8s.io/docs/user/quick-start/#installing-with-a-package-manager</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># For linux</span></span><br><span class="line">curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64</span><br><span class="line"><span class="built_in">chmod</span> +x ./kind</span><br><span class="line">sudo <span class="built_in">mv</span> ./kind /usr/local/bin/kind</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装kubectl</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官方文档：https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 二进制文件安装</span></span><br><span class="line">curl -LO <span class="string">&quot;https://dl.k8s.io/release/<span class="subst">$(curl -L -s https://dl.k8s.io/release/stable.txt)</span>/bin/linux/amd64/kubectl&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证二进制文件</span></span><br><span class="line">curl -LO <span class="string">&quot;https://dl.k8s.io/<span class="subst">$(curl -L -s https://dl.k8s.io/release/stable.txt)</span>/bin/linux/amd64/kubectl.sha256&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(cat kubectl.sha256)</span>  kubectl&quot;</span> | <span class="built_in">sha256sum</span> --check</span><br><span class="line"><span class="comment"># 验证通过</span></span><br><span class="line">kubectl: OK</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装kubectl</span></span><br><span class="line">sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">kubectl version --client</span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令补全</span></span><br><span class="line"><span class="built_in">source</span> &lt;(kubectl completion bash)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安装Helm</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官方教程：https://helm.sh/docs/intro/install/</span></span><br><span class="line"><span class="comment"># From script</span></span><br><span class="line">curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3</span><br><span class="line"><span class="built_in">chmod</span> 700 get_helm.sh</span><br><span class="line">./get_helm.sh</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>安装Krew</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官方教程：https://krew.sigs.k8s.io/docs/user-guide/setup/install/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 确保 git 已经安装</span></span><br><span class="line">(</span><br><span class="line">  <span class="built_in">set</span> -x; <span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(mktemp -d)</span>&quot;</span> &amp;&amp;</span><br><span class="line">  OS=<span class="string">&quot;<span class="subst">$(uname | tr &#x27;[:upper:]&#x27; &#x27;[:lower:]&#x27;)</span>&quot;</span> &amp;&amp;</span><br><span class="line">  ARCH=<span class="string">&quot;<span class="subst">$(uname -m | sed -e &#x27;s/x86_64/amd64/&#x27; -e &#x27;s/\(arm\)\(64\)\?.*/\1\2/&#x27; -e &#x27;s/aarch64$/arm64/&#x27;)</span>&quot;</span> &amp;&amp;</span><br><span class="line">  KREW=<span class="string">&quot;krew-<span class="variable">$&#123;OS&#125;</span>_<span class="variable">$&#123;ARCH&#125;</span>&quot;</span> &amp;&amp;</span><br><span class="line">  curl -fsSLO <span class="string">&quot;https://github.com/kubernetes-sigs/krew/releases/latest/download/<span class="variable">$&#123;KREW&#125;</span>.tar.gz&quot;</span> &amp;&amp;</span><br><span class="line">  tar zxvf <span class="string">&quot;<span class="variable">$&#123;KREW&#125;</span>.tar.gz&quot;</span> &amp;&amp;</span><br><span class="line">  ./<span class="string">&quot;<span class="variable">$&#123;KREW&#125;</span>&quot;</span> install krew</span><br><span class="line">)</span><br><span class="line"><span class="comment"># 将 $HOME/.krew/bin 添加到环境变量</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$&#123;KREW_ROOT:-<span class="variable">$HOME</span>/.krew&#125;</span>/bin:<span class="variable">$PATH</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启shell并检查</span></span><br><span class="line">kubectl krew</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>安装Istio</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://istio.io/downloadIstio | sh -</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>创建cluster</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">EOF &gt; kind-config.yaml</span></span><br><span class="line"><span class="string">kind: Cluster</span></span><br><span class="line"><span class="string">apiVersion: kind.x-k8s.io/v1alpha4</span></span><br><span class="line"><span class="string">nodes:</span></span><br><span class="line"><span class="string">- role: control-plane</span></span><br><span class="line"><span class="string">  extraPortMappings:</span></span><br><span class="line"><span class="string">  - containerPort: 30949</span></span><br><span class="line"><span class="string">    hostPort: 80</span></span><br><span class="line"><span class="string">  - containerPort: 30950</span></span><br><span class="line"><span class="string">    hostPort: 443</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">kind create cluster --config=./kind-config.yaml</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fabric部分"><a href="#Fabric部分" class="headerlink" title="Fabric部分"></a>Fabric部分</h3><ol>
+<li>安装k8s operator</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">helm repo add kfs https://kfsoftware.github.io/hlf-helm-charts --force-update</span><br><span class="line"></span><br><span class="line">helm install hlf-operator --version=1.8.2 kfs/hlf-operator</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装kubectl插件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl krew install hlf</span><br></pre></td></tr></table></figure>
+
+<h3 id="链码部分"><a href="#链码部分" class="headerlink" title="链码部分"></a>链码部分</h3><ol>
+<li>配置Go环境</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://golang.google.cn/dl/go1.19.3.linux-amd64.tar.gz</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /usr/local/go &amp;&amp; sudo tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/local/go/bin</span><br><span class="line">go version</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2>
+  </div>
+</article>
+
+
+<script src="https://giscus.app/client.js"
+        data-repo="focuseds/giscus"
+        data-repo-id="R_kgDOH48gZQ"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOH48gZc4CRE0v"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="1"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/search/">搜索</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">Docker部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K8s%E9%83%A8%E5%88%86"><span class="toc-number">1.2.</span> <span class="toc-text">K8s部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fabric%E9%83%A8%E5%88%86"><span class="toc-number">1.3.</span> <span class="toc-text">Fabric部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">1.4.</span> <span class="toc-text">链码部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB"><span class="toc-number">2.</span> <span class="toc-text">问题汇总</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/prepare-for-hlf-k8s/&text=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/prepare-for-hlf-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络（准备工作）&body=Check out this article: https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/prepare-for-hlf-k8s/&name=基于k8s搭建Hyperledger Fabric网络（准备工作）&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/prepare-for-hlf-k8s/&t=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2018-2023
+            Focuseds
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        
+          <!--
+       -->
+          <li><a href="/">
+              首页
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/archives/">
+              归档
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/search/">
+              搜索
+            </a></li>
+          <!--
+     -->
+          
+          <!--
+       -->
+          <li><a href="/about/">
+              关于
+            </a></li>
+          <!--
+     -->
+          
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+              <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+              
+      </ul>
+    </nav>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FN5YNJ7DRE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FN5YNJ7DRE');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
