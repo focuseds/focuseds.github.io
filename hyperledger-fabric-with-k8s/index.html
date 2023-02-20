@@ -8,15 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="👀 本文为个人在使用Kubernetes搭建Hyperledger Facric 2.X网络的个人笔记，原视频教程在这里，有需要可以移步观看。目前该视频没有配套的操作文档，故留此文档用于日后学习。🎈 操作前请先完成依赖安装。或者参考我的另一篇文章。  准备 按照官方教程准备好依赖 配置版本号，避免出现不兼容现象  12345678export PEER_IMAGE&#x3D;hyperledger&#x2F;f">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于k8s搭建Hyperledger Fabric网络">
+<meta property="og:title" content="基于Kubernetes集群部署Hyperledger Fabric网络">
 <meta property="og:url" content="https://focuseds.github.io/hyperledger-fabric-with-k8s/">
 <meta property="og:site_name" content="Focuseds Blog">
 <meta property="og:description" content="👀 本文为个人在使用Kubernetes搭建Hyperledger Facric 2.X网络的个人笔记，原视频教程在这里，有需要可以移步观看。目前该视频没有配套的操作文档，故留此文档用于日后学习。🎈 操作前请先完成依赖安装。或者参考我的另一篇文章。  准备 按照官方教程准备好依赖 配置版本号，避免出现不兼容现象  12345678export PEER_IMAGE&#x3D;hyperledger&#x2F;f">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-18T13:14:53.000Z">
-<meta property="article:modified_time" content="2023-02-20T08:05:23.968Z">
+<meta property="article:modified_time" content="2023-02-20T11:53:19.831Z">
 <meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="k8s">
 <meta property="article:tag" content="区块链">
+<meta property="article:tag" content="Hyperledger Fabric">
+<meta property="article:tag" content="Fabric">
+<meta property="article:tag" content="Hyperledger">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="blockchain">
 <meta name="twitter:card" content="summary">
     
     
@@ -37,7 +44,7 @@
       
     
     <!-- title -->
-    <title>基于k8s搭建Hyperledger Fabric网络</title>
+    <title>基于Kubernetes集群部署Hyperledger Fabric网络</title>
     <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -94,16 +101,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&text=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络&body=Check out this article: https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&name=基于k8s搭建Hyperledger Fabric网络&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/&t=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&text=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&is_video=false&description=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=基于Kubernetes集群部署Hyperledger Fabric网络&body=Check out this article: https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&name=基于Kubernetes集群部署Hyperledger Fabric网络&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/&t=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -120,7 +127,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        基于k8s搭建Hyperledger Fabric网络
+        基于Kubernetes集群部署Hyperledger Fabric网络
     </h1>
 
 
@@ -143,7 +150,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag">区块链</a>
+        <a class="tag-link-link" href="/tags/Fabric/" rel="tag">Fabric</a>, <a class="tag-link-link" href="/tags/Hyperledger/" rel="tag">Hyperledger</a>, <a class="tag-link-link" href="/tags/Hyperledger-Fabric/" rel="tag">Hyperledger Fabric</a>, <a class="tag-link-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a>, <a class="tag-link-link" href="/tags/blockchain/" rel="tag">blockchain</a>, <a class="tag-link-link" href="/tags/docker/" rel="tag">docker</a>, <a class="tag-link-link" href="/tags/k8s/" rel="tag">k8s</a>, <a class="tag-link-link" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag">区块链</a>
     </div>
     
       
@@ -837,16 +844,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&text=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络&body=Check out this article: https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&name=基于k8s搭建Hyperledger Fabric网络&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/&t=基于k8s搭建Hyperledger Fabric网络"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&text=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&is_video=false&description=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=基于Kubernetes集群部署Hyperledger Fabric网络&body=Check out this article: https://focuseds.github.io/hyperledger-fabric-with-k8s/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&title=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/hyperledger-fabric-with-k8s/&name=基于Kubernetes集群部署Hyperledger Fabric网络&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/hyperledger-fabric-with-k8s/&t=基于Kubernetes集群部署Hyperledger Fabric网络"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

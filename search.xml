@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>基于k8s搭建Hyperledger Fabric网络（准备工作）</title>
+      <title>集群部署Hyperledger Fabric网络的准备工作</title>
       <link href="/prepare-for-hlf-k8s/"/>
       <url>/prepare-for-hlf-k8s/</url>
       
@@ -14,7 +14,21 @@
       
         <tags>
             
+            <tag> docker </tag>
+            
             <tag> k8s </tag>
+            
+            <tag> 区块链 </tag>
+            
+            <tag> Hyperledger Fabric </tag>
+            
+            <tag> Fabric </tag>
+            
+            <tag> Hyperledger </tag>
+            
+            <tag> Kubernetes </tag>
+            
+            <tag> blockchain </tag>
             
         </tags>
       
@@ -23,7 +37,7 @@
     
     
     <entry>
-      <title>基于k8s搭建Hyperledger Fabric网络</title>
+      <title>基于Kubernetes集群部署Hyperledger Fabric网络</title>
       <link href="/hyperledger-fabric-with-k8s/"/>
       <url>/hyperledger-fabric-with-k8s/</url>
       
@@ -33,7 +47,21 @@
       
         <tags>
             
+            <tag> docker </tag>
+            
+            <tag> k8s </tag>
+            
             <tag> 区块链 </tag>
+            
+            <tag> Hyperledger Fabric </tag>
+            
+            <tag> Fabric </tag>
+            
+            <tag> Hyperledger </tag>
+            
+            <tag> Kubernetes </tag>
+            
+            <tag> blockchain </tag>
             
         </tags>
       

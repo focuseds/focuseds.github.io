@@ -8,15 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="环境配置Docker部分 安装docker  Ubuntu 用户 12345678910111213141516171819# 如果你过去安装过 docker，先删掉:sudo apt-get remove docker docker-engine docker.io containerd runc# 首先安装依赖:sudo apt-get install apt-transport-https">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于k8s搭建Hyperledger Fabric网络（准备工作）">
+<meta property="og:title" content="集群部署Hyperledger Fabric网络的准备工作">
 <meta property="og:url" content="https://focuseds.github.io/prepare-for-hlf-k8s/">
 <meta property="og:site_name" content="Focuseds Blog">
 <meta property="og:description" content="环境配置Docker部分 安装docker  Ubuntu 用户 12345678910111213141516171819# 如果你过去安装过 docker，先删掉:sudo apt-get remove docker docker-engine docker.io containerd runc# 首先安装依赖:sudo apt-get install apt-transport-https">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-19T11:35:21.000Z">
-<meta property="article:modified_time" content="2023-02-20T06:18:53.478Z">
+<meta property="article:modified_time" content="2023-02-20T11:52:50.168Z">
 <meta property="article:author" content="Focuseds">
+<meta property="article:tag" content="docker">
 <meta property="article:tag" content="k8s">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="Hyperledger Fabric">
+<meta property="article:tag" content="Fabric">
+<meta property="article:tag" content="Hyperledger">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="blockchain">
 <meta name="twitter:card" content="summary">
     
     
@@ -37,7 +44,7 @@
       
     
     <!-- title -->
-    <title>基于k8s搭建Hyperledger Fabric网络（准备工作）</title>
+    <title>集群部署Hyperledger Fabric网络的准备工作</title>
     <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -92,16 +99,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/prepare-for-hlf-k8s/&text=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/prepare-for-hlf-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络（准备工作）&body=Check out this article: https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/prepare-for-hlf-k8s/&name=基于k8s搭建Hyperledger Fabric网络（准备工作）&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/prepare-for-hlf-k8s/&t=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/prepare-for-hlf-k8s/&text=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/prepare-for-hlf-k8s/&is_video=false&description=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=集群部署Hyperledger Fabric网络的准备工作&body=Check out this article: https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/prepare-for-hlf-k8s/&name=集群部署Hyperledger Fabric网络的准备工作&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/prepare-for-hlf-k8s/&t=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -118,7 +125,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        基于k8s搭建Hyperledger Fabric网络（准备工作）
+        集群部署Hyperledger Fabric网络的准备工作
     </h1>
 
 
@@ -141,7 +148,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/k8s/" rel="tag">k8s</a>
+        <a class="tag-link-link" href="/tags/Fabric/" rel="tag">Fabric</a>, <a class="tag-link-link" href="/tags/Hyperledger/" rel="tag">Hyperledger</a>, <a class="tag-link-link" href="/tags/Hyperledger-Fabric/" rel="tag">Hyperledger Fabric</a>, <a class="tag-link-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a>, <a class="tag-link-link" href="/tags/blockchain/" rel="tag">blockchain</a>, <a class="tag-link-link" href="/tags/docker/" rel="tag">docker</a>, <a class="tag-link-link" href="/tags/k8s/" rel="tag">k8s</a>, <a class="tag-link-link" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag">区块链</a>
     </div>
     
       
@@ -264,16 +271,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/prepare-for-hlf-k8s/&text=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/prepare-for-hlf-k8s/&is_video=false&description=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=基于k8s搭建Hyperledger Fabric网络（准备工作）&body=Check out this article: https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/prepare-for-hlf-k8s/&name=基于k8s搭建Hyperledger Fabric网络（准备工作）&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/prepare-for-hlf-k8s/&t=基于k8s搭建Hyperledger Fabric网络（准备工作）"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://focuseds.github.io/prepare-for-hlf-k8s/&text=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://focuseds.github.io/prepare-for-hlf-k8s/&is_video=false&description=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=集群部署Hyperledger Fabric网络的准备工作&body=Check out this article: https://focuseds.github.io/prepare-for-hlf-k8s/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://focuseds.github.io/prepare-for-hlf-k8s/&title=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://focuseds.github.io/prepare-for-hlf-k8s/&name=集群部署Hyperledger Fabric网络的准备工作&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://focuseds.github.io/prepare-for-hlf-k8s/&t=集群部署Hyperledger Fabric网络的准备工作"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
