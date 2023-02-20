@@ -37,7 +37,7 @@
     
     
     <entry>
-      <title>基于Kubernetes集群部署Hyperledger Fabric网络</title>
+      <title>基于Kubernetes集群构建并部署Hyperledger Fabric网络</title>
       <link href="/hyperledger-fabric-with-k8s/"/>
       <url>/hyperledger-fabric-with-k8s/</url>
       
